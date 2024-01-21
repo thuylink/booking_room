@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('id_role')->after('password');
-            //
+        Schema::create('category', function (Blueprint $table) {
+            $table->id();
+            $table->string('name_category')->notNull()->unique();
+            $table->string('image');
+            $table->string('description');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('category');
     }
 };

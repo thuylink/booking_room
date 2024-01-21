@@ -14,17 +14,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('home', function (Blueprint $table) {
-            $table->integer('id_home');
-            $table->string('name');
+            $table->id();
+            $table->string('name', 250);
             $table->string('description');
-            $table->integer('id_category');
+            $table->unsignedBigInteger('id_category');
             $table->string('image');
             $table->string('file');
             $table->string('location');
             $table->integer('price');
-            $table->string('host_name');
+            $table->string('name_host');
             $table->text('map');
             $table->timestamps();
+            $table->foreign('id_category')->references('id')->on('category');
+
         });
     }
 
