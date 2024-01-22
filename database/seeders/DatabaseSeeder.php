@@ -27,14 +27,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        /*
-        truy vấn bảng role ktra xem có bản ghi nào có id = 2 không
-        phương thức first() trả về bản ghi đầu tiên
-        nếu không tìm thấy bản ghi nào, biến $userRole là null
-        nếu null (không tìm thấy bản ghi user)
-        thì chèn bản ghi đó vào bảng bằng phương thức insert()
-        với 2 trường id và name_role
-        */
+
 
         $userRole = DB::table('role')->where('id', 2)->first();
         if (!$userRole) {
