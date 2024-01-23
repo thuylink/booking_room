@@ -1,0 +1,40 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - laravel
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+    networks:
+      - laravel
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: booking_room
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: booking_room_user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - laravel
+
+networks:
+  laravel:
