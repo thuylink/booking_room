@@ -1,27 +1,32 @@
 version: '3'
 services:
-  backend:
+  laravel:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - '8000:8000'
     volumes:
-      - './backend:/var/www/html'
-    
+      - ./backend:/var/www/html
+    networks:
+      - booking_room_network
 
-  frontend:
+  nextjs:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
-
-    command: npm run dev
-    container_name: mywebsite  
-
-    image: docker-nextjs-dev 
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - '3002:3000'
+      - '3000:3000'
     volumes:
-      - './frontend:/app'
-    environment:
-      -  WATCHPACK_POLLING=true  
+      - ./frontend:/usr/src/app
+    networks:
+      - booking_room_network
+
+networks:
+  booking_room_network:
+
+# explain:  
+# định nghĩa 2 service: laravel và nextjs
+# thư mục backend gắn kết vào /var/www/html, frontend ...
+# cả 2 được kết nối vào mạng booking_room_network
+  

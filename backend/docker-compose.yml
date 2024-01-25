@@ -1,13 +1,13 @@
 version: "3"
 services:
-  backend:
+  app:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8000:9000"
     volumes:
-      - ./backend:/var/www/html
+      - .:/var/www/html
     depends_on:
       - db
 
@@ -16,9 +16,9 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: bookung_room
+      MYSQL_DATABASE: newsDb
       MYSQL_USER: root
-      MYSQL_PASSWORD: 200019401a
-      MYSQL_ROOT_PASSWORD: 200019401a
+      MYSQL_PASSWORD: secretnewsDb
+      MYSQL_ROOT_PASSWORD: secretnewsDb
     volumes:
-      - ./backend/mysql:/var/lib/mysql
+      - ./mysql:/var/lib/mysql

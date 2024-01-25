@@ -66,4 +66,5 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT). -->
 
 
-# Build a booking room website using Laravel 
+- Trong cmd gốc chạy docker-compose up --build
+- chạy php artist Migrate để thiết lập cơ sở dữ liệu
