@@ -1,10 +1,9 @@
 import './bootstrap';
-import React from 'react';
 
-// function App() {
-//   return <h1>Hello, React!</h1>;
-// }
+import Alpine from 'alpinejs';
+import focus from '@alpinejs/focus';
+window.Alpine = Alpine;
 
-export default App;
+Alpine.plugin(focus);
 
-
+Alpine.start();
