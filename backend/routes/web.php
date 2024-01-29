@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeMainController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -17,9 +19,21 @@ use App\Http\Controllers\HomeMainController;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('home');
+
+Route::get('/', [HomeMainController::class,'index'])->name('index');
+Route::get('/login', [UserController::class,'login'])->name('login');
+Route::post('/login', [UserController::class,'postLogin']);
+Route::get('/register', [UserController::class,'register'])->name('register');
+Route::post('/register', [UserController::class,'postRegister']);
+Route::get('/logout', [UserController::class,'logout'])->name('logout');
+
+
+
+
+
 
 // Route::get('/', [HomeMainController::class, 'checkUserType']);
 
