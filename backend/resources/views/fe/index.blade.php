@@ -1181,7 +1181,7 @@
         </main>
         <!-- End .main -->
 
-        <footer class="footer appear-animate">
+        {{-- <footer class="footer appear-animate">
             <div class="footer-middle">
                 <div class="container">
                     <div class="row">
@@ -1285,7 +1285,8 @@
                 <!-- End .footer-bottom -->
             </div>
             <!-- End .containr -->
-        </footer>
+        </footer> --}}
+
         <!-- End .footer -->
     </div>
     <!-- End .page-wrapper -->
@@ -1301,7 +1302,7 @@
     <div class="mobile-menu-overlay"></div>
     <!-- End .mobil-menu-overlay -->
 
-    <div class="mobile-menu-container">
+    {{-- <div class="mobile-menu-container">
         <div class="mobile-menu-wrapper">
             <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
             <nav class="mobile-nav">
@@ -1447,7 +1448,8 @@
             </div>
         </div>
         <!-- End .mobile-menu-wrapper -->
-    </div>
+    </div> --}}
+    
     <!-- End .mobile-menu-container -->
 
     <div class="sticky-navbar">

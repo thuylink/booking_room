@@ -1,0 +1,37 @@
+'use client'
+
+import { useRouter } from 'next/navigation';
+import {Form, Button } from 'react-bootstrap';
+import styles from '../../styles/login.module.css';
+
+
+const Register = () => {
+    const router = useRouter();
+
+    const handleBtn = () => {
+        router.push("/")
+    }
+    return (
+        <div>
+            <h1 className={styles.register}>LOGIN</h1>
+            <Form className={styles.form} onSubmit={handleBtn}>
+                <Form.Group className={styles.formGroup} controlId="formEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email"/>
+                </Form.Group>
+
+                <Form.Group className={styles.formGroup} controlId="formPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" />
+                </Form.Group>
+
+            </Form>
+            <div>
+                <Button className={styles.save} variant='success'>SAVE </Button>
+                <Button className={styles.back} variant='danger' onClick={() => handleBtn()}>Back Home</Button> 
+            </div>
+        </div>
+    )
+}
+
+export default Register;
