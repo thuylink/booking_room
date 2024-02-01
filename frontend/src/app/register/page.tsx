@@ -3,6 +3,10 @@
 import { useRouter } from 'next/navigation';
 import {Form, Button } from 'react-bootstrap';
 import styles from '../../styles/register.module.css';
+import { useState } from 'react';
+import { useAuth } from '@/hooks/auth';
+import Link from 'next/link';
+
 
 
 const Register = () => {

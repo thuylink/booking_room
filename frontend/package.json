@@ -6,31 +6,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --wire --ignore-path .gitignore ."
+    "lint": "next lint"
   },
   "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.23.9",
-    "@babel/preset-react": "^7.23.3",
-    "@types/axios": "^0.14.0",
     "axios": "^1.6.7",
-    "bootstrap": "5.3.0",
-    "next": "^14.1.0",
+    "bootstrap": "^5.3.0",
+    "next": "14.1.0",
     "react": "^18",
-    "react-bootstrap": "2.8.0",
+    "react-bootstrap": "^2.8.0",
     "react-dom": "^18",
     "swr": "^2.2.4"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.23.9",
-    "@babel/plugin-syntax-dynamic-import": "^7.23.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "babel-plugin-example": "^1.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
-    "prettier": "^3.2.4",
     "typescript": "^5"
   }
 }
