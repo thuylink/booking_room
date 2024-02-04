@@ -1,9 +1,0 @@
-@font-face {
-    font-family: 'Fira Code';
-    src: url('/fonts/FiraCode-Regular.ttf') format('truetype');
-    /* Đường dẫn tới tệp tin font FiraCode-Regular.ttf */
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  /* Các lớp CSS khác định dạng văn bản sử dụng font Fira Code */
