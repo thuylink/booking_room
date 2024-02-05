@@ -36,6 +36,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        // session()->flash('success', 'Đăng kí thành công');
+        // return back();
         return response()->noContent();
     }
 }
