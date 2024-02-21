@@ -35,6 +35,8 @@ const Page = () => {
     return (
         <form onSubmit={submitForm}>
             {/* Name */}
+            <h1 style={{ display: 'flex', justifyContent: 'center' }}>Đăng ký cho khách thuê nhà</h1>
+
             <div>
                 <Label htmlFor="name">Name</Label>
 
@@ -47,6 +49,8 @@ const Page = () => {
                     required
                     autoFocus
                 />
+
+                
 
                 <InputError messages={errors.name} className="mt-2" />
             </div>

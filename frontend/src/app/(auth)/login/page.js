@@ -49,6 +49,8 @@ const Login = () => {
             <AuthSessionStatus className="mb-4" status={status} />
             <form onSubmit={submitForm}>
                 {/* Email Address */}
+                <h1 style={{ display: 'flex', justifyContent: 'center' }}>Đăng nhập cho khách thuê nhà</h1>
+
                 <div>
                     <Label htmlFor="email">Email</Label>
 

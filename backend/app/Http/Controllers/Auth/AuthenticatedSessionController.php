@@ -24,9 +24,13 @@ class AuthenticatedSessionController extends Controller
                 window.location.href = '$redirectUrl';
             }, 3000); // 5 seconds delay
         </script>";
-        
+
         exit();
     }
+
+    /*hàm sau dùng để xử lý yêu cầu đăng nhập của người dùng
+        - gọi authenticate() để xác thực thông tin đăng nhập
+    */
     public function store(LoginRequest $request): Response
     {
         $request->authenticate();

@@ -10,3 +10,10 @@ const axios = Axios.create({
 })
 
 export default axios
+
+
+/**
+ * - đây là tệp cấu hình cho thư viện axios để thực hiện 
+ * các yêu cầu HTTP từ phía client đến server 
+ * - 
+ */

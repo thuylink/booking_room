@@ -21,15 +21,31 @@ const LoginLinks = () => {
                         href="/login"
                         className="text-sm text-gray-700 underline"
                     >
-                        Login
+                        Đăng nhập với vai trò khách thuê
                     </Link>
 
                     <Link
                         href="/register"
                         className="ml-4 text-sm text-gray-700 underline"
                     >
-                        Register
+                        Đăng ký với vai trò khách thuê
                     </Link>
+
+                    <Link
+                        href="/register-host"
+                        className="ml-4 text-sm text-gray-700 underline"
+                    >
+                        Đăng ký với vai trò chủ nhà
+                    </Link>
+
+                    <Link
+                        href="/login-host"
+                        className="ml-4 text-sm text-gray-700 underline"
+                    >
+                        Đăng nhập với vai trò chủ nhà
+                    </Link>
+
+                    
                 </>
             )}
         </div>
