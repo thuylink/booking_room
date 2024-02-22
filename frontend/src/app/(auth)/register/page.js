@@ -7,13 +7,16 @@ import Label from '@/components/Label'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
+    
+    const router = useRouter()
+
     const { register } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/verify-email',
+        redirectIfAuthenticated: '/login',
     })
-
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -27,8 +30,11 @@ const Page = () => {
             name,
             email,
             password,
+            usertype: 0,
             password_confirmation: passwordConfirmation,
             setErrors,
+        }).then(() => {
+            router.push('/login');
         })
     }
 

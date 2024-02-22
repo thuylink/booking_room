@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Middleware\MiddleWareCheckUserType;
 
 
 class RegisteredUserController extends Controller
@@ -39,15 +40,23 @@ class RegisteredUserController extends Controller
 
         // event(new Registered($user));
 
-        Auth::login($user);
+        // Auth::login($user);
+
+
+        // if ($request->usertype == 0) {
+        //     return redirect()->route('login');
+        // }
+        // return redirect()->route('host.login-host');
+
+
         if ($request->usertype == 0) {
-            return redirect()->route('login');
+            return redirect()->route('dashboard');
         }
-        return redirect()->route('host.login-host');
+        return redirect()->route('dashboard-host');
+
 
         // return response()->noContent();
     }
-
 
 
 

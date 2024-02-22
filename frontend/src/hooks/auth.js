@@ -44,6 +44,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
         setErrors([])
 
+        console.log(props);
+
         axios
         /* yêu cầu POST gửi đến đường dẫn /register
         props là đối tượng chứa các thông tin username, pass, email cần gửi đi trong yêu cầu
