@@ -3,7 +3,7 @@ import axios from '@/lib/axios'
 import { useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
-export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
+export const useCategory = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
     const params = useParams()
 
@@ -14,14 +14,14 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
      * - error: biến chứa thôn tin về lỗi nếu có
      * - mutate: hàm để làm mới dữ liệu ng dùng khi cần
      */
-    const { data: user, error, mutate } = useSWR('/api/category', () =>
+    const { data: category, error, mutate } = useSWR('/category', () =>
         axios
-            .get('/api/category')
+            .get('/category')
             .then(res => res.data)
             .catch(error => {
                 if (error.response.status !== 409) throw error
  
-                router.push('/verify-email')
+                // router.push('/verify-email')
             }),
     )
 
@@ -31,6 +31,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
+    
 
     /* 
     hàm register xử lý quá trình đky ng dùng
@@ -39,65 +40,39 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     để thiết lập lỗi và ...props là cách để truyền các thuộc tính vào hàm
     */ 
 
-    const register = async ({ setErrors, ...props }) => {
+    const createCategory = async ({ setErrors, setStatus, ...props }) => {
         await csrf() //hàm đảm bảo mã được gửi kèm yêu câu POST
 
+        // setLoading(true);
         setErrors([])
+        setStatus(null)
+
 
         console.log(props);
 
         axios
         
-            .post('/register', props) 
+            .post('/add-category', props) 
             .then(() => mutate()) //sau khi POST thành công, gọi hàm mutate() để cập nhật dữ liệu khi đăng kí thàng công
             .catch(error => {
                 if (error.response.status !== 422) throw error
 
                 setErrors(error.response.data.errors)
             })
-    }
 
-    const login = async ({ setErrors, setStatus, ...props }) => {
-        await csrf()
 
-        setErrors([])
-        setStatus(null)
 
-        axios
-            .post('/login', props)
-            .then(() => mutate())
-            .catch(error => {
-                if (error.response.status !== 422) throw error
+      
 
-                setErrors(error.response.data.errors)
-            })
+
     }
 
     
-    const logout = async () => {
-        if (!error) {
-            await axios.post('/logout').then(() => mutate())
-        }
-
-        window.location.pathname = '/login'
-    }
-
-    useEffect(() => {
-        if (middleware === 'guest' && redirectIfAuthenticated && user)
-            router.push(redirectIfAuthenticated)
-        if (
-            window.location.pathname === '/verify-email' &&
-            user?.email_verified_at
-        )
-            router.push(redirectIfAuthenticated)
-        if (middleware === 'auth' && error) logout()
-    }, [user, error])
-
     return {
         category,
-        register,
-        login,
-        logout,
+        createCategory,
+        error, mutate,
+       
     }
 }
 
