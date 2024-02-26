@@ -16,6 +16,31 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(app)/layout.js"
     ],
+    "/(app)/@header/default": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/@header/default.js"
+    ],
+    "/(app)/dashboard-host/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/dashboard-host/page.js"
+    ],
+    "/(auth)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(auth)/layout.js"
+    ],
+    "/(auth)/login-host/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(auth)/login-host/page.js"
+    ],
+    "/(app)/add-category/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/add-category/page.js"
+    ],
     "/(app)/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -25,11 +50,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(app)/@header/dashboard/page.js"
-    ],
-    "/(auth)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/layout.js"
     ],
     "/(auth)/login/page": [
       "static/chunks/webpack.js",
@@ -41,30 +61,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
-    "/(auth)/register/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/register/page.js"
-    ],
     "/(auth)/register-host/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(auth)/register-host/page.js"
-    ],
-    "/(auth)/login-host/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/login-host/page.js"
-    ],
-    "/(app)/dashboard-host/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(app)/dashboard-host/page.js"
-    ],
-    "/(app)/@header/default": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(app)/@header/default.js"
     ]
   }
 }

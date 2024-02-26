@@ -55,9 +55,7 @@ const Page = () => {
                     required
                     autoFocus
                 />
-
-                
-
+                        
                 <InputError messages={errors.name} className="mt-2" />
             </div>
 

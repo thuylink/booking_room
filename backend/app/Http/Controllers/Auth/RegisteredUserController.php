@@ -43,16 +43,16 @@ class RegisteredUserController extends Controller
         // Auth::login($user);
 
 
-        // if ($request->usertype == 0) {
-        //     return redirect()->route('login');
-        // }
-        // return redirect()->route('host.login-host');
-
-
         if ($request->usertype == 0) {
-            return redirect()->route('dashboard');
+            return redirect()->route('login');
         }
-        return redirect()->route('dashboard-host');
+        return redirect()->route('host.login-host');
+
+
+        // if ($request->usertype == 0) {
+        //     return redirect()->route('dashboard');
+        // }
+        // return redirect()->route('dashboard-host');
 
 
         // return response()->noContent();

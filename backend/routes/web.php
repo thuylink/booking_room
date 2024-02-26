@@ -2,9 +2,10 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HostController;
 use App\Http\Controllers\HomeMainController;
 use App\Http\Controllers\Api\UserController;
@@ -128,3 +129,22 @@ Route::get('/dashboard', [DashboardController::class, 'indexHost'])->name('hosth
 Route::post('/host/login-host', [RegisteredUserController::class,'postLoginHost']);
 
 
+Route::get('/category',[CategoryController::class,'index'])->name('category.all');
+Route::get('/add-category',[CategoryController::class,'add'])->name('category.add');
+Route::post('/add-category', [CategoryController::class, 'store'])->name('category.store');
+Route::get('/edit-category/{id}',[CategoryController::class,'edit'])->name('category.edit');
+Route::post('/update-category/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::delete('/delete-category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+Route::get('/show-category/{id}',[CategoryController::class,'show'])->name('category.show');
+
+
+
+
+Route::get('/product',[ProductController::class,'index'])->name('product.all');
+Route::get('/add-product',[ProductController::class,'add'])->name('product.add');
+Route::post('/add-product', [ProductController::class, 'store'])->name('product.store');
+Route::get('/edit-product/{id}',[ProductController::class,'edit'])->name('product.edit');
+Route::post('/update-product/{id}', [ProductController::class, 'update'])->name('product.update');
+Route::get('/show-product/{id}',[ProductController::class,'show'])->name('product.show');
+
+Route::delete('/delete-product/{id}', [ProductController::class, 'delete'])->name('product.delete');
