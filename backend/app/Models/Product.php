@@ -11,12 +11,14 @@ class Product extends Model
     protected $table = 'product';
     public $timestamps = false;
     protected $fillable = [
-        'name_product',
+        'id_category',
+        'privacy_type',
+        'location',
+        'capacity',
+        'amenities',
+        'image',
+        'title',
         'description',
         'price',
-        'id_category',
-        'status',
-        'location',
-        'image'
     ];
 }

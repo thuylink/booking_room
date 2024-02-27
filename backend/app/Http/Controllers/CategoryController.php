@@ -10,50 +10,27 @@ use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
-    //liệt kê
     public function index()
     {
         $categories = Category::all();
         return view('category.index', compact('categories'));
     }
 
-    // public function store(Request $request){
-    //     $category = new Category;
-    //     $category->name_category = $request->input('name_category'); //name_category là cột trong bảng, ten là name="ten" trong form
-    //     if ($request->hasFile('image')) {
-    //         $file = $request->file('image');
-    //         $extension = $file->getClientOriginalExtension(); //lấy tên mở rộng .jpg .png ...
-    //         $filename = time().'.'.$extension;
-    //         $file->move('uploads/category/', $filename); //upload lên thư mục upload/category
-    //         $category->image = $filename;
-    //     }
-    //     $category->status = $request->input('status');
-    //     $category->created_at = Carbon::now();
-    //     $category->save();
-    //     return redirect()->back()->with('status', 'Đã thêm mới 1 danh mục');
-    // }
 
     public function store(Request $request)
     {
-        // Kiểm tra và xử lý dữ liệu đầu vào
         $validatedData = $request->validate([
             'name_category' => 'required|string',
-            'image' => 'required|image',
-            // 'status' => 'required|string',
+            'image' => 'required|string',
         ]);
 
-
-        //xử lý và lưu trữ file ảnh
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = $image->getClientOriginalName();
             $image->move('uploads/category/', $imageName);
             $validatedData['image'] = $imageName;
         }
-        // Tạo mới danh mục trong cơ sở dữ liệu
         $category = Category::create($validatedData);
-
-        // Trả về kết quả thành công
         return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
     }
 

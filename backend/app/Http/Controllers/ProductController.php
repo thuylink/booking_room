@@ -12,35 +12,38 @@ class ProductController extends Controller
         return view('product.index', compact('products'));
     }
 
-    public function store(Request $request){
-        $product = new Product;
-        $product->id_category = $request->input('id_category');
-        if ($request->has('privacy_type')) {
-            $product->privacy_type = $request->input('privacy_type');
-        }
-        $product->location = $request->input('location');
-        $product->capacity = $request->input('capacity');
-        $product->amenities = $request->input('amenities');
 
-        //upload 1 ảnh
+    public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'id_category' => 'required|integer',
+        'privacy_type' => 'required|string',
+        'location' => 'required|string',
+        'capacity' => 'required|string',
+        'amenities' => 'required|string',
+        'image' => 'required|string',
+        'title' => 'required|string',
+        'description' => 'required|string',
+        'price' => 'required|string',
+    ]);
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension(); //lấy tên mở rộng .jpg .png ...
-            $filename = time().'.'.$extension;
-            $file->move('uploads/product/', $filename); //upload lên thư mục upload/category
-            $product->image = $filename;
-        }
-
-
-
-        $product->title = $request->input('title');
-        $product->description = $request->input('description');
-        $product->price = $request->input('price');
-
-        $product->save();
-        return redirect()->back()->with('status', 'Đã thêm mới 1 nhà');
+    // Kiểm tra trường title đã được cung cấp hay chưa
+    if (!$request->filled('title')) {
+        return response()->json(['error' => 'Trường title là bắt buộc'], 422);
     }
+
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = $image->getClientOriginalName();
+        $image->move('uploads/product/', $imageName);
+        $validatedData['image'] = $imageName;
+    }
+
+    $product = Product::create($validatedData);
+
+    return response()->json(['status' => 'Tạo mới nhà thành công'], 201);
+}
+
     //create
     public function add(Request $request){
         return view('product.add');

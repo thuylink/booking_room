@@ -6,7 +6,7 @@ import InputError from '@/components/InputError'
 import Link from 'next/link'
 import Button from '@/components/Button'
 import { useCategory } from '../../../hooks/category'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const CreateCategoryPage = () => {
     const { createCategory } = useCategory({
@@ -17,8 +17,6 @@ const CreateCategoryPage = () => {
     const [image, setImage] = useState('')
     const [status, setStatus] = useState('')
     const [errors, setErrors] = useState([])
-
-    
 
     const submitForm = event => {
         event.preventDefault()
@@ -32,7 +30,6 @@ const CreateCategoryPage = () => {
         })
     }
 
-    
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
             <div className="border rounded-lg p-4" color="blue">
@@ -59,14 +56,14 @@ const CreateCategoryPage = () => {
                 <div className="mt-4">
                     <Label htmlFor="image">Hình ảnh:</Label>
                     <Input
-                        type="file"
                         id="image"
+                        type="text"
+                        value={image}
                         className="block w-full"
-                        onChange={event => {
-                            const file = event.target.files[0]
-                            setImage(file)
-                        }}
+                        onChange={event => setImage(event.target.value)}
+                        required
                     />
+
                     <InputError messages={errors.image} className="mt-2" />
                 </div>
 

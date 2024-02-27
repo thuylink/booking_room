@@ -33,6 +33,15 @@ const Dashboard = () => {
 
                         </Link>
                     </div>
+
+                    <div>
+                        <Link
+                        href="/add-product"
+                            className="underline text-sm text-gray-600 hover:text-gray-900">
+                            <Button className="ml-4">Thêm mới nhà</Button>
+
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
