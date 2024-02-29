@@ -6,11 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <!-- Latest compiled and minified CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -23,42 +22,40 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <table class="table table-stripped" >
+                        <table class="table table-stripped">
                             <thead>
                                 <th>Tên danh mục: </th>
                                 <th>Ảnh danh mục: </th>
                                 <th>Trạng thái: </th>
                                 <th>Thao tác: </th>
-
                             </thead>
-
                             <tbody>
                                 @foreach ($categories as $category)
-                                    <tr>
-                                        <td>{{$category->name_category}}</td>
-                                        <td><img src="{{asset('uploads/category/'.$category->image)}}"
-                                            alt=""
-                                            width="70px"
-                                            height="70px"
-                                            alt="Image"></td>
-                                        <td>{{$category->status}}</td>
-                                        <td>
-                                            <a href="{{route('category.edit', ['id' => $category->id])}}" class="btn btn-primary">Edit</a>
-                                            {{-- <a href="{{route('category.delete', ['id' =>$category->id])}}" class="btn btn-danger">Delete</a> --}}
-                                        </td>
-                                        <td>
-                                            <a href="{{route('category.show', ['id' =>$category->id])}}" class="btn btn-danger">Show</a>
-
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('category.delete', ['id'=>$category->id])}}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
+    <tr>
+        <td>{{$category->name_category}}</td>
+        <td>
+            @if ($category->image && is_string($category->image) && is_array(json_decode($category->image)))
+                @foreach (json_decode($category->image) as $image)
+                    <img src="{{asset('uploads/category/'.$image)}}"
+                        alt=""
+                        width="70px"
+                        height="70px"
+                        alt="Image">
+                @endforeach
+            @endif
+        </td>
+        <td>{{$category->status}}</td>
+        <td>
+            <a href="{{route('category.edit', ['id' => $category->id])}}" class="btn btn-primary">Edit</a>
+            <a href="{{route('category.show', ['id' =>$category->id])}}" class="btn btn-danger">Show</a>
+            <form action="{{ route('category.delete', ['id'=>$category->id])}}" method="post">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+    </tr>
+@endforeach
                             </tbody>
                         </table>
                     </div>

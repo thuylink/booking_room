@@ -1,8 +1,7 @@
 {
-  "/page": "app/page.js",
+  "/(app)/dashboard-host/page": "app/(app)/dashboard-host/page.js",
   "/(app)/add-category/page": "app/(app)/add-category/page.js",
-  "/(auth)/login-host/page": "app/(auth)/login-host/page.js",
+  "/(app)/all-category/page": "app/(app)/all-category/page.js",
   "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/(app)/dashboard/page": "app/(app)/dashboard/page.js",
-  "/(auth)/register-host/page": "app/(auth)/register-host/page.js"
+  "/(auth)/login-host/page": "app/(auth)/login-host/page.js"
 }

@@ -15,7 +15,7 @@ const CreateCategoryPage = () => {
         redirectIfAuthenticated: '/dashboard',
     })
     const [name_category, setNameCategory] = useState('')
-    const [image, setImage] = useState('')
+    const [images, setImages] = useState([])
     const [status, setStatus] = useState('')
     const [errors, setErrors] = useState([])
 
@@ -24,37 +24,30 @@ const CreateCategoryPage = () => {
 
         const formData = new FormData();
         formData.append('name_category', name_category);
-        formData.append('image', image);
+        images.forEach(image => formData.append('image[]', image));
         formData.append('status', status);
-
-        // createCategory({
-        //     name_category,
-        //     image,
-        //     status,
-        //     setErrors,
-        //     setStatus,
-        // })
-        // console.log(formData);
 
         createCategory({
             formData,
             setStatus,
             setErrors,
-            setStatus,
         });
     }
 
 
-    const previewImage = () => {
-        if (image) {
-            return (
-                <Image
-                    src={URL.createObjectURL(image)}
-                    alt="Preview"
-                    width={200}
-                    height={200}
-                />
-            )
+    const previewImages = () => {
+        if (images.length > 0) {
+            return images.map((image, index) => (
+                <div key={index} className="w-32 h-32">
+                    <Image
+                        src={URL.createObjectURL(image)}
+                        alt={`Preview ${index}`}
+                        layout="responsive"
+                        width={200}
+                        height={200}
+                    />
+                </div>
+            ))
         }
         return null
     }
@@ -84,12 +77,13 @@ const CreateCategoryPage = () => {
 
                 <div className="mt-4">
                     <Label htmlFor="image">Hình ảnh:</Label>
-                    {previewImage()}
+                    {previewImages()}
                     <Input
                         id="image"
                         type="file"
                         className="block w-full"
-                        onChange={event => setImage(event.target.files[0])}
+                        onChange={event => setImages(Array.from(event.target.files))}
+                        multiple
                     />
 
 
@@ -115,7 +109,7 @@ const CreateCategoryPage = () => {
                 <Link
                     href="/"
                     className="underline text-sm text-gray-600 hover:text-gray-900">
-                    Back
+                    Quay lại
                 </Link>
 
                 <Button className="ml-4">Tạo mới danh mục</Button>

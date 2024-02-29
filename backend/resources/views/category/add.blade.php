@@ -45,14 +45,20 @@
                                 <input type="text" name="name_category" id="" class="form-control">
                             </div>
 
+                            {{-- upload 1 ảnh --}}
+                            {{-- <div class="form-group mb-3">
+                                <label for="">Ảnh danh mục:</label>
+                                <input type="file" name="image" id="image" class="form-control" onchange="previewImage(event)">
+                            </div> --}}
+
+                            {{-- upload nhiều ảnh --}}
                             <div class="form-group mb-3">
                                 <label for="">Ảnh danh mục:</label>
-                                <!-- Thẻ input để chọn file ảnh -->
-                                <input type="file" name="image" id="image" class="form-control" onchange="previewImage(event)">
+                                <input type="file" name="image[]" id="image" class="form-control" multiple onchange="previewImage(event)">
                             </div>
+
                             <div class="form-group mb-3">
                                 <label for="">Xem trước ảnh:</label>
-                                <!-- Thẻ img để hiển thị ảnh xem trước -->
                                 <img id="preview" src="" alt="Preview Image" style="max-width: 200px;">
                             </div>
 

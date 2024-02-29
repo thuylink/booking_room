@@ -9,7 +9,7 @@ class Product extends Model
 {
     use HasFactory;
     protected $table = 'product';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
         'id_category',
         'privacy_type',
