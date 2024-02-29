@@ -26,6 +26,7 @@
                             <thead>
                                 <th>Tên danh mục: </th>
                                 <th>Ảnh danh mục: </th>
+                                <th>Ảnh 360: </th>
                                 <th>Trạng thái: </th>
                                 <th>Thao tác: </th>
                             </thead>
@@ -44,6 +45,19 @@
                 @endforeach
             @endif
         </td>
+
+        <td>
+            @if ($category->image360 && is_string($category->image360) && is_array(json_decode($category->image360)))
+                @foreach (json_decode($category->image360) as $image360)
+                    <img src="{{asset('uploads/category/'.$image360)}}"
+                        alt=""
+                        width="70px"
+                        height="70px"
+                        alt="Image360">
+                @endforeach
+            @endif
+        </td>
+
         <td>{{$category->status}}</td>
         <td>
             <a href="{{route('category.edit', ['id' => $category->id])}}" class="btn btn-primary">Edit</a>

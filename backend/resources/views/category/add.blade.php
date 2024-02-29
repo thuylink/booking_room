@@ -45,13 +45,6 @@
                                 <input type="text" name="name_category" id="" class="form-control">
                             </div>
 
-                            {{-- upload 1 ảnh --}}
-                            {{-- <div class="form-group mb-3">
-                                <label for="">Ảnh danh mục:</label>
-                                <input type="file" name="image" id="image" class="form-control" onchange="previewImage(event)">
-                            </div> --}}
-
-                            {{-- upload nhiều ảnh --}}
                             <div class="form-group mb-3">
                                 <label for="">Ảnh danh mục:</label>
                                 <input type="file" name="image[]" id="image" class="form-control" multiple onchange="previewImage(event)">
@@ -60,6 +53,11 @@
                             <div class="form-group mb-3">
                                 <label for="">Xem trước ảnh:</label>
                                 <img id="preview" src="" alt="Preview Image" style="max-width: 200px;">
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="">Ảnh 360:</label>
+                                <input type="file" name="image360[]" id="image360" class="form-control" multiple onchange="previewImage(event)">
                             </div>
 
                             <div class="form-group mb-3">

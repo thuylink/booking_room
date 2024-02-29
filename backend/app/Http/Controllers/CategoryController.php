@@ -49,6 +49,8 @@ public function store(Request $request)
         'name_category' => 'required|string',
         'image' => 'nullable|array',
         'image.*' => 'nullable|image',
+        'image360' => 'nullable|array',
+        'image360.*' => 'nullable|image',
         'status' => 'required|integer'
     ]);
 
@@ -64,6 +66,21 @@ public function store(Request $request)
         }
 
         $validatedData['image'] = json_encode($imageNames);
+        
+    }
+
+    if ($request->hasFile('image360')) {
+        $image360s = $request->file('image360');
+        $image360Names = [];
+
+        foreach ($image360s as $image360) {
+            $extension = $image360->getClientOriginalExtension();
+            $image360Name = time() . '_' . uniqid() . '.' . $extension;
+            $image360->move('uploads/category/', $image360Name);
+            $image360Names[] = $image360Name;
+        }
+
+        $validatedData['image360'] = json_encode($image360Names);
     }
 
     $category = Category::create($validatedData);
