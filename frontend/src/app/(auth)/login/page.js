@@ -48,7 +48,6 @@ const Login = () => {
         <>
             <AuthSessionStatus className="mb-4" status={status} />
             <form onSubmit={submitForm}>
-                {/* Email Address */}
                 <h1 style={{ display: 'flex', justifyContent: 'center' }}>Đăng nhập cho khách thuê nhà</h1>
 
                 <div>
@@ -67,7 +66,6 @@ const Login = () => {
                     <InputError messages={errors.email} className="mt-2" />
                 </div>
 
-                {/* Password */}
                 <div className="mt-4">
                     <Label htmlFor="password">Password</Label>
 
@@ -87,7 +85,6 @@ const Login = () => {
                     />
                 </div>
 
-                {/* Remember Me */}
                 <div className="block mt-4">
                     <label
                         htmlFor="remember_me"

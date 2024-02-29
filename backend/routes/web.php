@@ -129,7 +129,7 @@ Route::get('/dashboard', [DashboardController::class, 'indexHost'])->name('hosth
 Route::post('/host/login-host', [RegisteredUserController::class,'postLoginHost']);
 
 
-Route::get('/category',[CategoryController::class,'index'])->name('category.all');
+Route::get('/category',[CategoryController::class,'index_'])->name('category.all');
 Route::get('/add-category',[CategoryController::class,'add'])->name('category.add');
 Route::post('/add-category', [CategoryController::class, 'store'])->name('category.store');
 Route::get('/edit-category/{id}',[CategoryController::class,'edit'])->name('category.edit');
@@ -140,7 +140,7 @@ Route::get('/show-category/{id}',[CategoryController::class,'show'])->name('cate
 
 
 
-Route::get('/product',[ProductController::class,'index'])->name('product.all');
+Route::get('/product',[ProductController::class,'index_'])->name('product.all');
 Route::get('/add-product',[ProductController::class,'add'])->name('product.add');
 Route::post('/add-product', [ProductController::class, 'store'])->name('product.store');
 Route::get('/edit-product/{id}',[ProductController::class,'edit'])->name('product.edit');

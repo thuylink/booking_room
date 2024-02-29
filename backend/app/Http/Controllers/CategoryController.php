@@ -10,29 +10,66 @@ use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index_()
     {
         $categories = Category::all();
         return view('category.index', compact('categories'));
     }
 
+    public function index() {
+        $categories = Category::all();
+        return response()->json($categories);
+    }
 
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name_category' => 'required|string',
-            'image' => 'required|string',
-        ]);
+{
+    $validatedData = $request->validate([
+        'name_category' => 'required|string',
+        'image' => 'nullable|image',
+        'status' => 'required|integer'
+    ]);
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
-            $image->move('uploads/category/', $imageName);
-            $validatedData['image'] = $imageName;
-        }
-        $category = Category::create($validatedData);
-        return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $extension = $image->getClientOriginalExtension();
+        $imageName = time() . '.' . $extension;
+        $image->move('uploads/category/', $imageName);
+        $validatedData['image'] = $imageName;
     }
+
+    $category = Category::create($validatedData);
+
+    return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
+}
+
+
+// public function store(Request $request)
+// {
+//     $validatedData = $request->validate([
+//         'name_category' => 'required|string',
+//         // 'image' => 'nullable|array',
+//         'image.*' => 'nullable|image',
+//         'status' => 'required|integer'
+//     ]);
+
+//     if ($request->hasFile('image')) {
+//         $images = $request->file('image');
+//         $imageNames = [];
+
+//         foreach ($images as $image) {
+//             $extension = $image->getClientOriginalExtension();
+//             $imageName = time() . '_' . uniqid() . '.' . $extension;
+//             $image->move('uploads/category/', $imageName);
+//             $imageNames[] = $imageName;
+//         }
+
+//         $validatedData['image'] = $imageNames;
+//     }
+
+//     $category = Category::create($validatedData);
+
+//     return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
+// }
 
     //create
     public function add(Request $request)

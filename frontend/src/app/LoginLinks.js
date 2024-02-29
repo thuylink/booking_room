@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
+import Button from '@/components/Button'
 
 const LoginLinks = () => {
     const { user } = useAuth({ middleware: 'guest' })
@@ -11,41 +12,34 @@ const LoginLinks = () => {
             {user ? (
                 <Link
                     href="/dashboard"
-                    className="ml-4 text-sm text-gray-700 underline"
-                >
+                    className="ml-4 text-sm text-gray-700 underline">
                     Dashboard
                 </Link>
             ) : (
                 <>
                     <Link
                         href="/login"
-                        className="text-sm text-gray-700 underline"
-                    >
-                        Đăng nhập với vai trò khách thuê
+                        className="text-sm text-gray-700 underline">
+                        <Button>Đăng nhập với vai trò khách thuê</Button>
                     </Link>
 
                     <Link
                         href="/register"
-                        className="ml-4 text-sm text-gray-700 underline"
-                    >
-                        Đăng ký với vai trò khách thuê
+                        className="ml-4 text-sm text-gray-700 underline">
+                        <Button>Đăng ký với vai trò khách thuê</Button>
                     </Link>
 
                     <Link
                         href="/register-host"
-                        className="ml-4 text-sm text-gray-700 underline"
-                    >
-                        Đăng ký với vai trò chủ nhà
+                        className="ml-4 text-sm text-gray-700 underline">
+                        <Button>Đăng ký với vai trò chủ nhà</Button>
                     </Link>
 
                     <Link
                         href="/login-host"
-                        className="ml-4 text-sm text-gray-700 underline"
-                    >
-                        Đăng nhập với vai trò chủ nhà
+                        className="ml-4 text-sm text-gray-700 underline">
+                        <Button>Đăng nhập với vai trò chủ nhà</Button>
                     </Link>
-
-                    
                 </>
             )}
         </div>

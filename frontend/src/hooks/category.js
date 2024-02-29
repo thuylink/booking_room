@@ -17,22 +17,40 @@ export const useCategory = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
-    const createCategory = async ({ setErrors, setStatus, ...props }) => {
-        await csrf() 
-        setErrors([])
-        console.log(props);
+    const createCategory = async ({ formData, setErrors, setStatus }) => {
+        await csrf();
+        setErrors([]);
+    
         axios
-            .post('/add-category', props) 
-            .then(() => mutate()) 
-            .catch(error => {
-                if (error.response.status !== 422) throw error
+            .post('/add-category', formData)
+            .then(() => mutate())
+            .catch((error) => {
+                if (error.response && error.response.status !== 422) throw error;
+    
+                setErrors(error.response.data.errors);
+            });
+    };
+    // const createCategory = async ({ formData, setErrors, setStatus }) => {
+    //     await csrf();
+    //     setErrors([]);
+    
+    //     axios
+    //         .post('/add-category', formData)
+    //         .then(() => mutate())
+    //         .catch((error) => {
+    //             if (error.response && error.response.status !== 422) throw error;
+    
+    //             setErrors(error.response.data.errors);
+    //         });
+    // };
 
-                setErrors(error.response.data.errors)
-            })
-    }
+    
+
     return {
         category,
         createCategory,
-        error, mutate,
+        // listCategory,
+        error,
+        mutate,
     }
 }

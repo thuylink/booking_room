@@ -6,7 +6,8 @@ import InputError from '@/components/InputError'
 import Link from 'next/link'
 import Button from '@/components/Button'
 import { useCategory } from '../../../hooks/category'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 const CreateCategoryPage = () => {
     const { createCategory } = useCategory({
@@ -21,13 +22,41 @@ const CreateCategoryPage = () => {
     const submitForm = event => {
         event.preventDefault()
 
+        const formData = new FormData();
+        formData.append('name_category', name_category);
+        formData.append('image', image);
+        formData.append('status', status);
+
+        // createCategory({
+        //     name_category,
+        //     image,
+        //     status,
+        //     setErrors,
+        //     setStatus,
+        // })
+        // console.log(formData);
+
         createCategory({
-            name_category,
-            image,
-            status,
+            formData,
+            setStatus,
             setErrors,
             setStatus,
-        })
+        });
+    }
+
+
+    const previewImage = () => {
+        if (image) {
+            return (
+                <Image
+                    src={URL.createObjectURL(image)}
+                    alt="Preview"
+                    width={200}
+                    height={200}
+                />
+            )
+        }
+        return null
     }
 
     return (
@@ -55,14 +84,14 @@ const CreateCategoryPage = () => {
 
                 <div className="mt-4">
                     <Label htmlFor="image">Hình ảnh:</Label>
+                    {previewImage()}
                     <Input
                         id="image"
-                        type="text"
-                        value={image}
+                        type="file"
                         className="block w-full"
-                        onChange={event => setImage(event.target.value)}
-                        required
+                        onChange={event => setImage(event.target.files[0])}
                     />
+
 
                     <InputError messages={errors.image} className="mt-2" />
                 </div>
