@@ -3,8 +3,8 @@ import axios from '@/lib/axios'
 import { useParams, useRouter } from 'next/navigation'
 
 export const useCategory = ({ middleware, redirectIfAuthenticated } = {}) => {
-    const router = useRouter()
-    const params = useParams()
+    // const router = useRouter()
+    // const params = useParams()
 
     const { data: category, error, mutate } = useSWR('/category', () =>
         axios
@@ -30,10 +30,18 @@ export const useCategory = ({ middleware, redirectIfAuthenticated } = {}) => {
                 setErrors(error.response.data.errors);
             });
     };
+
+    const allCategory = async () => {
+    
+        axios
+            .get('/index')
+        mutate();    
+    };
      
     return {
         category,
         createCategory,
+        allCategory,
         error,
         mutate,
     }

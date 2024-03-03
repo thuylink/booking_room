@@ -19,11 +19,12 @@ return new class extends Migration
             $table->string('capacity');
             $table->string('amenities');
             $table->string('image');
+            $table->string('image360');
             $table->string('title');
             $table->string('description');
             $table->string('price');
             $table->timestamps();
-            // $table->foreign('id_category')->references('id')->on('category');
+            $table->foreign('id_category')->references('id')->on('category');
 
         });
     }

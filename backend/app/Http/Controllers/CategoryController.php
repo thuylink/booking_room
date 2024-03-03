@@ -22,71 +22,50 @@ class CategoryController extends Controller
         return response()->json($categories);
     }
 
-    //     public function store(Request $request)
-// {
-//     $validatedData = $request->validate([
-//         'name_category' => 'required|string',
-//         'image' => 'nullable|image',
-//         'status' => 'required|integer'
-//     ]);
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name_category' => 'required|string',
+            'image' => 'nullable|array',
+            'image.*' => 'nullable|image',
+            'image360' => 'nullable|array',
+            'image360.*' => 'nullable|image',
+            'status' => 'required|integer'
+        ]);
 
-    //     if ($request->hasFile('image')) {
-//         $image = $request->file('image');
-//         $extension = $image->getClientOriginalExtension();
-//         $imageName = time() . '.' . $extension;
-//         $image->move('uploads/category/', $imageName);
-//         $validatedData['image'] = $imageName;
-//     }
+        if ($request->hasFile('image')) {
+            $images = $request->file('image');
+            $imageNames = [];
 
-    //     $category = Category::create($validatedData);
+            foreach ($images as $image) {
+                $extension = $image->getClientOriginalExtension();
+                $imageName = time() . '_' . uniqid() . '.' . $extension;
+                $image->move('uploads/category/', $imageName);
+                $imageNames[] = $imageName;
+            }
 
-    //     return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
-// }
+            $validatedData['image'] = json_encode($imageNames);
 
-public function store(Request $request)
-{
-    $validatedData = $request->validate([
-        'name_category' => 'required|string',
-        'image' => 'nullable|array',
-        'image.*' => 'nullable|image',
-        'image360' => 'nullable|array',
-        'image360.*' => 'nullable|image',
-        'status' => 'required|integer'
-    ]);
-
-    if ($request->hasFile('image')) {
-        $images = $request->file('image');
-        $imageNames = [];
-
-        foreach ($images as $image) {
-            $extension = $image->getClientOriginalExtension();
-            $imageName = time() . '_' . uniqid() . '.' . $extension;
-            $image->move('uploads/category/', $imageName);
-            $imageNames[] = $imageName;
         }
 
-        $validatedData['image'] = json_encode($imageNames);
-        
-    }
+        if ($request->hasFile('image360')) {
+            $image360s = $request->file('image360');
+            $image360Names = [];
 
-    if ($request->hasFile('image360')) {
-        $image360s = $request->file('image360');
-        $image360Names = [];
+            foreach ($image360s as $image360) {
+                $extension = $image360->getClientOriginalExtension();
+                $image360Name = time() . '_' . uniqid() . '.' . $extension;
+                $image360->move('uploads/category/', $image360Name);
+                $image360Names[] = $image360Name;
+            }
 
-        foreach ($image360s as $image360) {
-            $extension = $image360->getClientOriginalExtension();
-            $image360Name = time() . '_' . uniqid() . '.' . $extension;
-            $image360->move('uploads/category/', $image360Name);
-            $image360Names[] = $image360Name;
+            $validatedData['image360'] = json_encode($image360Names);
         }
 
-        $validatedData['image360'] = json_encode($image360Names);
+        $category = Category::create($validatedData);
+
+        return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
     }
-
-    $category = Category::create($validatedData);
-
-    return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
-}
 
 
     //create

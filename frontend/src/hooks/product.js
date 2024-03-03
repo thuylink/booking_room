@@ -17,22 +17,36 @@ export const useProduct = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
-    const createProduct = async ({ setErrors, setStatus, ...props }) => {
-        await csrf() 
+    const createProduct = async ({ formData, setErrors, setStatus }) => {
+        await csrf()
         setErrors([])
-        console.log(props);
         axios
-            .post('/add-product', props) 
-            .then(() => mutate()) 
+            .post('/add-product', formData)
+            .then(() => mutate())
             .catch(error => {
-                if (error.response.status !== 422) throw error
+                if (error.response && error.response.status !== 422) throw error
 
                 setErrors(error.response.data.errors)
             })
     }
+
+  
+
+    const getAllProducts = async () => {
+        try {
+            const response = await axios.get('/product')
+            return response.data
+        } catch (error) {
+            console.error('Error fetching products:', error)
+            throw error
+        }
+    }
+
     return {
         product,
         createProduct,
-        error, mutate,
+        getAllProducts,
+        error,
+        mutate,
     }
 }

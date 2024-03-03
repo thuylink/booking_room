@@ -1,0 +1,23 @@
+.p-4 {
+    padding: 1rem;
+    width: 350px;
+    margin-left: -350px;
+}
+
+.p-4-2 {
+    padding: 1rem;
+    width: 230%;
+    margin-left: -174px;
+}
+
+.amenities-column-left {
+    display: inline-block;
+    width: 40%;
+}
+
+.amenities-column-right {
+    display: inline-block;
+    width: 60%;
+}
+
+

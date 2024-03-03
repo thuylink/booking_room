@@ -140,7 +140,7 @@ Route::get('/show-category/{id}',[CategoryController::class,'show'])->name('cate
 
 
 
-Route::get('/product',[ProductController::class,'index_'])->name('product.all');
+Route::get('/product',[ProductController::class,'index'])->name('product.all');
 Route::get('/add-product',[ProductController::class,'add'])->name('product.add');
 Route::post('/add-product', [ProductController::class, 'store'])->name('product.store');
 Route::get('/edit-product/{id}',[ProductController::class,'edit'])->name('product.edit');

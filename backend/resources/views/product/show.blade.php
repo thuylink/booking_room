@@ -31,6 +31,7 @@
                                 <th>Sức chứa: </th>
                                 <th>Tiện ích: </th>
                                 <th>Ảnh: </th>
+                                <th>Ảnh 360: </th>
                                 <th>Tiêu đề: </th>
                                 <th>Mô tả: </th>
                                 <th>Chi phí: </th>
@@ -46,11 +47,41 @@
                                         <td>{{$product->location}}</td>
                                         <td>{{$product->capacity}}</td>
                                         <td>{{$product->amenities}}</td>
-                                        <td><img src="{{asset('uploads/product/'.$product->image)}}"
-                                            alt=""
-                                            width="70px"
-                                            height="70px"
-                                            alt="Image"></td>
+                                        <td>
+                                            @if ($product->image && is_string($product->image) && is_array(json_decode($product->image)))
+                                                @foreach (json_decode($product->image) as $image)
+                                                    <img src="{{asset('uploads/product/'.$image)}}"
+                                                        alt=""
+                                                        width="70px"
+                                                        height="70px"
+                                                        alt="Image">
+                                                @endforeach
+                                            @else
+                                                <img src="{{asset('uploads/product/'.$product->image)}}"
+                                                    alt=""
+                                                    width="70px"
+                                                    height="70px"
+                                                    alt="Image">
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @if ($product->image360 && is_string($product->image360) && is_array(json_decode($product->image360)))
+                                                @foreach (json_decode($product->image360) as $image360)
+                                                    <img src="{{asset('uploads/product/'.$image360)}}"
+                                                        alt=""
+                                                        width="70px"
+                                                        height="70px"
+                                                        alt="Image360">
+                                                @endforeach
+                                            @else
+                                                <img src="{{asset('uploads/product/'.$product->image360)}}"
+                                                    alt=""
+                                                    width="70px"
+                                                    height="70px"
+                                                    alt="Image360">
+                                            @endif
+                                        </td>
                                         <td>{{$product->title}}</td>
                                         <td>{{$product->description}}</td>
                                         <td>{{$product->price}}</td>

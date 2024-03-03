@@ -20,7 +20,6 @@ const Dashboard = () => {
                         href="/add-category"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
                             <Button className="ml-4">Thêm mới danh mục</Button>
-
                         </Link>
                     
                     </div>
@@ -30,7 +29,6 @@ const Dashboard = () => {
                         href="/all-category"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
                             <Button className="ml-4">Xem tất cả danh mục được thêm</Button>
-
                         </Link>
                     </div>
 
@@ -39,7 +37,14 @@ const Dashboard = () => {
                         href="/add-product"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
                             <Button className="ml-4">Thêm mới nhà</Button>
+                        </Link>
+                    </div>
 
+                    <div>
+                        <Link
+                        href="/all-product"
+                            className="underline text-sm text-gray-600 hover:text-gray-900">
+                            <Button className="ml-4">Xem tất cả nhà được thêm</Button>
                         </Link>
                     </div>
                 </div>

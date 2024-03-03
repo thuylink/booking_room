@@ -27,7 +27,7 @@
                             <thead>
                                 <th>Kiểu kiến trúc: </th>
                                 <th>Ảnh nhà: </th>
-                                <th>Địa chỉ: </th>
+                                <th>Ảnh 360: </th>
                                 <th>Giá: </th>
                                 <th>Thao tác: </th>
 
@@ -37,12 +37,29 @@
                                 @foreach ($products as $product)
                                     <tr>
                                         <td>{{$product->id_category}}</td>
-                                        <td><img src="{{asset('uploads/product/'.$product->image)}}"
-                                            alt=""
-                                            width="70px"
-                                            height="70px"
-                                            alt="Image"></td>
-                                        <td>{{$product->location}}</td>
+                                        <td>
+                                            @if ($product->image && is_string($product->image) && is_array(json_decode($product->image)))
+                                                @foreach (json_decode($product->image) as $image)
+                                                    <img src="{{asset('uploads/product/'.$image)}}"
+                                                        alt=""
+                                                        width="70px"
+                                                        height="70px"
+                                                        alt="Image">
+                                                @endforeach
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @if ($product->image360 && is_string($product->image360) && is_array(json_decode($product->image360)))
+                                                @foreach (json_decode($product->image360) as $image360)
+                                                    <img src="{{asset('uploads/product/'.$image360)}}"
+                                                        alt=""
+                                                        width="70px"
+                                                        height="70px"
+                                                        alt="Image360">
+                                                @endforeach
+                                            @endif
+                                        </td>
                                         <td>{{$product->price}}</td>
 
                                         <td>

@@ -8,7 +8,7 @@ import Button from '@/components/Button'
 import { useCategory } from '../../../hooks/category'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-// import Pannellum from 'pannellum';
+// import {Pannellum} from "react-pannellum"
 
 const CreateCategoryPage = () => {
     const { createCategory } = useCategory({
@@ -36,7 +36,6 @@ const CreateCategoryPage = () => {
             setErrors,
         });
     }
-
 
     const previewImages = () => {
         if (images.length > 0) {
@@ -71,6 +70,7 @@ const CreateCategoryPage = () => {
         }
         return null
     }
+    
 
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
@@ -111,6 +111,8 @@ const CreateCategoryPage = () => {
 
                 <div className="mt-4">
                     <Label htmlFor="image360">Hình ảnh 360:</Label>
+                    {previewImage360s()}
+
                     <Input
                         id="image360"
                         type="file"
@@ -124,7 +126,6 @@ const CreateCategoryPage = () => {
 
                 <div className="mt-4">
                     <Label htmlFor="status">Trạng thái:</Label>
-                    {previewImage360s()}
                     <Input
                         id="status"
                         type="text"

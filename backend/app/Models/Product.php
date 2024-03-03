@@ -17,6 +17,7 @@ class Product extends Model
         'capacity',
         'amenities',
         'image',
+        'image360',
         'title',
         'description',
         'price',
