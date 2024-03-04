@@ -59,7 +59,7 @@ class ProductController extends Controller
             foreach ($image360s as $image360) {
                 $extension = $image360->getClientOriginalExtension();
                 $image360Name = time() . '_' . uniqid() . '.' . $extension;
-                $image360->move('uploads/product/', $image360Name);
+                $image360->move('uploads/product360/', $image360Name);
                 $image360Names[] = $image360Name;
             }
 

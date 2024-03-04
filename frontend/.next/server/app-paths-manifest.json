@@ -1,4 +1,6 @@
 {
+  "/(app)/all-product/page": "app/(app)/all-product/page.js",
   "/(app)/add-product/page": "app/(app)/add-product/page.js",
-  "/(app)/all-product/page": "app/(app)/all-product/page.js"
+  "/(auth)/login-host/page": "app/(auth)/login-host/page.js",
+  "/(app)/dashboard-host/page": "app/(app)/dashboard-host/page.js"
 }

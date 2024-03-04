@@ -32,20 +32,11 @@ export const useProduct = ({ middleware, redirectIfAuthenticated } = {}) => {
 
   
 
-    const getAllProducts = async () => {
-        try {
-            const response = await axios.get('/product')
-            return response.data
-        } catch (error) {
-            console.error('Error fetching products:', error)
-            throw error
-        }
-    }
+    
 
     return {
         product,
         createProduct,
-        getAllProducts,
         error,
         mutate,
     }
