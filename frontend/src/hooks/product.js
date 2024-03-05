@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 export const useProduct = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
     const params = useParams()
-
+        
     const { data: product, error, mutate } = useSWR('/product', () =>
         axios
             .get('/product')
@@ -14,6 +14,17 @@ export const useProduct = ({ middleware, redirectIfAuthenticated } = {}) => {
                 if (error.response.status !== 409) throw error
             }),
     )
+
+    
+
+    const getProductById = async (id) => {
+        try {
+          const response = await axios.get(`/show-product/${id}`);
+          return response.data;
+        } catch (error) {
+          throw new Error(error.response.data.message);
+        }
+      };
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
@@ -29,15 +40,13 @@ export const useProduct = ({ middleware, redirectIfAuthenticated } = {}) => {
                 setErrors(error.response.data.errors)
             })
     }
-
-  
-
     
-
     return {
         product,
         createProduct,
         error,
         mutate,
+       
+        getProductById
     }
 }

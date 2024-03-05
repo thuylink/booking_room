@@ -9,9 +9,13 @@ import { useProduct } from '../../../hooks/product'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import './add_product.css'
+import { useRouter } from 'next/navigation';
+
 
 
 const CreateProductPage = () => {
+    const router = useRouter()
+
     const { createProduct } = useProduct({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
@@ -107,13 +111,14 @@ const CreateProductPage = () => {
         image360s.forEach(image360 => formData.append('image360[]', image360))
         formData.append('title', title)
         formData.append('description', description)
-        // formData.append('description', selectedDescription)
         formData.append('price', price)
 
         createProduct({
             formData,
             setErrors,
-        })
+        }).then(() => {
+            router.push('/all-product');
+        });
     }
 
     const previewImages = () => {
@@ -401,7 +406,7 @@ const CreateProductPage = () => {
                     Back
                 </Link>
 
-                <Button className="ml-4">Tạo mới nhà</Button>
+                <Button  className="ml-4">Tạo mới nhà</Button>
             </div>
         </form>
     )

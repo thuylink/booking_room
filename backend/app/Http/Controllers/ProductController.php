@@ -131,9 +131,15 @@ class ProductController extends Controller
 
 
     //read - show
-    public function show($id)
+    public function show_($id)
     {
         $product = Product::find($id);
         return view('product.show', compact('product'));
     }
+
+    public function show($id)
+{
+    $product = Product::find($id);
+    return response()->json($product);
+}
 }

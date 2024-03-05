@@ -68,7 +68,7 @@
                                         <td>
                                             @if ($product->image360 && is_string($product->image360) && is_array(json_decode($product->image360)))
                                                 @foreach (json_decode($product->image360) as $image360)
-                                                    <img src="{{asset('uploads/product/'.$image360)}}"
+                                                    <img src="{{asset('uploads/product360/'.$image360)}}"
                                                         alt=""
                                                         width="70px"
                                                         height="70px"
