@@ -1,7 +1,7 @@
 'use client'
 
 import { useProduct } from '../../../hooks/product'
-import './all_product_css.css'
+import './all_product_css.scss'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Button from '@/components/Button'
@@ -11,6 +11,9 @@ const AllProduct = () => {
 
     const router = useRouter()
 
+    const handleViewDetail = () => {
+        window.location.href = `/show-product/${product.id}`
+    }
     if (error) {
         return <div>{error}</div>
     }
@@ -21,18 +24,16 @@ const AllProduct = () => {
 
     return (
         <div>
-            <h1>Danh sách các nhà đã được tạo</h1>
-            <table style={{ borderCollapse: 'collapse' }}>
+            <table className='large'>
                 <thead>
                     <tr>
-                        <th className="border">STT</th>
-                        <th className="border">ID</th>
-
-                        <th className="border">Tiêu đề</th>
-                        <th className="border">Kiểu kiến trúc</th>
-                        <th className="border">Phạm vi sử dụng</th>
+                    <th className="border borderSTT" >STT</th>                        
+                    <th className="border borderID">ID</th>
+                        <th className="border borderTitle ">Tiêu đề</th>
+                        <th className="border borderCate ">Kiểu kiến trúc</th>
+                        <th className="border borderpv">Phạm vi sử dụng</th>
                         <th className="border">Địa chỉ</th>
-                        <th className="border">Sức chứa</th>
+                        <th className="border borderCapa ">Sức chứa</th>
 
                         <th className="border">Tiện ích</th>
                         <th className="border">Ảnh</th>
@@ -63,34 +64,65 @@ const AllProduct = () => {
                                     ) && (
                                         <>
                                             {JSON.parse(product.image).map(
-                                                (image, index) => (
-                                                    <img
-                                                        key={index}
-                                                        src={`uploads/product/${product.image}`}
-                                                        alt="Image"
-                                                        width="100px"
-                                                        height="70px"
-                                                    />
-                                                ),
+                                                (image, index) => {
+                                                    const cleanedImagePath = image.replace(
+                                                        /[\[\]"]/g,
+                                                        '',
+                                                    )
+                                                    // const imagePath = `C:/wamp64/www/booking_room/backend/public/uploads/product/${cleanedImagePath}`;
+                                                    const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
+
+                                                    return (
+                                                        <img
+                                                            key={index}
+                                                            src={imagePath}
+                                                            alt="Image"
+                                                            width="100px"
+                                                            height="70px"
+                                                        />
+                                                    )
+                                                },
                                             )}
                                         </>
                                     )}
                             </td>
                             <td className="border">
-                                <img
-                                    src={`product360/${product.image360}`}
-                                    alt="Image 360"
-                                    style={{ width: '100px', height: '100px' }}
-                                />
+                                {product.image360 &&
+                                    Array.isArray(
+                                        JSON.parse(product.image360),
+                                    ) && (
+                                        <>
+                                            {JSON.parse(product.image360).map(
+                                                (image360, index) => {
+                                                    const cleanedImage360Path = image360.replace(
+                                                        /[\[\]"]/g,
+                                                        '',
+                                                    )
+                                                    // const imagePath = `C:/wamp64/www/booking_room/backend/public/uploads/product/${cleanedImagePath}`;
+                                                    const image360Path = `http://127.0.0.1:8000/uploads/product360/${cleanedImage360Path}`
+
+                                                    return (
+                                                        <img
+                                                            key={index}
+                                                            src={image360Path}
+                                                            alt="Image360"
+                                                            width="100px"
+                                                            height="70px"
+                                                        />
+                                                    )
+                                                },
+                                            )}
+                                        </>
+                                    )}
                             </td>
                             <td className="border">{product.description}</td>
                             <td className="border">{product.price}</td>
                             <td className="border">
                                 <div>
                                     <Link
-                                        href="/show-product"
+                                        href={`/show-product/${product.id}`}
                                         className="underline text-sm text-gray-600 hover:text-gray-900">
-                                        <Button className="ml-4">
+                                        <Button className="ml-4" >
                                             Xem chi tiết
                                         </Button>
                                     </Link>
@@ -109,9 +141,7 @@ const AllProduct = () => {
                                     <Link
                                         href="/"
                                         className="underline text-sm text-gray-600 hover:text-gray-900">
-                                        <Button className="ml-4">
-                                            Xóa
-                                        </Button>
+                                        <Button className="ml-4">Xóa</Button>
                                     </Link>
                                 </div>
                             </td>
@@ -119,8 +149,11 @@ const AllProduct = () => {
                     ))}
                 </tbody>
             </table>
+
+            <blockquote>Responsive Table</blockquote>
         </div>
     )
 }
 
 export default AllProduct
+
