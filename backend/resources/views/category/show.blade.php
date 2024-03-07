@@ -53,14 +53,14 @@
                                     <td>
                                         @if ($category->image360 && is_string($category->image360) && is_array(json_decode($category->image360)))
                                             @foreach (json_decode($category->image360) as $image360)
-                                                <img src="{{asset('uploads/category/'.$image360)}}"
+                                                <img src="{{asset('uploads/category360/'.$image360)}}"
                                                     alt=""
                                                     width="70px"
                                                     height="70px"
                                                     alt="Image360">
                                             @endforeach
                                         @else
-                                            <img src="{{asset('uploads/category/'.$category->image360)}}"
+                                            <img src="{{asset('uploads/category360/'.$category->image360)}}"
                                                 alt=""
                                                 width="70px"
                                                 height="70px"

@@ -2,18 +2,11 @@
 
 import { useProduct } from '../../../hooks/product'
 import './all_product_css.scss'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Button from '@/components/Button'
 
 const AllProduct = () => {
-    const { product, error } = useProduct()
-
-    const router = useRouter()
-
-    const handleViewDetail = () => {
-        window.location.href = `/show-product/${product.id}`
-    }
+    const { product, error } = useProduct()    
     if (error) {
         return <div>{error}</div>
     }
@@ -69,7 +62,6 @@ const AllProduct = () => {
                                                         /[\[\]"]/g,
                                                         '',
                                                     )
-                                                    // const imagePath = `C:/wamp64/www/booking_room/backend/public/uploads/product/${cleanedImagePath}`;
                                                     const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
 
                                                     return (
@@ -98,7 +90,6 @@ const AllProduct = () => {
                                                         /[\[\]"]/g,
                                                         '',
                                                     )
-                                                    // const imagePath = `C:/wamp64/www/booking_room/backend/public/uploads/product/${cleanedImagePath}`;
                                                     const image360Path = `http://127.0.0.1:8000/uploads/product360/${cleanedImage360Path}`
 
                                                     return (
@@ -130,7 +121,7 @@ const AllProduct = () => {
 
                                 <div>
                                     <Link
-                                        href="/"
+                                        href={`/update-product/${product.id}`}
                                         className="underline text-sm text-gray-600 hover:text-gray-900">
                                         <Button className="ml-4">
                                             Chỉnh sửa

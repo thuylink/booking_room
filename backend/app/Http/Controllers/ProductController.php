@@ -79,12 +79,17 @@ class ProductController extends Controller
 
 
     //update
-    public function edit($id)
+    public function edit_($id)
     {
         $product = Product::find($id);
         return view('product.edit', compact('product'));
     }
 
+    public function edit($id)
+    {
+        $product = Product::find($id);
+        return response()->json($product);
+    }
     public function update(Request $request, $id)
     {
         $product = Product::find($id);
@@ -108,6 +113,19 @@ class ProductController extends Controller
             $filename = time() . '.' . $extension;
             $file->move('uploads/product', $filename);
             $product->image = $filename;
+        }
+
+        if ($request->hasFile('image360')) {
+            /**nếu có file trong form update thì tìm file cũ và xóa đi */
+            $oldImage360 = 'uploads/product360/' . $product->image360;
+            if (File::exists($oldImage360)) {
+                File::delete($oldImage360);
+            }
+            $file360 = $request->file('image360');
+            $extension360 = $file->getClientOriginalExtension();
+            $filename360 = time() . '.' . $extension360;
+            $file->move('uploads/product360', $filename360);
+            $product->image360 = $filename360;
         }
         $product->title = $request->input('title');
         $product->description = $request->input('description');

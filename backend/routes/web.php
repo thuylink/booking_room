@@ -73,7 +73,7 @@ Route::get('/dashboard', [DashboardController::class, 'indexHost'])->name('hosth
 Route::post('/host/login-host', [RegisteredUserController::class,'postLoginHost']);
 
 
-Route::get('/category',[CategoryController::class,'index_'])->name('category.all');
+Route::get('/category',[CategoryController::class,'index'])->name('category.all');
 Route::get('/add-category',[CategoryController::class,'add'])->name('category.add');
 Route::post('/add-category', [CategoryController::class, 'store'])->name('category.store');
 Route::get('/edit-category/{id}',[CategoryController::class,'edit'])->name('category.edit');

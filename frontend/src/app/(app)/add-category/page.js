@@ -8,9 +8,11 @@ import Button from '@/components/Button'
 import { useCategory } from '../../../hooks/category'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-// import {Pannellum} from "react-pannellum"
+import { useRouter } from 'next/navigation';
 
 const CreateCategoryPage = () => {
+    const router = useRouter()
+
     const { createCategory } = useCategory({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
@@ -34,6 +36,8 @@ const CreateCategoryPage = () => {
             formData,
             setStatus,
             setErrors,
+        }).then(() => {
+            router.push('all-category');
         });
     }
 

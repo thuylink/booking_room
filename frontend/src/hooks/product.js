@@ -18,14 +18,15 @@ export const useProduct = ({ middleware, redirectIfAuthenticated } = {}) => {
     } catch (error) {
       throw new Error(error.response.data.message);
     }
-//     const { data: product_ID } = useSWR('/product', (id) =>
-//     axios
-//       .get(`/show-product/${id}`)
-//       .then(res => res.data)
-//       .catch(error => {
-//         if (error.response && error.response.status !== 409) throw error;
-//       }),
-//   );
+  };
+
+  const updateProductById = async id => {
+    try {
+      const response = await axios.get(`/update-product/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
   };
 
   const csrf = () => axios.get('/sanctum/csrf-cookie');
@@ -44,7 +45,7 @@ export const useProduct = ({ middleware, redirectIfAuthenticated } = {}) => {
 
   return {
     product,
-    // product_ID,
+    updateProductById,
     createProduct,
     error,
     mutate,

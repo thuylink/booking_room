@@ -1,0 +1,208 @@
+.classes.volume {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+
+.border {
+border: 1px solid black;
+padding: 5px;
+}
+
+.title {
+font-size: 24px;
+color: #333333;
+font-weight: bold;
+/*Thêm các thuộc tính CSS khác tùy ý*/
+}
+
+.border {
+// border: 1px solid black;
+padding: 5px;
+}
+.borderSTT {
+
+width: 3%;
+}
+.borderID {
+
+width: 4%;
+}
+.borderTitle{
+width: 6%;
+}
+
+.borderCate {
+width: 9%;
+}
+.borderpv {
+width: 6%;
+}
+.borderCapa {
+width: 4%;;
+}
+.title {
+font-size: 24px;
+color: #333333;
+font-weight: bold;
+/*Thêm các thuộc tính CSS khác tùy ý*/
+}
+
+
+$gl-ms : "screen and (max-width: 23.5em)"; // up to 360px
+$gl-xs : "screen and (max-width: 35.5em)"; // up to 568px
+$gl-sm : "screen and (max-width: 48em)"; // max 768px
+$gl-md : "screen and (max-width: 64em)"; // max 1024px
+$gl-lg : "screen and (max-width: 80em)"; // max 1280px
+
+
+table {
+border-spacing: 1;
+border-collapse: collapse;
+background: white;
+border-radius: 6px;
+overflow: hidden;
+max-width: 1200px;
+width: 1200px;
+margin: 0 auto;
+position: relative;
+
+* {
+  position: relative
+}
+
+td,
+th {
+  padding-left: 8px
+}
+
+thead tr {
+  height: 60px;
+  width: 200px;
+  background: #FFED86;
+  font-size: 16px;
+}
+
+tbody tr {
+  height: 48px;
+  border-bottom: 1px solid #E3F1D5;
+
+  &:last-child {
+    border: 0;
+  }
+}
+
+td,
+th {
+  text-align: left;
+  width: 150px;
+
+  &.l {
+    text-align: right
+  }
+
+  &.c {
+    text-align: center
+  }
+
+  &.r {
+    text-align: center
+  }
+}
+}
+
+
+@media #{$gl-xs} {
+
+table {
+  display: block;
+
+  >*,
+  tr,
+  td,
+  th {
+    display: block
+  }
+
+  thead {
+    display: none
+  }
+
+  tbody tr {
+    height: auto;
+    padding: 8px 0;
+
+    td {
+      padding-left: 45%;
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0
+      }
+
+      &:before {
+        position: absolute;
+        font-weight: 700;
+        width: 40%;
+        left: 10px;
+        top: 0
+      }
+
+      &:nth-child(1):before {
+        content: "Code";
+      }
+
+      &:nth-child(2):before {
+        content: "Stock";
+      }
+
+      &:nth-child(3):before {
+        content: "Cap";
+      }
+
+      &:nth-child(4):before {
+        content: "Inch";
+      }
+
+      &:nth-child(5):before {
+        content: "Box Type";
+      }
+    }
+  }
+}
+}
+
+
+
+
+// body style
+
+body {
+background: #ff3e63;
+font: 400 14px 'Calibri', 'Arial';
+padding: 20px;
+}
+
+blockquote {
+color: white;
+text-align: center;
+}
+
+large {
+width: 1000px;
+}
+
+td,
+th {
+/* ... */
+width: 150px; /* thay đổi giá trị tùy ý */
+/* ... */
+}
+
+borderSTT {
+width: 10px;
+}

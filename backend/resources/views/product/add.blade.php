@@ -1,40 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <!-- Latest compiled and minified CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
+
 <body>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 @if (session('status'))
-                    <h5 class="alert alert-success">{{session('status')}}</h5>
+                    <h5 class="alert alert-success">{{ session('status') }}</h5>
                 @endif
                 <div class="card">
                     <div class="card-header">
                         <h3>Tạo nhà cho thuê
-                                <a href="{{route('product.all')}}" class="btn btn-danger float-end">Quay lại
-                                </a>
+                            <a href="{{ route('product.all') }}" class="btn btn-danger float-end">Quay lại
+                            </a>
                         </h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('product.store')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="">Loại kiến trúc:</label>
                                 <select name="id_category" id="id_category" class="form-control">
-                                    <?php $categories = App\Models\Category::where('status',1)->get();?>
+                                    <?php $categories = App\Models\Category::where('status', 1)->get(); ?>
                                     @foreach ($categories as $category)
-                                        <option value="{{$category->id}}">{{$category->name_category}}</option>
+                                        <option value="{{ $category->id }}">{{ $category->name_category }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -183,7 +185,7 @@
                             <script>
                                 function previewImage(event) {
                                     const input = event.target;
-                                    if (input.files &&input.files[0]) {
+                                    if (input.files && input.files[0]) {
                                         const reader = new FileReader();
 
                                         reader.onload = function(e) {
@@ -197,7 +199,28 @@
                                 }
                             </script>
 
+                            <div class="form-group mb-3">
+                                <label for="">Ảnh 360:</label>
+                                <input type="file" name="image360" id="" class="form-control">
+                            </div>
 
+
+                            <script>
+                                function previewImage360(event) {
+                                    const input = event.target;
+                                    if (input.files && input.files[0]) {
+                                        const reader = new FileReader();
+
+                                        reader.onload = function(e) {
+                                            const preview = document.getElementById('image360-preview');
+                                            preview.src = e.target.result;
+                                            preview.style.display = 'block';
+                                        };
+
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
 
                             <div class="form-group mb-3">
                                 <label for="">Tiêu đề:</label>
@@ -227,4 +250,5 @@
         </div>
     </div>
 </body>
+
 </html>

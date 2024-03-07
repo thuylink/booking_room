@@ -1,0 +1,159 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useCategory, getCategoryById } from '../../../../hooks/category'
+import '../show_category_css.scss'
+import * as React from 'react'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import Slider from '@mui/material/Slider'
+
+export const CategoryDetailWithPannellum = () => {
+    const id = window.location.pathname.split('/').pop()
+    const { getCategoryById, error } = useCategory()
+    const [category, setCategory] = useState(null)
+
+    const [value, setValue] = React.useState(30)
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue)
+    }
+    useEffect(() => {
+        const fetchCategory = async () => {
+            try {
+                const response = await getCategoryById(id)
+                setCategory(response)
+            } catch (error) {
+                console.error('Error:', error)
+            }
+        }
+
+        fetchCategory()
+    }, [getCategoryById, id])
+
+    if (error) {
+        return <div>Error: {error}</div>
+    }
+
+    if (!category) {
+        return <div>Loading...</div>
+    }
+
+    const categoryFields = Object.keys(category)
+    
+    return (
+        <div>
+            <h2>Chi tiết danh mục{id}</h2>
+            <div>360 kkk</div>
+            {categoryFields.map(field => (
+                <p key={field}></p>
+            ))}
+            <table style={{ borderCollapse: 'collapse' }}>
+                <thead>
+                    <tr>
+                        <th className="border">ID</th>
+                        <th className="border">Tên</th>
+                        <th className="border">Ảnh</th>
+                        <th className="border">Ảnh 360</th>
+                        <th className="border">Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr key={category.id} style={{ border: '1px solid black' }}>
+                        <td className="border">{category.id}</td>
+                        <td className="border">{category.name_category}</td>
+                        <td className="border">
+                            {category.image &&
+                                (() => {
+                                    try {
+                                        const parsedImage = JSON.parse(
+                                            category.image,
+                                        )
+                                        if (Array.isArray(parsedImage)) {
+                                            return (
+                                                <>
+                                                    {parsedImage.map(
+                                                        (image, index) => {
+                                                            const cleanedImagePath = image.replace(
+                                                                /[\[\]"]/g,
+                                                                '',
+                                                            )
+                                                            const imagePath = `http://127.0.0.1:8000/uploads/category/${cleanedImagePath}`
+                                                            return (
+                                                                <img
+                                                                    key={index}
+                                                                    src={
+                                                                        imagePath
+                                                                    }
+                                                                    alt="Image"
+                                                                    width="100px"
+                                                                    height="70px"
+                                                                />
+                                                            )
+                                                        },
+                                                    )}
+                                                </>
+                                            )
+                                        }
+                                    } catch (error) {
+                                        console.error(
+                                            'Error parsing JSON:',
+                                            error,
+                                        )
+                                    }
+                                })()}
+                        </td>
+
+                        <td className="border">
+                            {category.image360 &&
+                                (() => {
+                                    try {
+                                        const parsedImage360 = JSON.parse(
+                                            category.image360,
+                                        )
+                                        if (Array.isArray(parsedImage360)) {
+                                            return (
+                                                <>
+                                                    {parsedImage360.map(
+                                                        (image360, index) => {
+                                                            const cleanedImage360Path = image360.replace(
+                                                                /[\[\]"]/g,
+                                                                '',
+                                                            )
+                                                            const image360Path = `http://127.0.0.1:8000/uploads/category360/${cleanedImage360Path}`
+                                                            return (
+                                                                <img
+                                                                    key={index}
+                                                                    src={
+                                                                        image360Path
+                                                                    }
+                                                                    alt="Image"
+                                                                    width="100px"
+                                                                    height="70px"
+                                                                />
+                                                            )
+                                                        },
+                                                    )}
+
+                                                    
+                                                </>
+                                            )
+                                        }
+                                    } catch (error) {
+                                        console.error(
+                                            'Error parsing JSON:',
+                                            error,
+                                        )
+                                    }
+                                })()}
+                        </td>
+                        <td className="border">{category.status}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
+export default CategoryDetailWithPannellum
