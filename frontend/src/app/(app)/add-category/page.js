@@ -6,9 +6,9 @@ import InputError from '@/components/InputError'
 import Link from 'next/link'
 import Button from '@/components/Button'
 import { useCategory } from '../../../hooks/category'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 
 const CreateCategoryPage = () => {
     const router = useRouter()
@@ -26,19 +26,18 @@ const CreateCategoryPage = () => {
     const submitForm = event => {
         event.preventDefault()
 
-        const formData = new FormData();
-        formData.append('name_category', name_category);
-        images.forEach(image => formData.append('image[]', image));
-        image360s.forEach(image360 => formData.append('image360[]', image360));
-        formData.append('status', status);
-
+        const formData = new FormData()
+        formData.append('name_category', name_category)
+        images.forEach(image => formData.append('image[]', image))
+        image360s.forEach(image360 => formData.append('image360[]', image360))
+        formData.append('status', status)
         createCategory({
             formData,
             setStatus,
             setErrors,
         }).then(() => {
-            router.push('all-category');
-        });
+            router.push('all-category')
+        })
     }
 
     const previewImages = () => {
@@ -74,7 +73,6 @@ const CreateCategoryPage = () => {
         }
         return null
     }
-    
 
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
@@ -106,7 +104,9 @@ const CreateCategoryPage = () => {
                         id="image"
                         type="file"
                         className="block w-full"
-                        onChange={event => setImages(Array.from(event.target.files))}
+                        onChange={event =>
+                            setImages(Array.from(event.target.files))
+                        }
                         multiple
                     />
 
@@ -121,7 +121,9 @@ const CreateCategoryPage = () => {
                         id="image360"
                         type="file"
                         className="block w-full"
-                        onChange={event => setImage360s(Array.from(event.target.files))}
+                        onChange={event =>
+                            setImage360s(Array.from(event.target.files))
+                        }
                         multiple
                     />
 

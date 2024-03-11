@@ -15,7 +15,7 @@
 }
 
 .borderTitle {
-  width: 6%;
+  width: 15%;
 }
 
 .borderCate {
@@ -30,11 +30,23 @@
   width: 4%;
 }
 
+.bordertt {
+  width: 15%;
+}
+
+.formsearch {
+  margin-left: 40%;
+}
+
 .title {
   font-size: 24px;
   color: #333333;
   font-weight: bold;
   /*Thêm các thuộc tính CSS khác tùy ý*/
+}
+
+.add {
+  margin-left: 85%;
 }
 
 table {
@@ -151,7 +163,8 @@ large {
 td,
 th {
   /* ... */
-  width: 150px; /* thay đổi giá trị tùy ý */
+  width: 150px;
+  /* thay đổi giá trị tùy ý */
   /* ... */
 }
 

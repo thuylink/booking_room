@@ -52,9 +52,9 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('category.update', ['id' => $category->id]) }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form action="{{ route('category.update', ['id' => $category->id]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="form-group mb-3">
                                 <label for="">Tên danh mục:</label>
                                 <input type="text" name="name_category" id=""
@@ -79,7 +79,7 @@
                                 <label for="">Ảnh 360 danh mục:</label>
                                 <input type="file" name="image360" id="image360" class="form-control"
                                     onchange="previewImage360(event)">
-                                <img src="{{ asset('uploads/category360/' . $category->image) }}" width="70px"
+                                <img src="{{ asset('uploads/category360/' . $category->image360) }}" width="70px"
                                     height="70px" alt="Ảnh hiển tại">
                             </div>
 

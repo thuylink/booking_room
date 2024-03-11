@@ -1,12 +1,25 @@
 'use client'
 
-import { useCategory } from '../../../hooks/category'
+import { useCategory, deleteCategoryById } from '../../../hooks/category'
 import './all_category_css.scss'
 import Link from 'next/link'
 import Button from '@/components/Button'
+import { useState } from 'react'
+import { searchByName } from '../../../hooks/category'
 
 const AllCategory = () => {
-    const { category, error } = useCategory()
+    const { category, error, mutate } = useCategory()
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResult, setSearchResult] = useState([])
+    const [filteredCategory, setFilteredCategory] = useState([])
+    const handleDelete = async id => {
+        try {
+            await deleteCategoryById(id)
+            mutate()
+        } catch (error) {
+            console.error('Lỗi:', error)
+        }
+    }
 
     if (error) {
         return <div>{error}</div>
@@ -15,9 +28,56 @@ const AllCategory = () => {
     if (!category) {
         return <div>Loading...</div>
     }
+    const handleSearchChange = event => {
+        setSearchTerm(event.target.value)
+    }
+    const handleSubmit = async event => {
+        event.preventDefault()
+        try {
+            let result = []
+            if (searchTerm === '') {
+                result = category
+            } else {
+                result = category.filter(category =>
+                    category.name_category.includes(searchTerm),
+                )
+            }
+            setFilteredCategory(result)
+        } catch (error) {
+            console.error('Lỗi:', error)
+        }
+    }
 
     return (
         <div>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        placeholder="Tìm kiếm theo tên danh mục"
+                        className="formsearch"
+                    />
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+            <div>
+                <Link
+                    href={`/add-category`}
+                    className="underline text-sm text-gray-600 hover:text-gray-900">
+                    <Button className="add">Thêm mới danh mục</Button>
+                </Link>
+            </div>
+            <tbody>
+                {searchResult.map((category, index) => (
+                    <tr key={category.id}>
+                        <td>{index + 1}</td>
+                        <td>{category.id}</td>
+                        <td>{category.name_category}</td>
+                    </tr>
+                ))}
+            </tbody>
             <table className="large">
                 <thead>
                     <tr>
@@ -27,20 +87,19 @@ const AllCategory = () => {
                         <th className="border">Ảnh</th>
                         <th className="border">Ảnh 360</th>
                         <th className="border">Trạng thái</th>
-                        <th className="border">Thao tác</th>
-
+                        <th className="border bordertt">Thao tác</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    {category.map((category, index) => (
-                        <tr
+                    {(searchTerm === '' ? category : filteredCategory).map(
+                        (category, index) => (
+                            <tr
                             key={category.id}
                             style={{ border: '1px solid black' }}>
                             <td className="border">{index + 1}</td>
                             <td className="border">{category.id}</td>
-
                             <td className="border">{category.name_category}</td>
-
                             <td className="border">
                                 {category.image &&
                                     (() => {
@@ -55,7 +114,7 @@ const AllCategory = () => {
                                                         {parsedImage.map(
                                                             (image, index) => {
                                                                 const cleanedImagePath = image.replace(
-                                                                    /[\[\]"]/g,
+                                                                    /[[\]"]/g,
                                                                     '',
                                                                 )
                                                                 const imagePath = `http://127.0.0.1:8000/uploads/category/${cleanedImagePath}`
@@ -99,9 +158,12 @@ const AllCategory = () => {
                                                 return (
                                                     <>
                                                         {parsedImage360.map(
-                                                            (image360, index) => {
+                                                            (
+                                                                image360,
+                                                                index,
+                                                            ) => {
                                                                 const cleanedImage360Path = image360.replace(
-                                                                    /[\[\]"]/g,
+                                                                    /[[\]"]/g,
                                                                     '',
                                                                 )
                                                                 const image360Path = `http://127.0.0.1:8000/uploads/category360/${cleanedImage360Path}`
@@ -156,18 +218,20 @@ const AllCategory = () => {
                                     </Link>
                                 </div>
                                 <div>
-                                    <Link
-                                    href={`/update-category/${category.id}`}
-
-                                        // href={`/delete-category/${category.id}`}
-                                        className="underline text-sm text-gray-600 hover:text-gray-900">
-                                        <Button className="ml-4">Xóa</Button>
-                                    </Link>
+                                    <Button
+                                        className="ml-4"
+                                        onClick={() =>
+                                            handleDelete(category.id)
+                                        }>
+                                        Xóa
+                                    </Button>
                                 </div>
                             </td>
                         </tr>
-                    ))}
+                        ),
+                    )}
                 </tbody>
+                
             </table>
 
             <blockquote>Responsive Table</blockquote>

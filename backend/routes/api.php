@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Route::post('/add-product', [ProductController::class, 'store']);
 
 Route::get('/product', [ProductController::class, 'index']);
 // Route::get('/product',[ProductController::class,'index_'])->name('product.all');
+Route::get('/category360/{imageName}', [ImageController::class, 'getCategoryImage']);
 
 /**
  *

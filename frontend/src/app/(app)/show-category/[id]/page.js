@@ -1,29 +1,24 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useCategory, getCategoryById } from '../../../../hooks/category'
+import { useCategory, getCategoryImage } from '../../../../hooks/category'
 import '../show_category_css.scss'
-import * as React from 'react'
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-import Slider from '@mui/material/Slider'
+import { Pannellum } from 'pannellum-react'
 
 export const CategoryDetailWithPannellum = () => {
     const id = window.location.pathname.split('/').pop()
     const { getCategoryById, error } = useCategory()
     const [category, setCategory] = useState(null)
+    const [showImage360, setShowImage360] = useState(false)
 
-    const [value, setValue] = React.useState(30)
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue)
-    }
     useEffect(() => {
         const fetchCategory = async () => {
             try {
                 const response = await getCategoryById(id)
                 setCategory(response)
+                if (response.image360) {
+                    setShowImage360(true)
+                }
             } catch (error) {
                 console.error('Error:', error)
             }
@@ -41,11 +36,10 @@ export const CategoryDetailWithPannellum = () => {
     }
 
     const categoryFields = Object.keys(category)
-    
+
     return (
         <div>
-            <h2>Chi tiết danh mục{id}</h2>
-            <div>360 kkk</div>
+            <h2>Chi tiết danh mục {id}</h2>
             {categoryFields.map(field => (
                 <p key={field}></p>
             ))}
@@ -79,6 +73,7 @@ export const CategoryDetailWithPannellum = () => {
                                                                 /[\[\]"]/g,
                                                                 '',
                                                             )
+
                                                             const imagePath = `http://127.0.0.1:8000/uploads/category/${cleanedImagePath}`
                                                             return (
                                                                 <img
@@ -104,7 +99,35 @@ export const CategoryDetailWithPannellum = () => {
                                     }
                                 })()}
                         </td>
-
+                        <td className="border">
+                            {showImage360 && (
+                                <Pannellum
+                                    width="100%"
+                                    height="300px"
+                                    image={`https://pannellum.org/images/alma.jpg`}
+                                    pitch={10}
+                                    yaw={180}
+                                    hfov={110}
+                                    autoLoad
+                                />
+                            )}
+                        </td>
+                        <td className="border">
+                            {showImage360 && (
+                                <Pannellum
+                                    width="100%"
+                                    height="300px"
+                                    image={`http://127.0.0.1:8000/uploads/category360/${category.image360.replace(
+                                        /[\[\]"]/g,
+                                        '',
+                                    )}`}
+                                    pitch={10}
+                                    yaw={180}
+                                    hfov={110}
+                                    autoLoad
+                                />
+                            )}
+                        </td>
                         <td className="border">
                             {category.image360 &&
                                 (() => {
@@ -118,7 +141,7 @@ export const CategoryDetailWithPannellum = () => {
                                                     {parsedImage360.map(
                                                         (image360, index) => {
                                                             const cleanedImage360Path = image360.replace(
-                                                                /[\[\]"]/g,
+                                                                /[[\]"]/g,
                                                                 '',
                                                             )
                                                             const image360Path = `http://127.0.0.1:8000/uploads/category360/${cleanedImage360Path}`
@@ -135,8 +158,6 @@ export const CategoryDetailWithPannellum = () => {
                                                             )
                                                         },
                                                     )}
-
-                                                    
                                                 </>
                                             )
                                         }

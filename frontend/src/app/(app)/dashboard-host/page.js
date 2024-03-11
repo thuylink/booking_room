@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Button from '@/components/Button'
 
-
 export const metadata = {
     title: 'Laravel - Dashboard',
 }
@@ -15,26 +14,26 @@ const Dashboard = () => {
                         Đã đăng nhập vào trang dành cho chủ nhà!
                     </div>
                     <div className="flex">
-
                         <Link
-                        href="/add-category"
+                            href="/add-category"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
                             <Button className="ml-4">Thêm mới danh mục</Button>
                         </Link>
-                    
                     </div>
 
                     <div>
                         <Link
-                        href="/all-category"
+                            href="/all-category"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
-                            <Button className="ml-4">Xem tất cả danh mục được thêm</Button>
+                            <Button className="ml-4">
+                                Xem tất cả danh mục được thêm
+                            </Button>
                         </Link>
                     </div>
 
                     <div>
                         <Link
-                        href="/add-product"
+                            href="/add-product"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
                             <Button className="ml-4">Thêm mới nhà</Button>
                         </Link>
@@ -42,9 +41,11 @@ const Dashboard = () => {
 
                     <div>
                         <Link
-                        href="/all-product"
+                            href="/all-product"
                             className="underline text-sm text-gray-600 hover:text-gray-900">
-                            <Button className="ml-4">Xem tất cả nhà được thêm</Button>
+                            <Button className="ml-4">
+                                Xem tất cả nhà được thêm
+                            </Button>
                         </Link>
                     </div>
                 </div>

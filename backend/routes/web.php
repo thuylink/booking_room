@@ -77,10 +77,11 @@ Route::get('/category',[CategoryController::class,'index'])->name('category.all'
 Route::get('/add-category',[CategoryController::class,'add'])->name('category.add');
 Route::post('/add-category', [CategoryController::class, 'store'])->name('category.store');
 Route::get('/edit-category/{id}',[CategoryController::class,'edit'])->name('category.edit');
-Route::post('/update-category/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::put('/update-category/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::delete('/delete-category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 Route::get('/show-category/{id}',[CategoryController::class,'show'])->name('category.show');
-
+Route::put('/update-category-image/{id}', [CategoryController::class, 'updateCategoryImage']);
+Route::get('/search', [CategoryController::class, 'search'])->name('category.search');
 
 
 

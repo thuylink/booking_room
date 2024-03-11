@@ -118,11 +118,13 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->name_category = $request->input('name_category');
+
         if ($request->hasFile('image')) {
             $oldImage = 'uploads/category/' . $category->image;
             if (File::exists($oldImage)) {
                 File::delete($oldImage);
             }
+
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -135,16 +137,20 @@ class CategoryController extends Controller
             if (File::exists($oldImage360)) {
                 File::delete($oldImage360);
             }
+
             $file360 = $request->file('image360');
-            $extension = $file360->getClientOriginalExtension();
-            $filename360 = time() . '.' . $extension;
+            $extension360 = $file360->getClientOriginalExtension();
+            $filename360 = time() . '.' . $extension360;
             $file360->move('uploads/category360', $filename360);
             $category->image360 = $filename360;
         }
+
         $category->status = $request->input('status');
         $category->update();
+
         return response()->json(['status' => 'Cập nhật danh mục thành công'], 201);
     }
+
     //delete
     public function delete_($id)
     {
@@ -164,15 +170,12 @@ class CategoryController extends Controller
         if (File::exists($image)) {
             File::delete($image);
         }
-
         $image360 = 'uploads/category360/' . $category->image360;
         if (File::exists($image360)) {
             File::delete($image360);
         }
         $category->delete();
         return response()->json(['status' => 'Xóa danh mục thành công'], 201);
-
-        // return redirect()->back()->with('status', 'Đã xóa 1 danh mục');
     }
 
     //read - show
@@ -183,8 +186,24 @@ class CategoryController extends Controller
     }
 
     public function show($id)
+    {
+        $category = Category::find($id);
+        return response()->json($category);
+    }
+
+    public function search_(Request $request)
 {
-    $category = Category::find($id);
-    return response()->json($category);
+    $search = $request->search;
+    $categories = Category::where('name_category', 'like', "%$search%")->get();
+
+    return view('category.index', compact('categories', 'search'));
+}
+
+public function search(Request $request)
+{
+    $search = $request->search;
+    $categories = Category::where('name_category', 'like', "%$search%")->get();
+
+    return response()->json($categories);
 }
 }

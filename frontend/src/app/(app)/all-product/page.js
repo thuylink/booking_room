@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Button from '@/components/Button'
 
 const AllProduct = () => {
-    const { product, error } = useProduct()    
+    const { product, error } = useProduct()
     if (error) {
         return <div>{error}</div>
     }
@@ -17,11 +17,11 @@ const AllProduct = () => {
 
     return (
         <div>
-            <table className='large'>
+            <table className="large">
                 <thead>
                     <tr>
-                    <th className="border borderSTT" >STT</th>                        
-                    <th className="border borderID">ID</th>
+                        <th className="border borderSTT">STT</th>
+                        <th className="border borderID">ID</th>
                         <th className="border borderTitle ">Tiêu đề</th>
                         <th className="border borderCate ">Kiểu kiến trúc</th>
                         <th className="border borderpv">Phạm vi sử dụng</th>
@@ -113,7 +113,7 @@ const AllProduct = () => {
                                     <Link
                                         href={`/show-product/${product.id}`}
                                         className="underline text-sm text-gray-600 hover:text-gray-900">
-                                        <Button className="ml-4" >
+                                        <Button className="ml-4">
                                             Xem chi tiết
                                         </Button>
                                     </Link>
@@ -147,4 +147,3 @@ const AllProduct = () => {
 }
 
 export default AllProduct
-

@@ -20,6 +20,18 @@
                             <a href="{{ route('category.add') }}" class="btn btn-primary float-end">Thêm danh mục</a>
                         </h3>
                     </div>
+                    <form action="{{ route('category.search') }}" method="GET">
+                        @csrf
+                        <div class="input-group input-group" style="width: 250px;">
+                            <input type="text" name="search" class="form-control float-right"
+                                   placeholder="Search" value=" {{ isset($search) ? $search : " " }}">
+
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default" style="color: aqua">
+                                    <i class="fas fa-search" style="color: rgb(13, 17, 241)"></i>
+                                </button>
+                            </div>
+                        </div>
                     <div class="card-body">
                         <table class="table table-stripped">
                             <thead>

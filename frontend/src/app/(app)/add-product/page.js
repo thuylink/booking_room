@@ -21,6 +21,8 @@ const CreateProductPage = () => {
         redirectIfAuthenticated: '/dashboard',
     })
     const [id_category, setIdCategory] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('');
+
     const [selectedPrivacy, setSelectedPrivacy] = useState('')
     const [location, setLocation] = useState('')
     const [capacity, setCapacity] = useState('')
@@ -96,6 +98,10 @@ const CreateProductPage = () => {
         const input = document.getElementById('image')
         input.click()
     }
+
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.value);
+      };
 
     const submitForm = event => {
         event.preventDefault()
