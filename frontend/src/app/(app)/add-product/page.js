@@ -21,8 +21,6 @@ const CreateProductPage = () => {
         redirectIfAuthenticated: '/dashboard',
     })
     const [id_category, setIdCategory] = useState('')
-    const [selectedCategory, setSelectedCategory] = useState('');
-
     const [selectedPrivacy, setSelectedPrivacy] = useState('')
     const [location, setLocation] = useState('')
     const [capacity, setCapacity] = useState('')
@@ -76,32 +74,7 @@ const CreateProductPage = () => {
         }
     }
 
-    const handleDescriptionChange = event => {
-        const value = event.target.value
-        const isChecked = event.target.checked
-
-        if (isChecked) {
-            setSelectedDescription(prevSelected => [...prevSelected, value])
-        } else {
-            setSelectedDescription(prevSelected =>
-                prevSelected.filter(item => item !== value),
-            )
-        }
-    }
-
-    const handleImageChange = event => {
-        const newImages = Array.from(event.target.files)
-        setImages(prevImages => [...prevImages, ...newImages])
-    }
-
-    const handleAddImage = () => {
-        const input = document.getElementById('image')
-        input.click()
-    }
-
-    const handleCategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
-      };
+    
 
     const submitForm = event => {
         event.preventDefault()
@@ -127,39 +100,39 @@ const CreateProductPage = () => {
         });
     }
 
-    const previewImages = () => {
-        if (images.length > 0) {
-            return images.map((image, index) => (
-                <div key={index} className="w-32 h-32">
-                    <Image
-                        src={URL.createObjectURL(image)}
-                        alt={`Preview ${index}`}
-                        layout="responsive"
-                        width={300}
-                        height={300}
-                    />
-                </div>
-            ))
-        }
-        return null
-    }
+    // const previewImages = () => {
+    //     if (images.length > 0) {
+    //         return images.map((image, index) => (
+    //             <div key={index} className="w-32 h-32">
+    //                 <Image
+    //                     src={URL.createObjectURL(image)}
+    //                     alt={`Preview ${index}`}
+    //                     layout="responsive"
+    //                     width={300}
+    //                     height={300}
+    //                 />
+    //             </div>
+    //         ))
+    //     }
+    //     return null
+    // }
 
-    const previewImage360s = () => {
-        if (image360s.length > 0) {
-            return image360s.map((image360, index) => (
-                <div key={index} className="w-32 h-32">
-                    <Image
-                        src={URL.createObjectURL(image360)}
-                        alt={`Preview ${index}`}
-                        layout="responsive"
-                        width={300}
-                        height={300}
-                    />
-                </div>
-            ))
-        }
-        return null
-    }
+    // const previewImage360s = () => {
+    //     if (image360s.length > 0) {
+    //         return image360s.map((image360, index) => (
+    //             <div key={index} className="w-32 h-32">
+    //                 <Image
+    //                     src={URL.createObjectURL(image360)}
+    //                     alt={`Preview ${index}`}
+    //                     layout="responsive"
+    //                     width={300}
+    //                     height={300}
+    //                 />
+    //             </div>
+    //         ))
+    //     }
+    //     return null
+    // }
 
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
@@ -168,44 +141,58 @@ const CreateProductPage = () => {
                     <div className="border rounded-lg p-4 w-full">
                         <h1 className="text-center">Chủ nhà thêm mới nhà</h1>
                         <div className="mt-4">
-                            <Label htmlFor="image">Hình ảnh:</Label>
-                            {previewImages()}
+                    <Label htmlFor="image">Hình ảnh:</Label>
+                    {images.length > 0 &&
+                        images.map((image, index) => (
+                            <div key={index} className="w-32 h-32">
+                                <Image
+                                    src={URL.createObjectURL(image)}
+                                    // alt={`Preview ${index}`}
+                                    layout="responsive"
+                                    width={200}
+                                    height={200}
+                                />
+                            </div>
+                        ))}
 
-                            <Input
-                                id="image"
-                                type="file"
-                                className="block w-full"
-                                onChange={event =>
-                                    setImages(Array.from(event.target.files))
-                                }
-                                multiple
-                            />
+                    <Input
+                        id="image"
+                        type="file"
+                        className="block w-full"
+                        onChange={event =>
+                            setImages([...images, event.target.files[0]])
+                        }
+                    />
 
-                            <InputError
-                                messages={errors.image}
-                                className="mt-2"
-                            />
-                        </div>
+                    <InputError messages={errors.image} className="mt-2" />
+                </div>
 
-                        <div className="mt-4">
-                            <Label htmlFor="image360">Hình ảnh 360:</Label>
-                            {previewImage360s()}
+                <div className="mt-4">
+                    <Label htmlFor="image">Hình ảnh 360:</Label>
+                    {image360s.length > 0 &&
+                        image360s.map((image360, index) => (
+                            <div key={index} className="w-32 h-32">
+                                <Image
+                                    src={URL.createObjectURL(image360)}
+                                    // alt={`Preview ${index}`}
+                                    layout="responsive"
+                                    width={200}
+                                    height={200}
+                                />
+                            </div>
+                        ))}
 
-                            <Input
-                                id="image360"
-                                type="file"
-                                className="block w-full"
-                                onChange={event =>
-                                    setImage360s(Array.from(event.target.files))
-                                }
-                                multiple
-                            />
+                    <Input
+                        id="image360"
+                        type="file"
+                        className="block w-full"
+                        onChange={event =>
+                            setImage360s([...image360s, event.target.files[0]])
+                        }
+                    />
 
-                            <InputError
-                                messages={errors.image360}
-                                className="mt-2"
-                            />
-                        </div>
+                    <InputError messages={errors.image} className="mt-2" />
+                </div>
                     </div>
                 </div>
                 <div className="w-1/2 pl-2">

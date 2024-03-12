@@ -136,7 +136,7 @@ class ProductController extends Controller
     }
 
     //delete
-    public function delete($id)
+    public function delete_($id)
     {
         $product = Product::find($id);
         $image = 'uploads/product/' . $product->image;
@@ -145,6 +145,21 @@ class ProductController extends Controller
         }
         $product->delete();
         return redirect()->back()->with('status', 'Đã xóa 1 nhà');
+    }
+
+    public function delete($id)
+    {
+        $product = Product::find($id);
+        $image = 'uploads/product/' . $product->image;
+        if (File::exists($image)) {
+            File::delete($image);
+        }
+        $image360 = 'uploads/product/' . $product->image360;
+        if (File::exists($image360)) {
+            File::delete($image360);
+        }
+        $product->delete();
+        return response()->json(['status' => 'Xóa danh mục thành công'], 201);
     }
 
 
@@ -159,6 +174,14 @@ class ProductController extends Controller
 {
     $product = Product::find($id);
     return response()->json($product);
+}
+
+public function search(Request $request)
+{
+    $search = $request->search;
+    $products = Product::where('location', 'like', "%$search%")->get();
+
+    return response()->json($products);
 }
 
 }

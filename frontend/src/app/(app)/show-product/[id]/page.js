@@ -1,11 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { useProduct, getProductById } from '../../../../hooks/product'
 import '../show_product_css.scss'
-import Pannellum from 'pannellum';
-// import '../import.html'
+import { Pannellum } from 'pannellum-react'
 
 
 export const ProductDetailWithPannellum = () => {
@@ -13,8 +11,7 @@ export const ProductDetailWithPannellum = () => {
     const id = window.location.pathname.split('/').pop()
     const { getProductById, error } = useProduct()
     const [product, setProduct] = useState(null)
-    const [panoramaLoaded, setPanoramaLoaded] = useState(false);
-    const [showPanorama, setShowPanorama] = useState(false); 
+    const [showImage360, setShowImage360] = useState(false)
 
 
     useEffect(() => {
@@ -22,6 +19,9 @@ export const ProductDetailWithPannellum = () => {
             try {
                 const response = await getProductById(id)
                 setProduct(response)
+                if (response.image360) {
+                    setShowImage360(true)
+                }
             } catch (error) {
                 console.error('Error:', error)
             }
@@ -29,24 +29,6 @@ export const ProductDetailWithPannellum = () => {
 
         fetchProduct()
     }, [getProductById, id])
-
-    useEffect(() => {
-      if (product && product.image360 && !panoramaLoaded) {
-          Array.isArray(JSON.parse(product.image360)) &&
-              JSON.parse(product.image360).forEach((image360, index) => {
-                  const cleanedImage360Path = image360.replace(/[\[\]"]/g, '')
-                  const image360Path = `http://127.0.0.1:8000/uploads/product360/${cleanedImage360Path}`
-                  new pannellum.viewer(`panorama-${index}`, {
-                      type: 'equirectangular',
-                      panorama: image360Path,
-                  })
-              })
-
-          setPanoramaLoaded(true);
-      }
-  }, [product, panoramaLoaded]);
-
-  
   
     if (error) {
         return <div>Error: {error}</div>
@@ -113,6 +95,35 @@ export const ProductDetailWithPannellum = () => {
                                 )}
                         </td>
 
+                        <td className="border">
+                            {showImage360 && (
+                                <Pannellum
+                                    width="100%"
+                                    height="300px"
+                                    image={`https://pannellum.org/images/alma.jpg`}
+                                    pitch={10}
+                                    yaw={180}
+                                    hfov={110}
+                                    autoLoad
+                                />
+                            )}
+                        </td>
+                        <td className="border">
+                            {showImage360 && (
+                                <Pannellum
+                                    width="100%"
+                                    height="300px"
+                                    image={`http://127.0.0.1:8000/uploads/product360/${product.image360.replace(
+                                        /[\[\]"]/g,
+                                        '',
+                                    )}`}
+                                    pitch={10}
+                                    yaw={180}
+                                    hfov={110}
+                                    autoLoad
+                                />
+                            )}
+                        </td>
                         <td className="border">
                         {product.image360 &&
                             Array.isArray(JSON.parse(product.image360)) && (

@@ -91,5 +91,6 @@ Route::post('/add-product', [ProductController::class, 'store'])->name('product.
 Route::get('/edit-product/{id}',[ProductController::class,'edit'])->name('product.edit');
 Route::post('/update-product/{id}', [ProductController::class, 'update'])->name('product.update');
 Route::get('/show-product/{id}',[ProductController::class,'show'])->name('product.show');
+Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 
 Route::delete('/delete-product/{id}', [ProductController::class, 'delete'])->name('product.delete');

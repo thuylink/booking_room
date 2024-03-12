@@ -22,7 +22,8 @@ const CreateCategoryPage = () => {
     const [image360s, setImage360s] = useState([])
     const [status, setStatus] = useState('')
     const [errors, setErrors] = useState([])
-
+    const [categoryOptions, setCategoryOptions] = useState([]);
+    
     const submitForm = event => {
         event.preventDefault()
 
@@ -40,22 +41,22 @@ const CreateCategoryPage = () => {
         })
     }
 
-    const previewImages = () => {
-        if (images.length > 0) {
-            return images.map((image, index) => (
-                <div key={index} className="w-32 h-32">
-                    <Image
-                        src={URL.createObjectURL(image)}
-                        alt={`Preview ${index}`}
-                        layout="responsive"
-                        width={200}
-                        height={200}
-                    />
-                </div>
-            ))
-        }
-        return null
-    }
+    // const previewImages = () => {
+    //     if (images.length > 0) {
+    //         return images.map((image, index) => (
+    //             <div key={index} className="w-32 h-32">
+    //                 <Image
+    //                     src={URL.createObjectURL(image)}
+    //                     alt={`Preview ${index}`}
+    //                     layout="responsive"
+    //                     width={200}
+    //                     height={200}
+    //                 />
+    //             </div>
+    //         ))
+    //     }
+    //     return null
+    // }
 
     const previewImage360s = () => {
         if (image360s.length > 0) {
@@ -99,37 +100,57 @@ const CreateCategoryPage = () => {
 
                 <div className="mt-4">
                     <Label htmlFor="image">Hình ảnh:</Label>
-                    {previewImages()}
+                    {images.length > 0 &&
+                        images.map((image, index) => (
+                            <div key={index} className="w-32 h-32">
+                                <Image
+                                    src={URL.createObjectURL(image)}
+                                    // alt={`Preview ${index}`}
+                                    layout="responsive"
+                                    width={200}
+                                    height={200}
+                                />
+                            </div>
+                        ))}
+
                     <Input
                         id="image"
                         type="file"
                         className="block w-full"
                         onChange={event =>
-                            setImages(Array.from(event.target.files))
+                            setImages([...images, event.target.files[0]])
                         }
-                        multiple
                     />
 
                     <InputError messages={errors.image} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <Label htmlFor="image360">Hình ảnh 360:</Label>
-                    {previewImage360s()}
+                    <Label htmlFor="image">Hình ảnh 360:</Label>
+                    {image360s.length > 0 &&
+                        image360s.map((image360, index) => (
+                            <div key={index} className="w-32 h-32">
+                                <Image
+                                    src={URL.createObjectURL(image360)}
+                                    // alt={`Preview ${index}`}
+                                    layout="responsive"
+                                    width={200}
+                                    height={200}
+                                />
+                            </div>
+                        ))}
 
                     <Input
                         id="image360"
                         type="file"
                         className="block w-full"
                         onChange={event =>
-                            setImage360s(Array.from(event.target.files))
+                            setImage360s([...image360s, event.target.files[0]])
                         }
-                        multiple
                     />
 
-                    <InputError messages={errors.image360} className="mt-2" />
+                    <InputError messages={errors.image} className="mt-2" />
                 </div>
-
                 <div className="mt-4">
                     <Label htmlFor="status">Trạng thái:</Label>
                     <Input
@@ -147,7 +168,7 @@ const CreateCategoryPage = () => {
 
             <div className="flex items-center justify-end mt-4">
                 <Link
-                    href="/"
+                    href="/dashboard-host"
                     className="underline text-sm text-gray-600 hover:text-gray-900">
                     Quay lại
                 </Link>

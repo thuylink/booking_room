@@ -89,6 +89,12 @@
       "static/chunks/main-app.js",
       "static/css/app/(app)/all-product/page.css",
       "static/chunks/app/(app)/all-product/page.js"
+    ],
+    "/(app)/show-product/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(app)/show-product/[id]/page.css",
+      "static/chunks/app/(app)/show-product/[id]/page.js"
     ]
   }
 }

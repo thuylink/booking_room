@@ -4,9 +4,22 @@ import { useProduct } from '../../../hooks/product'
 import './all_product_css.scss'
 import Link from 'next/link'
 import Button from '@/components/Button'
+import { useState } from 'react'
 
 const AllProduct = () => {
     const { product, error } = useProduct()
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResult, setSearchResult] = useState([])
+    const [filteredProduct, setFilteredProduct] = useState([])
+    
+    const handleDelete = async id => {
+        try {
+            await deleteProductById(id)
+            mutate()
+        } catch (error) {
+            console.error('Lỗi:', error)
+        }
+    }
     if (error) {
         return <div>{error}</div>
     }
@@ -15,8 +28,48 @@ const AllProduct = () => {
         return <div>Loading...</div>
     }
 
+    const handleSearchChange = event => {
+        setSearchTerm(event.target.value)
+    }
+    const handleSubmit = async event => {
+        event.preventDefault()
+        try {
+            let result = []
+            if (searchTerm === '') {
+                result = product
+            } else {
+                result = product.filter(product =>
+                    product.location.includes(searchTerm),
+                )
+            }
+            setFilteredProduct(result)
+        } catch (error) {
+            console.error('Lỗi:', error)
+        }
+    }
+
     return (
         <div>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        placeholder="Tìm kiếm theo địa chỉ nhà"
+                        className="formsearch"
+                    />
+                    <button type="submit" >Tìm kiếm</button>
+                </form>
+            </div>
+            <div>
+                <Link
+                    href={`/add-product`}
+                    className="underline text-sm text-gray-600 hover:text-gray-900">
+                    <Button className="add">Thêm mới nhà</Button>
+                </Link>
+            </div>
+
             <table className="large">
                 <thead>
                     <tr>
@@ -37,7 +90,8 @@ const AllProduct = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {product.map((product, index) => (
+                    {(searchTerm === '' ? product : filteredProduct).map(
+                        (product, index) => (
                         <tr
                             key={product.id}
                             style={{ border: '1px solid black' }}>
@@ -129,11 +183,13 @@ const AllProduct = () => {
                                     </Link>
                                 </div>
                                 <div>
-                                    <Link
-                                        href="/"
-                                        className="underline text-sm text-gray-600 hover:text-gray-900">
-                                        <Button className="ml-4">Xóa</Button>
-                                    </Link>
+                                    <Button
+                                        className="ml-4"
+                                        onClick={() =>
+                                            handleDelete(product.id)
+                                        }>
+                                        Xóa
+                                    </Button>
                                 </div>
                             </td>
                         </tr>
