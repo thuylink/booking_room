@@ -15,11 +15,19 @@
 }
 
 .borderTitle {
-  width: 15%;
+  width: 7%;
 }
 
 .borderCate {
   width: 9%;
+}
+
+.borderimage {
+  width: 20%;
+}
+
+.borderimage360 {
+  width: 25%;
 }
 
 .borderpv {
@@ -31,7 +39,7 @@
 }
 
 .bordertt {
-  width: 15%;
+  width: 10%;
 }
 
 .formsearch {

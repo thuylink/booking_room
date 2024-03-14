@@ -1,7 +1,7 @@
 {
-  "/(app)/all-product/page": "app/(app)/all-product/page.js",
   "/(app)/add-product/page": "app/(app)/add-product/page.js",
-  "/(app)/show-category/[id]/page": "app/(app)/show-category/[id]/page.js",
+  "/(app)/show-product/[id]/page": "app/(app)/show-product/[id]/page.js",
   "/(app)/all-category/page": "app/(app)/all-category/page.js",
+  "/(app)/show-category/[id]/page": "app/(app)/show-category/[id]/page.js",
   "/(app)/add-category/page": "app/(app)/add-category/page.js"
 }

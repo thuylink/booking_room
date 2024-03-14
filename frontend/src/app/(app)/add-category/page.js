@@ -39,6 +39,8 @@ const CreateCategoryPage = () => {
         }).then(() => {
             router.push('all-category')
         })
+        console.log('form', formData.getAll('image[]'));
+
     }
 
     // const previewImages = () => {

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\Product;
 use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
@@ -17,10 +15,10 @@ class CategoryController extends Controller
     }
 
     public function index()
-    {
-        $categories = Category::all();
-        return response()->json($categories);
-    }
+{
+    $categories = Category::all();
+    return response()->json([$categories]);
+}
 
     public function store(Request $request)
     {
@@ -32,6 +30,7 @@ class CategoryController extends Controller
             'image360.*' => 'nullable|image',
             'status' => 'required|integer'
         ]);
+
 
         if ($request->hasFile('image')) {
             $images = $request->file('image');
@@ -50,23 +49,21 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image360')) {
             $image360s = $request->file('image360');
-            $image360Names = [];
+            $image360Base64s = [];
 
             foreach ($image360s as $image360) {
-                $extension = $image360->getClientOriginalExtension();
-                $image360Name = time() . '_' . uniqid() . '.' . $extension;
-                $image360->move('uploads/category360/', $image360Name);
-                $image360Names[] = $image360Name;
+                $image360Contents = file_get_contents($image360->getPathname());
+                $image360Base64 = base64_encode($image360Contents); // Chuyển đổi sang base64
+                $image360Base64s[] = $image360Base64;
             }
 
-            $validatedData['image360'] = json_encode($image360Names);
+            $validatedData['image360'] = json_encode($image360Base64s);
         }
-
         $category = Category::create($validatedData);
-        return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
-
-        // return response()->json(['status' => 'Tạo mới danh mục thành công'], 201);
-    }
+        return response()->json([
+            'status' => 'Tạo mới danh mục thành công',
+            'category' => $category
+        ], 201);    }
 
 
     //create

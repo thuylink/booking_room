@@ -9,9 +9,20 @@ import { useProduct } from '../../../hooks/product'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import './add_product.css'
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
+function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
 
+ 
 
 const CreateProductPage = () => {
     const router = useRouter()
@@ -30,10 +41,38 @@ const CreateProductPage = () => {
     const [image360s, setImage360s] = useState([])
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    const [selectedDescription, setSelectedDescription] = useState([])
 
     const [price, setPrice] = useState('')
     const [errors, setErrors] = useState([])
+
+    const [categories, setCategories] = useState([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState('');
+   
+    function convertImageToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+          reader.readAsDataURL(file);
+        });
+      }
+ useEffect(() => {
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.get('/category');
+            setCategories(response.data.categories);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    fetchCategories();
+}, []);
+      const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        const base64Image = await convertImageToBase64(file);
+        setImage360s([...image360s, base64Image]);
+      };
 
     const privacyOptions = [
         { value: 'Toàn bộ nhà', label: 'Toàn bộ nhà' },
@@ -56,7 +95,6 @@ const CreateProductPage = () => {
         { id: 12, label: 'Thiết bị chữa cháy, bộ sơ cứu' },
     ]
 
-        
     const handlePrivacyTypeChange = event => {
         setSelectedPrivacy(event.target.value)
     }
@@ -73,8 +111,6 @@ const CreateProductPage = () => {
             )
         }
     }
-
-    
 
     const submitForm = event => {
         event.preventDefault()
@@ -96,43 +132,9 @@ const CreateProductPage = () => {
             formData,
             setErrors,
         }).then(() => {
-            router.push('/all-product');
-        });
+            router.push('/all-product')
+        })
     }
-
-    // const previewImages = () => {
-    //     if (images.length > 0) {
-    //         return images.map((image, index) => (
-    //             <div key={index} className="w-32 h-32">
-    //                 <Image
-    //                     src={URL.createObjectURL(image)}
-    //                     alt={`Preview ${index}`}
-    //                     layout="responsive"
-    //                     width={300}
-    //                     height={300}
-    //                 />
-    //             </div>
-    //         ))
-    //     }
-    //     return null
-    // }
-
-    // const previewImage360s = () => {
-    //     if (image360s.length > 0) {
-    //         return image360s.map((image360, index) => (
-    //             <div key={index} className="w-32 h-32">
-    //                 <Image
-    //                     src={URL.createObjectURL(image360)}
-    //                     alt={`Preview ${index}`}
-    //                     layout="responsive"
-    //                     width={300}
-    //                     height={300}
-    //                 />
-    //             </div>
-    //         ))
-    //     }
-    //     return null
-    // }
 
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
@@ -141,64 +143,76 @@ const CreateProductPage = () => {
                     <div className="border rounded-lg p-4 w-full">
                         <h1 className="text-center">Chủ nhà thêm mới nhà</h1>
                         <div className="mt-4">
-                    <Label htmlFor="image">Hình ảnh:</Label>
-                    {images.length > 0 &&
-                        images.map((image, index) => (
-                            <div key={index} className="w-32 h-32">
-                                <Image
-                                    src={URL.createObjectURL(image)}
-                                    // alt={`Preview ${index}`}
-                                    layout="responsive"
-                                    width={200}
-                                    height={200}
-                                />
-                            </div>
-                        ))}
+                            <Label htmlFor="image">Hình ảnh:</Label>
+                            {images.length > 0 &&
+                                images.map((image, index) => (
+                                    <div key={index} className="w-32 h-32">
+                                        <Image
+                                            src={URL.createObjectURL(image)}
+                                            // alt={`Preview ${index}`}
+                                            layout="responsive"
+                                            width={200}
+                                            height={200}
+                                        />
+                                    </div>
+                                ))}
 
-                    <Input
-                        id="image"
-                        type="file"
-                        className="block w-full"
-                        onChange={event =>
-                            setImages([...images, event.target.files[0]])
-                        }
-                    />
+                            <Input
+                                id="image"
+                                type="file"
+                                className="block w-full"
+                                onChange={event =>
+                                    setImages([
+                                        ...images,
+                                        event.target.files[0],
+                                    ])
+                                }
+                            />
 
-                    <InputError messages={errors.image} className="mt-2" />
-                </div>
+                            <InputError
+                                messages={errors.image}
+                                className="mt-2"
+                            />
+                        </div>
 
-                <div className="mt-4">
-                    <Label htmlFor="image">Hình ảnh 360:</Label>
-                    {image360s.length > 0 &&
-                        image360s.map((image360, index) => (
-                            <div key={index} className="w-32 h-32">
-                                <Image
-                                    src={URL.createObjectURL(image360)}
-                                    // alt={`Preview ${index}`}
-                                    layout="responsive"
-                                    width={200}
-                                    height={200}
-                                />
-                            </div>
-                        ))}
+                        <div className="mt-4">
+                            <Label htmlFor="image">Hình ảnh 360:</Label>
+                            {image360s.length > 0 &&
+                                image360s.map((image360, index) => (
+                                    <div key={index} className="w-32 h-32">
+                                        <Image
+                                            src={URL.createObjectURL(image360)}
+                                            layout="responsive"
+                                            width={200}
+                                            height={200}
+                                        />
+                                    </div>
+                                ))}
 
-                    <Input
-                        id="image360"
-                        type="file"
-                        className="block w-full"
-                        onChange={event =>
-                            setImage360s([...image360s, event.target.files[0]])
-                        }
-                    />
+                                <Input
+                                id="image360"
+                                type="file"
+                                className="block w-full"
+                                onChange={event =>
+                                    setImage360s([
+                                        ...image360s,
+                                        event.target.files[0],
+                                    ])
+                                }
+                            />
 
-                    <InputError messages={errors.image} className="mt-2" />
-                </div>
+                            <InputError
+                                messages={errors.image}
+                                className="mt-2"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="w-1/2 pl-2">
                     <div className="border rounded-lg p-4-2">
                         <div className="mt-4">
                             <Label htmlFor="id_category">Kiểu kiến trúc:</Label>
+
                             <Input
                                 type="number"
                                 id="id_category"
@@ -353,19 +367,17 @@ const CreateProductPage = () => {
                         </div>
 
                         <div className="mt-4">
-                            <Label htmlFor="description">Mô tả:</Label>
-                            <Input
-                                type="text"
-                                id="description"
-                                value={description}
-                                className="block w-full"
-                                onChange={event =>
-                                    setDescription(event.target.value)
-                                }
+                            <label htmlFor="description">Mô tả:</label>
+                            <CKEditor
+                                editor={ClassicEditor}
+                                data={description}
+                                onChange={(event, editor) => {
+                                    const data = editor.getData()
+                                    setDescription(data)
+                                }}
                                 required
                                 autoFocus
                             />
-
                             <InputError
                                 messages={errors.description}
                                 className="mt-2"
@@ -394,12 +406,12 @@ const CreateProductPage = () => {
 
             <div className="flex items-center justify-end mt-4">
                 <Link
-                    href="/"
+                    href="/dashboard-host"
                     className="underline text-sm text-gray-600 hover:text-gray-900">
                     Back
                 </Link>
 
-                <Button  className="ml-4">Tạo mới nhà</Button>
+                <Button className="ml-4">Tạo mới nhà</Button>
             </div>
         </form>
     )

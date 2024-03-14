@@ -1,29 +1,25 @@
 'use client'
 
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Input from '@/components/Input'
 import Label from '@/components/Label'
 import InputError from '@/components/InputError'
 import Link from 'next/link'
 import Button from '@/components/Button'
-import { useProduct, updateProductById, getProductById } from '../../../../hooks/product'
-import { useEffect, useState } from 'react'
+import { useProduct } from '../../../../hooks/product'
 import Image from 'next/image'
 import '../update_product.css'
-import { useRouter } from 'next/navigation';
-
-
 
 const UpdateProductPage = () => {
-    const {getProductById, updateProductById} = useProduct({
+    const router = useRouter()
+    const id = window.location.pathname.split('/').pop()
+
+    const { getProductById, updateProductById } = useProduct({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard-host',
     })
-    
-    const router = useRouter()
-    const id = window.location.pathname.split('/').pop()
-    // const { updateProductById, error } = useProduct()
-    const [product, setProduct] = useState(null)
-   
+
     const [id_category, setIdCategory] = useState('')
     const [selectedPrivacy, setSelectedPrivacy] = useState('')
     const [location, setLocation] = useState('')
@@ -37,20 +33,53 @@ const UpdateProductPage = () => {
     const [price, setPrice] = useState('')
     const [errors, setErrors] = useState([])
 
+    //hiển thị những giá trị đã nhập lúc cretae
+    const [tempLocation, setTempLocation] = useState('')
+    const [tempCapacity, setTempCapacity] = useState('')
+    const [tempAmenities, setTempAmenities] = useState('')
+    const [tempTitle, setTempTitle] = useState('')
+    const [tempDescription, setTempDescription] = useState('')
+    const [tempPrice, setTempPrice] = useState('')
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await updateProductById(id)
-                // setProduct(response)
-                setIdCategory(product.id_category)
-                selectedPrivacy(product.privacy_type)
+                const response = await getProductById(id)
+                setTempLocation(response.location)
+                setTempCapacity(response.capacity)
+                setTempAmenities(response.amenities)
+                setTempTitle(response.title)
+                setTempDescription(response.description)
+                setTempPrice(response.description)
             } catch (error) {
                 console.error('Error:', error)
             }
         }
-
         fetchProduct()
-    }, [updateProductById, id])
+    }, [id])
+    useEffect(() => {
+        setLocation(tempLocation)
+    }, [tempLocation])
+
+    useEffect(() => {
+        setDescription(tempDescription)
+    }, [tempDescription])
+
+    useEffect(() => {
+        setTitle(tempTitle)
+    }, [tempTitle])
+
+    useEffect(() => {
+        setPrice(tempPrice)
+    }, [tempPrice])
+
+    useEffect(() => {
+        setCapacity(tempCapacity)
+    }, [tempCapacity])
+
+    useEffect(() => {
+        setAmenities(tempAmenities)
+    }, [tempAmenities])
 
     const privacyOptions = [
         { value: 'Toàn bộ nhà', label: 'Toàn bộ nhà' },
@@ -73,7 +102,6 @@ const UpdateProductPage = () => {
         { id: 12, label: 'Thiết bị chữa cháy, bộ sơ cứu' },
     ]
 
-        
     const handlePrivacyTypeChange = event => {
         setSelectedPrivacy(event.target.value)
     }
@@ -91,29 +119,48 @@ const UpdateProductPage = () => {
         }
     }
 
-    
-    const submitForm = event => {
+    const submitForm = async event => {
         event.preventDefault()
 
-        const formData = new FormData()
-        formData.append('id_category', id_category)
-        formData.append('privacy_type', selectedPrivacy)
-        formData.append('location', location)
-        formData.append('capacity', capacity)
-        formData.append('amenities', amenities)
-        formData.append('amenities', selectedAmenities)
-        images.forEach(image => formData.append('image[]', image))
-        image360s.forEach(image360 => formData.append('image360[]', image360))
-        formData.append('title', title)
-        formData.append('description', description)
-        formData.append('price', price)
+        const formData = {
+            id_category: id_category,
+            privacy_type: selectedPrivacy,
+            location: location,
+            capacity: capacity,
+            amenities: amenities,
+            image: images,
+            image360: image360s,
+            title: title,
+            description: description,
+            price: price,
+        }
 
-        updateProductById({
-            formData,
-            setErrors,
-        }).then(() => {
-            router.push('/all-product');
-        });
+        try {
+            // Cập nhật danh mục
+            // Sau khi cập nhật thành công, gửi các ảnh lên server
+            await Promise.all([
+                setImages(images),
+                ...images.map(async image => {
+                    const imageFormData = new FormData()
+                    imageFormData.append('image[]', image)
+                    // await axios.post(`/upload-image/${id}`, imageFormData);
+                }),
+                ...image360s.map(async image360 => {
+                    const image360FormData = new FormData()
+                    image360FormData.append('image360[]', image360)
+                    // await axios.post(`/upload-image360/${id}`, image360FormData);
+                }),
+                console.log('formdata', formData),
+            ])
+
+            await updateProductById({
+                id: id,
+                formData: formData,
+            })
+            router.push('/all-product')
+        } catch (error) {
+            console.error('Error:', error)
+        }
     }
 
     const previewImages = () => {
@@ -151,12 +198,10 @@ const UpdateProductPage = () => {
     }
 
     return (
-        
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
-        <div>
-        <h1 className="text-center">Chủ nhà chỉnh sửa thông tin nhà</h1>
-
-        </div>
+            <div>
+                <h1 className="text-center">Chủ nhà chỉnh sửa thông tin nhà</h1>
+            </div>
             <div className="flex">
                 <div className="w-1/2 pr-2">
                     <div className="border rounded-lg p-4 w-full">
@@ -349,7 +394,6 @@ const UpdateProductPage = () => {
                                 className="block w-full"
                                 onChange={event => setTitle(event.target.value)}
                                 required
-                                autoFocus
                             />
 
                             <InputError
@@ -369,7 +413,6 @@ const UpdateProductPage = () => {
                                     setDescription(event.target.value)
                                 }
                                 required
-                                autoFocus
                             />
 
                             <InputError
@@ -405,7 +448,7 @@ const UpdateProductPage = () => {
                     Back
                 </Link>
 
-                <Button  className="ml-4">Cập nhật</Button>
+                <Button className="ml-4">Cập nhật</Button>
             </div>
         </form>
     )

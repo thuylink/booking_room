@@ -90,7 +90,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         return response()->json($product);
     }
-    public function update(Request $request, $id)
+    public function update_(Request $request, $id)
     {
         $product = Product::find($id);
         $product->id_category = $request->input('id_category');
@@ -103,7 +103,6 @@ class ProductController extends Controller
 
 
         if ($request->hasFile('image')) {
-            /**nếu có file trong form update thì tìm file cũ và xóa đi */
             $oldImage = 'uploads/product/' . $product->image;
             if (File::exists($oldImage)) {
                 File::delete($oldImage);
@@ -116,7 +115,6 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('image360')) {
-            /**nếu có file trong form update thì tìm file cũ và xóa đi */
             $oldImage360 = 'uploads/product360/' . $product->image360;
             if (File::exists($oldImage360)) {
                 File::delete($oldImage360);
@@ -132,7 +130,48 @@ class ProductController extends Controller
         $product->price = $request->input('price');
         $product->update();
         return redirect()->back()->with('status', 'Đã cập nhật nhà thành công');
-        // return view('product.edit', compact('product'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product = Product::find($id);
+        $product->id_category = $request->input('id_category');
+        if ($request->has('privacy_type')) {
+            $product->privacy_type = $request->input('privacy_type');
+        }
+        $product->location = $request->input('location');
+        $product->capacity = $request->input('capacity');
+        $product->amenities = $request->input('amenities');
+
+
+        if ($request->hasFile('image')) {
+            $oldImage = 'uploads/product/' . $product->image;
+            if (File::exists($oldImage)) {
+                File::delete($oldImage);
+            }
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('uploads/product', $filename);
+            $product->image = $filename;
+        }
+
+        if ($request->hasFile('image360')) {
+            $oldImage360 = 'uploads/product360/' . $product->image360;
+            if (File::exists($oldImage360)) {
+                File::delete($oldImage360);
+            }
+            $file360 = $request->file('image360');
+            $extension360 = $file->getClientOriginalExtension();
+            $filename360 = time() . '.' . $extension360;
+            $file->move('uploads/product360', $filename360);
+            $product->image360 = $filename360;
+        }
+        $product->title = $request->input('title');
+        $product->description = $request->input('description');
+        $product->price = $request->input('price');
+        $product->update();
+        return response()->json(['status' => 'Cập nhật nhà thành công'], 201);
     }
 
     //delete
@@ -149,18 +188,21 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        $product = Product::find($id);
-        $image = 'uploads/product/' . $product->image;
-        if (File::exists($image)) {
-            File::delete($image);
+
+            $product = Product::find($id);
+            $image = 'uploads/product/' . $product->image;
+            if (File::exists($image)) {
+                File::delete($image);
+            }
+            $image360 = 'uploads/product360/' . $product->image360;
+            if (File::exists($image360)) {
+                File::delete($image360);
+            }
+            $product->delete();
+            // return response()->json(['status' => 'Xóa danh mục thành công'], 201);
+            return redirect()->back()->with('status', 'Đã xóa 1 nhà');
+
         }
-        $image360 = 'uploads/product/' . $product->image360;
-        if (File::exists($image360)) {
-            File::delete($image360);
-        }
-        $product->delete();
-        return response()->json(['status' => 'Xóa danh mục thành công'], 201);
-    }
 
 
     //read - show

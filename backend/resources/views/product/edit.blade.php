@@ -27,8 +27,9 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('product.update', ['id'=>$product->id]) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('category.update', ['id' => $category->id]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="form-group mb-3">
                                 <label for="">Loại kiến trúc:</label>
                                 <select name="id_category" id="id_category" class="form-control">

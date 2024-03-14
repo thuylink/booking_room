@@ -11,7 +11,7 @@ export const deleteCategoryById = async id => {
 export const searchByName = async name_category => {
     try {
         const response = await axios.get(
-            `/search?name_category=${name_category}`,
+            `/search?category=${name_category}`,
         )
         return response.data
     } catch (error) {
@@ -44,7 +44,7 @@ export const useCategory = () => {
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
     const createCategory = async ({ formData, setErrors }) => {
-        console.log('formData create', formData)
+        console.log('formData create đây', formData.getAll('name_category', 'image', 'image360', 'status'))
 
         await csrf()
         setErrors([])

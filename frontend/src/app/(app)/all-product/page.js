@@ -1,6 +1,6 @@
 'use client'
 
-import { useProduct } from '../../../hooks/product'
+import { useProduct, deleteProductById } from '../../../hooks/product'
 import './all_product_css.scss'
 import Link from 'next/link'
 import Button from '@/components/Button'
@@ -9,9 +9,8 @@ import { useState } from 'react'
 const AllProduct = () => {
     const { product, error } = useProduct()
     const [searchTerm, setSearchTerm] = useState('')
-    const [searchResult, setSearchResult] = useState([])
     const [filteredProduct, setFilteredProduct] = useState([])
-    
+
     const handleDelete = async id => {
         try {
             await deleteProductById(id)
@@ -20,6 +19,7 @@ const AllProduct = () => {
             console.error('Lỗi:', error)
         }
     }
+    
     if (error) {
         return <div>{error}</div>
     }
@@ -80,7 +80,6 @@ const AllProduct = () => {
                         <th className="border borderpv">Phạm vi sử dụng</th>
                         <th className="border">Địa chỉ</th>
                         <th className="border borderCapa ">Sức chứa</th>
-
                         <th className="border">Tiện ích</th>
                         <th className="border">Ảnh</th>
                         <th className="border">Ảnh 360</th>
@@ -158,7 +157,8 @@ const AllProduct = () => {
                                                 },
                                             )}
                                         </>
-                                    )}
+                                    )
+                                }
                             </td>
                             <td className="border">{product.description}</td>
                             <td className="border">{product.price}</td>
@@ -183,13 +183,13 @@ const AllProduct = () => {
                                     </Link>
                                 </div>
                                 <div>
-                                    <Button
-                                        className="ml-4"
-                                        onClick={() =>
-                                            handleDelete(product.id)
-                                        }>
-                                        Xóa
-                                    </Button>
+                                <Button
+                                className="ml-4"
+                                onClick={() =>
+                                    handleDelete(product.id)
+                                }>
+                                Xóa
+                            </Button>
                                 </div>
                             </td>
                         </tr>
@@ -197,7 +197,6 @@ const AllProduct = () => {
                 </tbody>
             </table>
 
-            <blockquote>Responsive Table</blockquote>
         </div>
     )
 }

@@ -1,17 +1,16 @@
 'use client'
 
 import { useCategory, deleteCategoryById } from '../../../hooks/category'
-import './all_category_css.scss'
 import Link from 'next/link'
 import Button from '@/components/Button'
-import { useState } from 'react'
-import { searchByName } from '../../../hooks/category'
+import './all_category_css.scss'
+import React, { useState } from 'react'
 
 const AllCategory = () => {
     const { category, error, mutate } = useCategory()
     const [searchTerm, setSearchTerm] = useState('')
-    const [searchResult, setSearchResult] = useState([])
     const [filteredCategory, setFilteredCategory] = useState([])
+
     const handleDelete = async id => {
         try {
             await deleteCategoryById(id)
@@ -28,25 +27,26 @@ const AllCategory = () => {
     if (!category) {
         return <div>Loading...</div>
     }
+
     const handleSearchChange = event => {
         setSearchTerm(event.target.value)
     }
     const handleSubmit = async event => {
-        event.preventDefault()
+        event.preventDefault();
         try {
-            let result = []
+            let result = [];
             if (searchTerm === '') {
-                result = category
+                result = category[0];
             } else {
-                result = category.filter(category =>
-                    category.name_category.includes(searchTerm),
-                )
+                result = category[0].filter(category =>
+                    category.name_category.toLowerCase().includes(searchTerm.toLowerCase())
+                );
             }
-            setFilteredCategory(result)
+            setFilteredCategory(result);
         } catch (error) {
-            console.error('Lỗi:', error)
+            console.error('Lỗi:', error);
         }
-    }
+    };
 
     return (
         <div>
@@ -69,134 +69,128 @@ const AllCategory = () => {
                     <Button className="add">Thêm mới danh mục</Button>
                 </Link>
             </div>
-            <tbody>
-                {searchResult.map((category, index) => (
-                    <tr key={category.id}>
-                        <td>{index + 1}</td>
-                        <td>{category.id}</td>
-                        <td>{category.name_category}</td>
-                    </tr>
-                ))}
-            </tbody>
+
             <table className="large">
                 <thead>
                     <tr>
                         <th className="border borderSTT">STT</th>
                         <th className="border borderID">ID</th>
                         <th className="border borderTitle ">Tên</th>
-                        <th className="border">Ảnh</th>
-                        <th className="border">Ảnh 360</th>
+                        <th className="borderimage">Ảnh</th>
+                        <th className="borderimage360">Ảnh 360</th>
                         <th className="border">Trạng thái</th>
+                        <th className="border">Ngày tạo</th>
+                        <th className="border">Ngày cập nhật</th>
                         <th className="border bordertt">Thao tác</th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    {(searchTerm === '' ? category : filteredCategory).map(
-                        (category, index) => (
-                            <tr
+                    {(filteredCategory.length > 0
+                        ? filteredCategory
+                        : category[0]
+                    ).map((category, index) => (
+                        <tr
                             key={category.id}
                             style={{ border: '1px solid black' }}>
                             <td className="border">{index + 1}</td>
                             <td className="border">{category.id}</td>
                             <td className="border">{category.name_category}</td>
                             <td className="border">
-                                {category.image &&
-                                    (() => {
-                                        try {
-                                            const parsedImage = JSON.parse(
-                                                category.image,
-                                            )
+                            {category.image &&
+                                (() => {
+                                    try {
+                                        const parsedImage = JSON.parse(
+                                            category.image,
+                                        )
 
-                                            if (Array.isArray(parsedImage)) {
-                                                return (
-                                                    <>
-                                                        {parsedImage.map(
-                                                            (image, index) => {
-                                                                const cleanedImagePath = image.replace(
-                                                                    /[[\]"]/g,
-                                                                    '',
-                                                                )
-                                                                const imagePath = `http://127.0.0.1:8000/uploads/category/${cleanedImagePath}`
+                                        if (Array.isArray(parsedImage)) {
+                                            return (
+                                                <>
+                                                    {parsedImage.map(
+                                                        (image, index) => {
+                                                            const cleanedImagePath = image.replace(
+                                                                /[[\]"]/g,
+                                                                '',
+                                                            )
+                                                            const imagePath = `http://127.0.0.1:8000/uploads/category/${cleanedImagePath}`
 
-                                                                return (
-                                                                    <img
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        src={
-                                                                            imagePath
-                                                                        }
-                                                                        alt="Image"
-                                                                        width="100px"
-                                                                        height="70px"
-                                                                    />
-                                                                )
-                                                            },
-                                                        )}
-                                                    </>
-                                                )
-                                            }
-                                        } catch (error) {
-                                            console.error(
-                                                'Error parsing JSON:',
-                                                error,
+                                                            return (
+                                                                <img
+                                                                    key={
+                                                                        index
+                                                                    }
+                                                                    src={
+                                                                        imagePath
+                                                                    }
+                                                                    alt="Image"
+                                                                    width="100%"
+                                                                    height="100%"
+                                                                />
+                                                            )
+                                                        },
+                                                    )}
+                                                </>
                                             )
                                         }
-                                    })()}
-                            </td>
+                                    } catch (error) {
+                                        console.error(
+                                            'Error parsing JSON:',
+                                            error,
+                                        )
+                                    }
+                                })()}
+                        </td>
+                        <td className="border">
+                            {category.image360 &&
+                                (() => {
+                                    try {
+                                        const parsedImage360 = JSON.parse(
+                                            category.image360,
+                                        )
 
-                            <td className="border">
-                                {category.image360 &&
-                                    (() => {
-                                        try {
-                                            const parsedImage360 = JSON.parse(
-                                                category.image360,
-                                            )
+                                        if (Array.isArray(parsedImage360)) {
+                                            return (
+                                                <>
+                                                    {parsedImage360.map(
+                                                        (
+                                                            image360,
+                                                            index,
+                                                        ) => {
+                                                            const cleanedImage360Path = image360.replace(
+                                                                /[[\]"]/g,
+                                                                '',
+                                                            )
+                                                            const image360Path = `http://127.0.0.1:8000/uploads/category360/${cleanedImage360Path}`
 
-                                            if (Array.isArray(parsedImage360)) {
-                                                return (
-                                                    <>
-                                                        {parsedImage360.map(
-                                                            (
-                                                                image360,
-                                                                index,
-                                                            ) => {
-                                                                const cleanedImage360Path = image360.replace(
-                                                                    /[[\]"]/g,
-                                                                    '',
-                                                                )
-                                                                const image360Path = `http://127.0.0.1:8000/uploads/category360/${cleanedImage360Path}`
-
-                                                                return (
-                                                                    <img
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        src={
-                                                                            image360Path
-                                                                        }
-                                                                        alt="Image"
-                                                                        width="100px"
-                                                                        height="70px"
-                                                                    />
-                                                                )
-                                                            },
-                                                        )}
-                                                    </>
-                                                )
-                                            }
-                                        } catch (error) {
-                                            console.error(
-                                                'Error parsing JSON:',
-                                                error,
+                                                            return (
+                                                                <img
+                                                                    key={
+                                                                        index
+                                                                    }
+                                                                    src={
+                                                                        image360Path
+                                                                    }
+                                                                    alt="Image"
+                                                                    width="100%"
+                                                                    height="100%"
+                                                                />
+                                                            )
+                                                        },
+                                                    )}
+                                                </>
                                             )
                                         }
-                                    })()}
-                            </td>
-
+                                    } catch (error) {
+                                        console.error(
+                                            'Error parsing JSON:',
+                                            error,
+                                        )
+                                    }
+                                })()}
+                        </td>
                             <td className="border">{category.status}</td>
-
+                            <td className="border">{category.created_at}</td>
+                            <td className="border">{category.updated_at}</td>
                             <td className="border">
                                 <div>
                                     <Link
@@ -228,13 +222,9 @@ const AllCategory = () => {
                                 </div>
                             </td>
                         </tr>
-                        ),
-                    )}
+                    ))}
                 </tbody>
-                
             </table>
-
-            <blockquote>Responsive Table</blockquote>
         </div>
     )
 }

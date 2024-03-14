@@ -49,8 +49,8 @@ export const CategoryDetailWithPannellum = () => {
                         <th className="border">ID</th>
                         <th className="border">Tên</th>
                         <th className="border">Ảnh</th>
-                        <th className="border">Ảnh 360</th>
-                        <th className="border">Trạng thái</th>
+                        <th className="border borderimage">Ảnh 360</th>
+                        <th className="border borderimage360">Trạng thái</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,8 +82,8 @@ export const CategoryDetailWithPannellum = () => {
                                                                         imagePath
                                                                     }
                                                                     alt="Image"
-                                                                    width="100px"
-                                                                    height="70px"
+                                                                    width="100%"
+                                                                    height="100%"
                                                                 />
                                                             )
                                                         },
@@ -99,75 +99,36 @@ export const CategoryDetailWithPannellum = () => {
                                     }
                                 })()}
                         </td>
-                        <td className="border">
-                            {showImage360 && (
-                                <Pannellum
-                                    width="100%"
-                                    height="300px"
-                                    image={`https://pannellum.org/images/alma.jpg`}
-                                    pitch={10}
-                                    yaw={180}
-                                    hfov={110}
-                                    autoLoad
-                                />
-                            )}
-                        </td>
-                        <td className="border">
-                            {showImage360 && (
-                                <Pannellum
-                                    width="100%"
-                                    height="300px"
-                                    image={`http://127.0.0.1:8000/uploads/category360/${category.image360.replace(
-                                        /[\[\]"]/g,
-                                        '',
-                                    )}`}
-                                    pitch={10}
-                                    yaw={180}
-                                    hfov={110}
-                                    autoLoad
-                                />
-                            )}
-                        </td>
-                        <td className="border">
+
+                        <td className="border360">
                             {category.image360 &&
-                                (() => {
-                                    try {
-                                        const parsedImage360 = JSON.parse(
-                                            category.image360,
+                                Array.isArray(JSON.parse(category.image360)) &&
+                                JSON.parse(category.image360).map(
+                                    (image360, index) => {
+                                        const cleanedImage360Path = image360.replace(
+                                            /[\[\]"]/g,
+                                            '',
                                         )
-                                        if (Array.isArray(parsedImage360)) {
-                                            return (
-                                                <>
-                                                    {parsedImage360.map(
-                                                        (image360, index) => {
-                                                            const cleanedImage360Path = image360.replace(
-                                                                /[[\]"]/g,
-                                                                '',
-                                                            )
-                                                            const image360Path = `http://127.0.0.1:8000/uploads/category360/${cleanedImage360Path}`
-                                                            return (
-                                                                <img
-                                                                    key={index}
-                                                                    src={
-                                                                        image360Path
-                                                                    }
-                                                                    alt="Image"
-                                                                    width="100px"
-                                                                    height="70px"
-                                                                />
-                                                            )
-                                                        },
-                                                    )}
-                                                </>
+                                        const image360Path = `data:image/png;base64,${cleanedImage360Path}`
+                                        console.log('image360',image360Path);
+
+                                        return (
+                                            showImage360 && (
+                                                <Pannellum
+                                                    key={index}
+                                                    width="100%"
+                                                    height="300px"
+                                                    image={image360Path}
+                                                    pitch={10}
+                                                    yaw={180}
+                                                    hfov={110}
+                                                    autoLoad
+                                                    alt="image360"
+                                                />
                                             )
-                                        }
-                                    } catch (error) {
-                                        console.error(
-                                            'Error parsing JSON:',
-                                            error,
                                         )
-                                    }
-                                })()}
+                                    },
+                                )}
                         </td>
                         <td className="border">{category.status}</td>
                     </tr>
