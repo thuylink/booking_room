@@ -57,13 +57,12 @@ class ProductController extends Controller
             $image360Names = [];
 
             foreach ($image360s as $image360) {
-                $extension = $image360->getClientOriginalExtension();
-                $image360Name = time() . '_' . uniqid() . '.' . $extension;
-                $image360->move('uploads/product360/', $image360Name);
-                $image360Names[] = $image360Name;
+                $image360Contents = file_get_contents($image360->getPathname());
+                $image360Base64 = base64_encode($image360Contents); // Chuyển đổi sang base64
+                $image360Base64s[] = $image360Base64;
             }
 
-            $validatedData['image360'] = json_encode($image360Names);
+            $validatedData['image360'] = json_encode($image360Base64s);
         }
 
         $product = Product::create($validatedData);
