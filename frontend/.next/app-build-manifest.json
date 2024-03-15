@@ -1,15 +1,10 @@
 {
   "pages": {
-    "/layout": [
+    "/(app)/all-category/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
-    ],
-    "/not-found": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/not-found.js"
+      "static/css/app/(app)/all-category/page.css",
+      "static/chunks/app/(app)/all-category/page.js"
     ],
     "/(app)/layout": [
       "static/chunks/webpack.js",
@@ -21,91 +16,57 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(app)/@header/default.js"
     ],
-    "/(app)/dashboard-host/page": [
+    "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(app)/dashboard-host/page.js"
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
     ],
-    "/(app)/all-product/page": [
+    "/not-found": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(app)/all-product/page.css",
-      "static/chunks/app/(app)/all-product/page.js"
-    ],
-    "/(app)/update-product/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(app)/update-product/[id]/page.css",
-      "static/chunks/app/(app)/update-product/[id]/page.js"
-    ],
-    "/(app)/add-product/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(app)/add-product/page.css",
-      "static/chunks/app/(app)/add-product/page.js"
-    ],
-    "/(app)/show-product/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(app)/show-product/[id]/page.css",
-      "static/chunks/app/(app)/show-product/[id]/page.js"
-    ],
-    "/(auth)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/layout.js"
+      "static/chunks/app/not-found.js"
     ],
     "/(auth)/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(auth)/login/page.js"
     ],
-    "/(app)/dashboard/page": [
+    "/(auth)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(app)/dashboard/page.js"
-    ],
-    "/(app)/@header/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(app)/@header/dashboard/page.js"
+      "static/chunks/app/(auth)/layout.js"
     ],
     "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
+    "/(auth)/register-host/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(auth)/register-host/page.js"
+    ],
     "/(auth)/login-host/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(auth)/login-host/page.js"
     ],
-    "/(app)/all-category/page": [
+    "/(app)/dashboard-host/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(app)/all-category/page.css",
-      "static/chunks/app/(app)/all-category/page.js"
-    ],
-    "/(app)/show-category/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(app)/show-category/[id]/page.css",
-      "static/chunks/app/(app)/show-category/[id]/page.js"
-    ],
-    "/(app)/update-category/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(app)/update-category/[id]/page.js"
+      "static/chunks/app/(app)/dashboard-host/page.js"
     ],
     "/(app)/add-category/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(app)/add-category/page.js"
     ],
-    "/(auth)/register-host/page": [
+    "/(app)/show-category/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/register-host/page.js"
+      "static/css/app/(app)/show-category/[id]/page.css",
+      "static/chunks/app/(app)/show-category/[id]/page.js"
     ]
   }
 }

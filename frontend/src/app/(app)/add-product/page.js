@@ -13,16 +13,14 @@ import { useRouter } from 'next/navigation'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
-function convertImageToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file);
-    });
-  }
-
- 
+// function convertImageToBase64(file) {
+//     return new Promise((resolve, reject) => {
+//       const reader = new FileReader();
+//       reader.onload = () => resolve(reader.result);
+//       reader.onerror = (error) => reject(error);
+//       reader.readAsDataURL(file);
+//     });
+//   }
 
 const CreateProductPage = () => {
     const router = useRouter()

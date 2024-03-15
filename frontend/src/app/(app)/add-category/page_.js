@@ -52,7 +52,7 @@ const CreateCategoryPage = () => {
         }).then(() => {
             router.push('all-category')
         })
-        console.log('form', formData.getAll('image360[]', 'name_category', 'image', 'status'));
+        console.log('form getall', formData.getAll('image360[]', 'name_category', 'image', 'status'));
     }
 
     return (

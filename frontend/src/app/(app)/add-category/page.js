@@ -39,26 +39,9 @@ const CreateCategoryPage = () => {
         }).then(() => {
             router.push('all-category')
         })
-        console.log('form', formData.getAll('image[]'));
+        console.log('form add đây', formData.getAll('image[]', 'name_category', 'image360[]'));
 
     }
-
-    // const previewImages = () => {
-    //     if (images.length > 0) {
-    //         return images.map((image, index) => (
-    //             <div key={index} className="w-32 h-32">
-    //                 <Image
-    //                     src={URL.createObjectURL(image)}
-    //                     alt={`Preview ${index}`}
-    //                     layout="responsive"
-    //                     width={200}
-    //                     height={200}
-    //                 />
-    //             </div>
-    //         ))
-    //     }
-    //     return null
-    // }
 
     const previewImage360s = () => {
         if (image360s.length > 0) {
