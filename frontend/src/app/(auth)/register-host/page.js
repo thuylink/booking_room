@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+// import './register-host.scss'
 
 const Page = () => {
     const router = useRouter()
@@ -40,7 +41,6 @@ const Page = () => {
 
     return (
         <form onSubmit={submitForm}>
-            {/* Name */}
             <h1 style={{ display: 'flex', justifyContent: 'center' }}>Đăng ký cho chủ nhà</h1>
             <div>
                 <Label htmlFor="name">Tên đăng nhập</Label>
@@ -57,8 +57,7 @@ const Page = () => {
 
                 <InputError messages={errors.name} className="mt-2" />
             </div>
-
-            {/* Email Address */}
+            
             <div className="mt-4">
                 <Label htmlFor="email">Email</Label>
 
@@ -74,7 +73,6 @@ const Page = () => {
                 <InputError messages={errors.email} className="mt-2" />
             </div>
 
-            {/* Password */}
             <div className="mt-4">
                 <Label htmlFor="password">Mật khẩu</Label>
 
@@ -91,7 +89,6 @@ const Page = () => {
                 <InputError messages={errors.password} className="mt-2" />
             </div>
 
-            {/* Confirm Password */}
             <div className="mt-4">
                 <Label htmlFor="passwordConfirmation">
                     Xác nhận mật khẩu

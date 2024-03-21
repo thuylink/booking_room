@@ -47,20 +47,7 @@ class RegisteredUserController extends Controller
             return redirect()->route('login');
         }
         return redirect()->route('host.login-host');
-
-
-        // if ($request->usertype == 0) {
-        //     return redirect()->route('dashboard');
-        // }
-        // return redirect()->route('dashboard-host');
-
-
-        // return response()->noContent();
     }
-
-
-
-
 
     public function login()
     {
@@ -72,33 +59,28 @@ class RegisteredUserController extends Controller
         return view('register');
     }
 
-//     public function postRegister(Request $request)
-//     {
-//         $request->merge(['password' => Hash::make($request->password)]);
-//         try {
-//             User::create($request->all());
-//         } catch (\Throwable $th) {
-//             // dd($th);
-//         }
-//         return redirect()->route('login');
-//     }
 
-    public function postLogin(Request $request)
-    {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->route('customerhome');
+public function postLogin(Request $request)
+{
+    $credentials = $request->only('email', 'password');
+
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        if ($user->usertype == 1) {
+            Auth::logout(); // Đăng xuất người dùng
+            abort(403); // Từ chối đăng nhập
         }
-        return redirect()->back()->with('error','Sai mật khẩu hoặc email');
+
+        // var_dump($user->usertype);
+
+        // Đăng nhập thành công, thực hiện hành động tiếp theo
+        // return redirect()->route('customerhome');
     }
 
-//     public function logout()
-//     {
-//         Auth::logout();
-//         return redirect()->back();
-//     }
-
-
-
+    // Đăng nhập không thành công
+    // return redirect()->back()->with('error', 'Sai mật khẩu hoặc email');
+}
 
     public function loginHost()
     {
@@ -122,9 +104,25 @@ class RegisteredUserController extends Controller
 
     public function postLoginHost(Request $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->route('hosthome');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->usertype == 0) {
+                Auth::logout(); // Đăng xuất người dùng
+                abort(403); // Từ chối đăng nhập
+            }
+
+            // var_dump($user->usertype);
+
+            // Đăng nhập thành công, thực hiện hành động tiếp theo
+            // return redirect()->route('customerhome');
         }
-        return redirect()->back()->with('error','Sai mật khẩu hoặc email');
+
+        // if (Auth::attempt($credentials)) {
+        //     return redirect()->route('hosthome');
+        // }
+        // return redirect()->back()->with('error','Sai mật khẩu hoặc email');
     }
 }

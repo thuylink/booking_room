@@ -5,6 +5,11 @@ import { useProduct, getProductById } from '../../../../hooks/product'
 import '../show_product_css.scss'
 import { Pannellum } from 'pannellum-react'
 
+import Image from 'next/image'
+
+import { Button } from '@nextui-org/button'
+import { Card, CardBody } from '@nextui-org/card'
+
 export const ProductDetailWithPannellum = () => {
     const id = window.location.pathname.split('/').pop()
     const { getProductById, error } = useProduct()
@@ -37,23 +42,190 @@ export const ProductDetailWithPannellum = () => {
 
     const productFields = Object.keys(product)
 
-    // var base64DataPrefix = base64Image.substring(
-    //     0,
-    //     base64Image.indexOf(',') + 1,
-    // )
-    // var binaryStringData = base64Image.substring(
-    //     base64Image.indexOf(',') + 1,
-    //     base64Image.length,
-    // )
-    // var binaryString = window.atob(binaryStringData)
-    // var binaryLen = binaryString.length
-    // var fileContent = new Uint8Array(binaryLen)
-    // for (var i = 0; i < binaryLen; i++) {
-    //     var ascii = binaryString.charCodeAt(i)
-    //     fileContent[i] = ascii
-    // }
-    // var blob = new Blob([fileContent], { type: 'application/octet-stream' })
-    // var fileURL = window.URL.createObjectURL(blob)
+    return (
+        <div className="container">
+            <div className="left-section">
+                <div>
+                    <Button color="primary">Chi tiết sản phẩm {id}</Button>
+                    {productFields.map(field => (
+                        <p key={field}></p>
+                    ))}
+                </div>
+                <div>
+                    <table style={{ borderCollapse: 'collapse' }}>
+                        {/* ... */}
+                    </table>
+                </div>
+            </div>
+            <div className="right-section">
+                <section className="py-36">
+                    <Card className="py-4 lg:w-3/4 xl:w+3/2">
+                        <CardBody className="overflow-visible py-2">
+                            <div className="flex gap-6">
+                                <div className="flex gap-6">
+                                    <div className="flex-1">
+                                        {product.image &&
+                                            Array.isArray(
+                                                JSON.parse(product.image),
+                                            ) &&
+                                            JSON.parse(product.image).map(
+                                                (image, index) => {
+                                                    const cleanedImagePath = image.replace(
+                                                        /[\[\]"]/g,
+                                                        '',
+                                                    )
+                                                    const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
+
+                                                    return (
+                                                        <img
+                                                            key={index}
+                                                            src={imagePath}
+                                                            alt="Image"
+                                                            width="300px"
+                                                            height="170px"
+                                                        />
+                                                    )
+                                                },
+                                            )}
+                                    </div>
+
+                                    <div className="flex-1">
+                                        {product.image360 &&
+                                            Array.isArray(
+                                                JSON.parse(product.image360),
+                                            ) &&
+                                            JSON.parse(product.image360).map(
+                                                (image360, index) => {
+                                                    const cleanedImage360Path = image360.replace(
+                                                        /[\[\]"]/g,
+                                                        '',
+                                                    )
+                                                    const image360Path = `data:image/png;base64,${cleanedImage360Path}`
+                                                    console.log(
+                                                        'image360',
+                                                        image360Path,
+                                                    )
+
+                                                    return (
+                                                        showImage360 && (
+                                                            <Pannellum
+                                                                key={index}
+                                                                width="500px"
+                                                                height="300px"
+                                                                image={
+                                                                    image360Path
+                                                                }
+                                                                pitch={10}
+                                                                yaw={180}
+                                                                hfov={110}
+                                                                autoLoad
+                                                                alt="image360"
+                                                            />
+                                                        )
+                                                    )
+                                                },
+                                            )}
+                                    </div>
+                                </div>
+                                <div className="flex-1">
+                                    <h2 className="text-lg font-bold uppercase">
+                                        {product.title}
+                                    </h2>
+
+                                    <div className="mb-6 mt-2 flex gap-3">
+                                        <span className="font-bold">
+                                            <td className="text-sm text-smborder">
+                                                Tiện ích:
+                                            </td>
+                                        </span>
+
+                                        <p className="text-default-500">
+                                            {' '}
+                                            {product.amenities}
+                                        </p>
+                                    </div>
+
+                                    <div className="mb-6 mt-2 flex gap-3">
+                                        <span className="font-bold">
+                                            <td className="text-sm text-smborder">
+                                                Phạm vi sử dụng:
+                                            </td>
+                                        </span>
+
+                                        <p className="text-default-500">
+                                            {' '}
+                                            {product.privacy_type}
+                                        </p>
+                                    </div>
+
+                                    <div className="mb-6 mt-2 flex gap-3">
+                                        <span className="font-bold">
+                                            <td className="text-sm text-smborder">
+                                                Địa chỉ:
+                                            </td>
+                                        </span>
+
+                                        <p className="text-default-500">
+                                            {' '}
+                                            {product.location}
+                                        </p>
+                                    </div>
+
+                                    <div className="mb-6 mt-2 flex gap-3">
+                                        <span className="font-bold">
+                                            <td className="text-sm text-smborder">
+                                                Sức chứa:
+                                            </td>
+                                        </span>
+
+                                        <p className="text-default-500">
+                                            {' '}
+                                            {product.capacity}
+                                        </p>
+                                    </div>
+
+                                    <div className="mb-6 mt-2 flex gap-3">
+                                        <span className="font-bold">
+                                            <td className="text-sm text-smborder">
+                                                Mô tả:
+                                            </td>
+                                        </span>
+                                        {product.description}
+                                    </div>
+
+                                    <div>
+                                        <span className="font-bold">
+                                            <td className="text-sm text-smborder">
+                                                Chi phí:
+                                            </td>
+                                        </span>
+                                        <span
+                                            className="text-success"
+                                            style={{ marginLeft: '0.5em' }}>
+                                            {product.price} VNĐ
+                                        </span>
+                                    </div>
+
+                                    <div className="mt-6 flex gap-6">
+                                        <Button color="primary">
+                                            Đánh giá
+                                        </Button>
+                                        <Button
+                                            className="book"
+                                            variant="bordered"
+                                            radius="full"
+                                            style={{ borderColor: '#ff385c' }}>
+                                            Đặt phòng
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardBody>
+                    </Card>
+                </section>
+            </div>
+        </div>
+    )
 
     return (
         <div>
@@ -113,7 +285,6 @@ export const ProductDetailWithPannellum = () => {
                                 )}
                         </td>
 
-                        
                         <td className="border360">
                             {product.image360 &&
                                 Array.isArray(JSON.parse(product.image360)) &&
@@ -124,7 +295,7 @@ export const ProductDetailWithPannellum = () => {
                                             '',
                                         )
                                         const image360Path = `data:image/png;base64,${cleanedImage360Path}`
-                                        console.log('image360',image360Path);
+                                        console.log('image360', image360Path)
 
                                         return (
                                             showImage360 && (
@@ -144,7 +315,7 @@ export const ProductDetailWithPannellum = () => {
                                     },
                                 )}
                         </td>
-                        
+
                         <td className="border">{product.description}</td>
                         <td className="border">{product.price}</td>
                     </tr>

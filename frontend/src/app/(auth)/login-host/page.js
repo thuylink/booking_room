@@ -13,7 +13,7 @@ import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
 const Login = () => {
     const router = useRouter()
 
-    const { login } = useAuth({
+    const { loginHost } = useAuth({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard-host',
     })
@@ -35,7 +35,7 @@ const Login = () => {
     const submitForm = async event => {
         event.preventDefault()
 
-        login({
+        loginHost({
             email,
             password,
             remember: shouldRemember,

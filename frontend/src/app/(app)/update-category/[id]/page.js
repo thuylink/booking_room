@@ -26,6 +26,8 @@ const UpdateCategoryPage = () => {
     const [errors, setErrors] = useState([])
 
     const [tempNameCategory, setTempNameCategory] = useState('')
+    const [tempImages, setTempImages] = useState([]); // Lưu trữ ảnh hiện tại
+    const [tempImage360s, setTempImage360s] = useState([]); // Lưu trữ ảnh 360 hiện tại
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -33,6 +35,8 @@ const UpdateCategoryPage = () => {
                 const response = await getCategoryById(id)
                 setTempNameCategory(response.name_category)
                 setStatus(response.status)
+                setTempImages(response.image)
+                setTempImage360s(response.image360)
             } catch (error) {
                 console.error('Error:', error)
             }
@@ -64,8 +68,6 @@ const UpdateCategoryPage = () => {
         }
 
         try {
-            // Cập nhật danh mục
-            // Sau khi cập nhật thành công, gửi các ảnh lên server
             await Promise.all([
                 setImages(images),
                 ...images.map(async image => {

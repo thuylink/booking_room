@@ -14,11 +14,9 @@ const Navigation = ({ user }) => {
     const router = useRouter()
 
     const { logout } = useAuth()
+    const { profile } = useAuth()
 
     const [open, setOpen] = useState(false)
-    // const [showVerificationPopup, setShowVerificationPopup] = useState(false); // State để hiển thị pop-up
-
-    // Kiểm tra nếu email_verified_at là null thì hiển thị pop-up
     useEffect(() => {
         // if (user?.email_verified_at === null) {
         //     setShowVerificationPopup(true);
@@ -28,18 +26,12 @@ const Navigation = ({ user }) => {
     }, [user?.email_verified_at]);
     return (
         <nav className="bg-white border-b border-gray-100">
-            {/* Primary Navigation Menu */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex">
-                        {/* Logo */}
                         <div className="flex-shrink-0 flex items-center">
-                            <Link href="/dashboard">
-                                <ApplicationLogo className="block h-10 w-auto fill-current text-gray-600" />
-                            </Link>
+                            
                         </div>
-
-                        {/* Navigation Links */}
                         <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <NavLink
                                 href="/dashboard"
@@ -49,7 +41,6 @@ const Navigation = ({ user }) => {
                         </div>
                     </div>
 
-                    {/* Settings Dropdown */}
                     <div className="hidden sm:flex sm:items-center sm:ml-6">
                         <Dropdown
                             align="right"
@@ -75,6 +66,10 @@ const Navigation = ({ user }) => {
                             {/* Authentication */}
                             <DropdownButton onClick={logout}>
                                 Logout
+                            </DropdownButton>
+
+                            <DropdownButton onClick={profile}>
+                                Profile
                             </DropdownButton>
                         </Dropdown>
                     </div>
@@ -119,7 +114,7 @@ const Navigation = ({ user }) => {
                         <ResponsiveNavLink
                             href="/dashboard"
                             active={router.pathname === '/dashboard'}>
-                            Dashboard
+                            Dashbonlard
                         </ResponsiveNavLink>
                     </div>
 
@@ -156,6 +151,10 @@ const Navigation = ({ user }) => {
                             {/* Authentication */}
                             <ResponsiveNavButton onClick={logout}>
                                 Logout
+                            </ResponsiveNavButton>
+
+                            <ResponsiveNavButton onClick={profile}>
+                                Profile
                             </ResponsiveNavButton>
                         </div>
                     </div>

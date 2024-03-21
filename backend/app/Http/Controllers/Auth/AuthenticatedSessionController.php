@@ -53,4 +53,5 @@ class AuthenticatedSessionController extends Controller
 
         return response()->noContent();
     }
+    
 }

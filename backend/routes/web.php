@@ -3,12 +3,16 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HostController;
 use App\Http\Controllers\HomeMainController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\User;
+use App\Http\Controllers\SiteController;
 
 
 /*
@@ -47,6 +51,9 @@ require __DIR__.'/auth.php';
 Route::get('/', [HomeMainController::class,'index'])->name('index');
 Route::get('/login', [RegisteredUserController::class,'login'])->name('login');
 Route::post('/login', [RegisteredUserController::class,'postLogin']);
+
+Route::post('/loginHost', [RegisteredUserController::class,'postLoginHost']);
+
 //đi đến trang đki
 Route::get('/register', [RegisteredUserController::class,'register'])->name('register');
 //xử lí khi nhập thông tin đki
@@ -80,7 +87,6 @@ Route::get('/edit-category/{id}',[CategoryController::class,'edit'])->name('cate
 Route::put('/update-category/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::delete('/delete-category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 Route::get('/show-category/{id}',[CategoryController::class,'show'])->name('category.show');
-Route::put('/update-category-image/{id}', [CategoryController::class, 'updateCategoryImage']);
 Route::get('/search', [CategoryController::class, 'search'])->name('category.search');
 
 
@@ -94,3 +100,18 @@ Route::get('/show-product/{id}',[ProductController::class,'show'])->name('produc
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 
 Route::delete('/delete-product/{id}', [ProductController::class, 'delete'])->name('product.delete');
+
+
+
+Route::get('/profile', [ProfileController::class, 'index_'])->name('profile.all');
+
+Route::get('/san-pham', [SiteController::class, 'product'])->name('san_pham');
+Route::get('/customerhome', [SiteController::class, 'product'])->name('user.products');
+
+// Route::get('/users', function () {
+//     $users = User::all();
+//     $this->authorize('view', User::class);
+// });
+
+
+// Route::get('/decode-token', [AuthenticatedSessionController::class, decodeTokenAndDumpUsertype']);

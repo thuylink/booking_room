@@ -46,11 +46,11 @@ export const CategoryDetailWithPannellum = () => {
             <table style={{ borderCollapse: 'collapse' }}>
                 <thead>
                     <tr>
-                        <th className="border">ID</th>
-                        <th className="border">Tên</th>
-                        <th className="border">Ảnh</th>
-                        <th className="border borderimage">Ảnh 360</th>
-                        <th className="border borderimage360">Trạng thái</th>
+                        <th className="border borderID">ID</th>
+                        <th className="border borderTitle">Tên</th>
+                        <th className="border borderimage">Ảnh</th>
+                        <th className="border borderimage360">Ảnh 360</th>
+                        <th className="border bordertt">Trạng thái</th>
                     </tr>
                 </thead>
                 <tbody>
