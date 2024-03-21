@@ -9,6 +9,7 @@ import { useCategory } from '../../../hooks/category'
 import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { MailIcon } from '../../../components/MailIcon'
 
 const CreateCategoryPage = () => {
     const router = useRouter()
@@ -22,8 +23,8 @@ const CreateCategoryPage = () => {
     const [image360s, setImage360s] = useState([])
     const [status, setStatus] = useState('')
     const [errors, setErrors] = useState([])
-    const [categoryOptions, setCategoryOptions] = useState([]);
-    
+    const [categoryOptions, setCategoryOptions] = useState([])
+
     const submitForm = event => {
         event.preventDefault()
 
@@ -39,8 +40,10 @@ const CreateCategoryPage = () => {
         }).then(() => {
             router.push('all-category')
         })
-        console.log('form add đây', formData.getAll('image[]', 'name_category', 'image360[]'));
-
+        console.log(
+            'form add đây',
+            formData.getAll('image[]', 'name_category', 'image360[]'),
+        )
     }
 
     const previewImage360s = () => {
@@ -60,6 +63,36 @@ const CreateCategoryPage = () => {
         return null
     }
 
+    // return (
+    //     <div className="flex flex-col gap-4">
+    //         <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+    //             <Input
+    //                 type="email"
+    //                 label="Email"
+    //                 placeholder="you@example.com"
+    //                 labelPlacement="outside"
+    //                 startContent={
+    //                     <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+    //                 }
+    //             />
+    //         </div>
+    //         <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+    //             <Input
+    //                 type="number"
+    //                 label="Price"
+    //                 placeholder="0.00"
+    //                 labelPlacement="outside"
+    //                 endContent={
+    //                     <div className="pointer-events-none flex items-center">
+    //                         <span className="text-default-400 text-small">
+    //                             $
+    //                         </span>
+    //                     </div>
+    //                 }
+    //             />
+    //         </div>
+    //     </div>
+    // )
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
             <div className="border rounded-lg p-4" color="blue">

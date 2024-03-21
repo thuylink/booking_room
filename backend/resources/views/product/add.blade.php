@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </head>
 
 <body>
@@ -40,30 +47,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
-                            {{-- <div class="form-group mb-3">
-                                <label for="">Quyền riêng tư, khách có thể sử dụng:</label>
-                                <div>
-                                    <label for="">
-                                        <input type="radio" name="privacy_type" value="toan_bo_can_nha">
-                                        Toàn bộ căn nhà
-                                    </label>
-                                </div>
-
-                                <div>
-                                    <label for="">
-                                        <input type="radio" name="privacy_type" value="mot_can_phong">
-                                        Một căn phòng
-                                    </label>
-                                </div>
-
-                                <div>
-                                    <label for="">
-                                        <input type="radio" name="privacy_type" value="phong_chung">
-                                        Phòng chung
-                                    </label>
-                                </div>
-                            </div> --}}
 
                             <div class="form-group mb-3">
                                 <label for="">Quyền riêng tư, khách có thể sử dụng:</label>
@@ -97,36 +80,7 @@
                             <div class="form-group mb-3">
                                 <label for="">Sức chứa:</label>
                                 <input type="number" name="capacity" id="" class="form-control">
-                                {{-- <div class="capacity-item">
-                                    <label for="guests">Khách:</label>
-                                    <div class="counter">
-                                        <button class="minus">-</button>
-                                        <input type="text" id="guests" value="1">
-                                        <button class="plus">+</button>
-                                    </div>
-                                </div>
-                                <div class="capacity-item">
-                                    <label for="bedrooms">Phòng ngủ:</label>
-                                    <div class="counter">
-                                        <button class="minus">-</button>
-                                        <input type="text" id="bedrooms" value="1">
-                                        <button class="plus">+</button>
-                                    </div>
-                                </div>
-                                <div class="capacity-item">
-                                    <label for="beds">Giường:</label>
-                                    <div class="counter">
-                                        <button class="minus">-</button>
-                                        <input type="text" id="beds" value="1">
-                                        <button class="plus">+</button>
-                                    </div>
-                                </div> --}}
                             </div>
-
-                            {{-- <div class="form-group mb-3">
-                                <label for="">Tiện ích:</label>
-                                <input type="number" name="price" id="" class="form-control">
-                            </div> --}}
 
                             <div class="form-group mb-3">
                                 <label for="">Tiện ích:</label>
@@ -178,49 +132,14 @@
 
                             <div class="form-group mb-3">
                                 <label for="">Ảnh:</label>
-                                <input type="file" name="image" id="" class="form-control">
+                                <input type="file" name="image[]" id="image" class="form-control" multiple onchange="previewImage(event)">
                             </div>
 
-
-                            <script>
-                                function previewImage(event) {
-                                    const input = event.target;
-                                    if (input.files && input.files[0]) {
-                                        const reader = new FileReader();
-
-                                        reader.onload = function(e) {
-                                            const preview = document.getElementById('image-preview');
-                                            preview.src = e.target.result;
-                                            preview.style.display = 'block';
-                                        };
-
-                                        reader.readAsDataURL(input.files[0]);
-                                    }
-                                }
-                            </script>
 
                             <div class="form-group mb-3">
                                 <label for="">Ảnh 360:</label>
-                                <input type="file" name="image360" id="" class="form-control">
+                                <input type="file" name="image360[]" id="image360" class="form-control" multiple onchange="previewImage(event)">
                             </div>
-
-
-                            <script>
-                                function previewImage360(event) {
-                                    const input = event.target;
-                                    if (input.files && input.files[0]) {
-                                        const reader = new FileReader();
-
-                                        reader.onload = function(e) {
-                                            const preview = document.getElementById('image360-preview');
-                                            preview.src = e.target.result;
-                                            preview.style.display = 'block';
-                                        };
-
-                                        reader.readAsDataURL(input.files[0]);
-                                    }
-                                }
-                            </script>
 
                             <div class="form-group mb-3">
                                 <label for="">Tiêu đề:</label>

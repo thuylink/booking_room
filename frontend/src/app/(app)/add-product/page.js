@@ -12,15 +12,8 @@ import './add_product.css'
 import { useRouter } from 'next/navigation'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-
-// function convertImageToBase64(file) {
-//     return new Promise((resolve, reject) => {
-//       const reader = new FileReader();
-//       reader.onload = () => resolve(reader.result);
-//       reader.onerror = (error) => reject(error);
-//       reader.readAsDataURL(file);
-//     });
-//   }
+import {CameraIcon} from '../../../components/CameraIcon';
+// import {Button} from "@nextui-org/react";
 
 const CreateProductPage = () => {
     const router = useRouter()
@@ -136,10 +129,17 @@ const CreateProductPage = () => {
 
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
+        <Button className='addproduct' color="primary">Thêm mới nhà</Button>
+
+            <div className="flex gap-4 items-center">
+                <Button color="success" endContent={<CameraIcon/>}>
+                    Tải lên ảnh
+                </Button>    
+            </div>
             <div className="flex">
                 <div className="w-1/2 pr-2">
+
                     <div className="border rounded-lg p-4 w-full">
-                        <h1 className="text-center">Chủ nhà thêm mới nhà</h1>
                         <div className="mt-4">
                             <Label htmlFor="image">Hình ảnh:</Label>
                             {images.length > 0 &&
@@ -147,14 +147,12 @@ const CreateProductPage = () => {
                                     <div key={index} className="w-32 h-32">
                                         <Image
                                             src={URL.createObjectURL(image)}
-                                            // alt={`Preview ${index}`}
                                             layout="responsive"
                                             width={200}
                                             height={200}
                                         />
                                     </div>
                                 ))}
-
                             <Input
                                 id="image"
                                 type="file"
@@ -166,7 +164,6 @@ const CreateProductPage = () => {
                                     ])
                                 }
                             />
-
                             <InputError
                                 messages={errors.image}
                                 className="mt-2"

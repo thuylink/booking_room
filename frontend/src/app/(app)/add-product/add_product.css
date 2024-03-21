@@ -1,13 +1,15 @@
 .p-4 {
     padding: 1rem;
     width: 350px;
-    margin-left: -350px;
+    margin-left: -120%;
+    margin-top: 13%;
 }
 
 .p-4-2 {
     padding: 1rem;
     width: 230%;
-    margin-left: -174px;
+    margin-left: -17%;
+    margin-top: 13%;
 }
 
 .amenities-column-left {
@@ -20,4 +22,14 @@
     width: 60%;
 }
 
+.product-title {
+    color: blue;
+    font-size: 24px;
+    margin-top: 10%;
+  }
 
+  .addproduct {
+    background-color: #ff385c;
+    color: white;
+    margin-left: 20%;
+}
