@@ -13,12 +13,15 @@ class Profile extends Model
     public $timestamps = false;
     protected $fillable = [
         'name',
-        'birthday',
         'gender',
+        'birthday',
         'phone',
         'address',
         'id_user',
-        'image'
+        'image',
+        'education',
+        'job',
+        'language'
     ];
 
     // public function user() {

@@ -187,7 +187,6 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-
             $product = Product::find($id);
             $image = 'uploads/product/' . $product->image;
             if (File::exists($image)) {
@@ -198,8 +197,8 @@ class ProductController extends Controller
                 File::delete($image360);
             }
             $product->delete();
-            // return response()->json(['status' => 'Xóa danh mục thành công'], 201);
-            return redirect()->back()->with('status', 'Đã xóa 1 nhà');
+            return response()->json(['status' => 'Xóa nhà thành công'], 201);
+            // return redirect()->back()->with('status', 'Đã xóa 1 nhà');
 
         }
 

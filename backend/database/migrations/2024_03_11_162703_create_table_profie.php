@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('image')->nullable();
+            $table->string('education')->nullable();
+            $table->string('job')->nullable();
+            $table->string('language')->nullable();
             $table->timestamps();
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });

@@ -108,10 +108,4 @@ Route::get('/profile', [ProfileController::class, 'index_'])->name('profile.all'
 Route::get('/san-pham', [SiteController::class, 'product'])->name('san_pham');
 Route::get('/customerhome', [SiteController::class, 'product'])->name('user.products');
 
-// Route::get('/users', function () {
-//     $users = User::all();
-//     $this->authorize('view', User::class);
-// });
-
-
-// Route::get('/decode-token', [AuthenticatedSessionController::class, decodeTokenAndDumpUsertype']);
+Route::get('/dashboard', [SiteController::class, 'product']);

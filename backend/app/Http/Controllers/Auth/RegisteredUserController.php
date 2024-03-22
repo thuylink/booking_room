@@ -70,6 +70,7 @@ public function postLogin(Request $request)
         if ($user->usertype == 1) {
             Auth::logout(); // Đăng xuất người dùng
             abort(403); // Từ chối đăng nhập
+
         }
 
         // var_dump($user->usertype);
@@ -102,27 +103,23 @@ public function postLogin(Request $request)
 //         return redirect()->route('host.login-host');
 //     }
 
-    public function postLoginHost(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+public function postLoginHost(Request $request)
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
 
-            if ($user->usertype == 0) {
-                Auth::logout(); // Đăng xuất người dùng
-                abort(403); // Từ chối đăng nhập
-            }
-
-            // var_dump($user->usertype);
-
-            // Đăng nhập thành công, thực hiện hành động tiếp theo
-            // return redirect()->route('customerhome');
+        if ($user->usertype == 0) {
+            Auth::logout(); // Đăng xuất người dùng
+            abort(403);
+            // return redirect()->route('login')->with('error', 'Không thể đăng nhập'); // Chuyển hướng và truyền thông báo
         }
 
-        // if (Auth::attempt($credentials)) {
-        //     return redirect()->route('hosthome');
-        // }
-        // return redirect()->back()->with('error','Sai mật khẩu hoặc email');
+        // Đăng nhập thành công, thực hiện hành động tiếp theo
+        // return redirect()->route('customerhome');
     }
+
+    // return redirect()->route('login')->with('error', 'Sai mật khẩu hoặc email'); // Chuyển hướng và truyền thông báo
+}
 }
