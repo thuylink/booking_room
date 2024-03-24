@@ -1,2 +1,6 @@
-frontend/.next/
 node_modules/
+backend/public/
+.next/
+out/
+
+frontend/.next/

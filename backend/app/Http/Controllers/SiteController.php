@@ -21,7 +21,19 @@ class SiteController extends Controller
     public function index()
     {
         $products = Product::all();
-
         return response()->json($products);
     }
+
+    public function indexCate()
+    {
+        $categories = Category::all();
+
+        return response()->json($categories);
+    }
+
+    public function show($id)
+{
+    $product = Product::find($id);
+    return response()->json($product);
+}
 }

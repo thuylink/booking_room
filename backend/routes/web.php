@@ -109,3 +109,8 @@ Route::get('/san-pham', [SiteController::class, 'product'])->name('san_pham');
 Route::get('/customerhome', [SiteController::class, 'product'])->name('user.products');
 
 Route::get('/dashboard', [SiteController::class, 'product']);
+
+Route::get('/dashboard', [SiteController::class, 'indexCate']);
+
+Route::get('/fe-a-home/{id}',[SiteController::class,'show'])->name('product.show');
+

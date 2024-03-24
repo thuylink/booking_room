@@ -13,9 +13,20 @@ export const useProduct = () => {
 
   const csrf = () => axios.get('/sanctum/csrf-cookie');
 
+
+  const getProductById = async id => {
+    try {
+        const response = await axios.get(`/show-product/${id}`)
+        return response.data
+    } catch (error) {
+        throw new Error(error.response.data.message)
+    }
+}
+
   return {
     product,
     error,
     mutate,
+    getProductById,
   };
 };

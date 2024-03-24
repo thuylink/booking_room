@@ -5,7 +5,7 @@
   .py-4 {
     margin-top: -10%;
     height: 300%;
-    width: 50%; 
+    width: 101%; 
   }
   
   .text-sm{
@@ -32,3 +32,71 @@
     font-size: 24px;
     margin-top: 10%;
   }
+
+  .transition-transform-background {
+    transition-property: transform, background;
+    transition-timing-function: ease;
+    transition-duration: 232ms;
+    width: 500px;
+}
+
+.container{
+    width: 300px;
+}
+
+.product {
+    background-color: #d30e0e;
+    height: 100px;
+}
+
+.gap-4 {
+
+    gap: -10rem;
+}
+
+.text-left {
+    text-align: left;
+    width: 415px;
+}
+
+.py-36 {
+  padding-top: 3rem;
+  padding-bottom: 0rem;
+  margin-left: 3%;
+}
+
+.flex-1 {
+  width: 182px;
+  height: 200px;
+}
+
+.text-left {
+  text-align: left;
+  // width: 393px;
+}
+
+.right{
+  width: 100%
+}
+
+.text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+  display: none;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  margin-left: 1%;
+  margin-top: -2%;
+}
+
+.nav{
+  background-color: aqua;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+  text-align: center;
+}
