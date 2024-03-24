@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -112,5 +113,6 @@ Route::get('/dashboard', [SiteController::class, 'product']);
 
 Route::get('/dashboard', [SiteController::class, 'indexCate']);
 
-Route::get('/fe-a-home/{id}',[SiteController::class,'show'])->name('product.show');
+// Route::get('/fe-a-home/{id}',[SiteController::class,'show'])->name('product.show');
 
+// Route::get('/cart', [CartController])

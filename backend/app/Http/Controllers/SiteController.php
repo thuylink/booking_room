@@ -10,7 +10,7 @@ class SiteController extends Controller
 {
     public function product_()
     {
-       $products = Product::all();
+        $products = Product::all();
 
         // $category = Category::whereHas('products', function ($query) {
         //     // $query->where('status', 1);
@@ -32,8 +32,14 @@ class SiteController extends Controller
     }
 
     public function show($id)
-{
-    $product = Product::find($id);
-    return response()->json($product);
-}
+    {
+        $product = Product::find($id);
+        return response()->json($product);
+    }
+
+    public function viewCart() {
+        $total = DB::table('gio_hang')
+        ->where('id_user', Auth::user()->id);
+    }
+
 }

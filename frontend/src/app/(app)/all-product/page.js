@@ -5,7 +5,7 @@ import './all_product_css.scss'
 import Link from 'next/link'
 import Button from '@/components/Button'
 import { useState } from 'react'
-import { Pannellum } from 'pannellum-react'
+// import { Pannellum } from 'pannellum-react'
 import {
     Table,
     TableHeader,
@@ -173,22 +173,7 @@ const AllProduct = () => {
                                         )}
                                 </TableCell>
                                 <TableCell className="text2">
-                                    {product.image360 &&
-                                        JSON.parse(
-                                            product.image360,
-                                        ).map((image360, index) => (
-                                            <Pannellum
-                                                key={index}
-                                                width="350px"
-                                                height="150px"
-                                                image={`data:image/png;base64,${image360}`}
-                                                pitch={10}
-                                                yaw={180}
-                                                hfov={110}
-                                                autoLoad
-                                                alt="image360"
-                                            />
-                                        ))}
+                                    
                                 </TableCell>
                                 <TableCell className="text2">
                                     {product.price}
@@ -244,3 +229,21 @@ const AllProduct = () => {
 }
 
 export default AllProduct
+
+
+// {product.image360 &&
+//     JSON.parse(
+//         product.image360,
+//     ).map((image360, index) => (
+//         <Pannellum
+//             key={index}
+//             width="350px"
+//             height="150px"
+//             image={`data:image/png;base64,${image360}`}
+//             pitch={10}
+//             yaw={180}
+//             hfov={110}
+//             autoLoad
+//             alt="image360"
+//         />
+//     ))}
