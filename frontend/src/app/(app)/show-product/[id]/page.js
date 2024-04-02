@@ -34,10 +34,14 @@ export const ProductDetailWithPannellum = () => {
 
     const { addToCart } = useCart()
 
-    const handleAddToCart = id_product => {
-        addToCart(id_product)
-        console.log('id_product đây thây', id_product)
-    }
+    const handleAddToCart = async (id_product) => {
+        try {
+            await addToCart(id_product); // Gọi hàm addToCart từ hook useCart để thêm sản phẩm vào giỏ hàng
+            console.log('Đã thêm sản phẩm vào giỏ hàng');
+        } catch (error) {
+            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+        }
+    };
     useEffect(() => {
         const fetchProduct = async () => {
             try {

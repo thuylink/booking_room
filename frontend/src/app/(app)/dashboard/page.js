@@ -4,21 +4,18 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
+import { useCart } from '../../../hooks/cart'; 
 import { Card, CardBody } from '@nextui-org/card'
 import './style_dashboard.scss'
 import { Button } from '@nextui-org/react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-// import './nav.css'
 import {
     Navbar,
     NavbarBrand,
     NavbarContent,
     NavbarItem,
-    NavbarMenuToggle,
-    NavbarMenu,
-    NavbarMenuItem,
 } from '@nextui-org/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
@@ -27,7 +24,7 @@ const Dashboard = () => {
     const { product, error } = useProduct()
     const { category } = useCategory()
     const [searchValue, setSearchValue] = useState('')
-    const { addToCart } = useCart()
+    const { addToCart } = useCart();
 
     if (category && category.length > 0) {
         category.forEach(categoryItem => {
@@ -47,10 +44,14 @@ const Dashboard = () => {
         setFilteredProducts(filtered)
     }
 
-    const handleAddToCart = id_product => {
-        addToCart(id_product)
-        console.log('id_product đây thây', id_product)
-    }
+    const handleAddToCart = async (id_product) => {
+        try {
+            await addToCart(id_product); // Gọi hàm addToCart từ hook useCart để thêm sản phẩm vào giỏ hàng
+            console.log('Đã thêm sản phẩm vào giỏ hàng');
+        } catch (error) {
+            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+        }
+    };
 
     if (error) {
         return <div>Error loading products</div>
@@ -161,9 +162,7 @@ const Dashboard = () => {
                                                     <Button
                                                         className="custom-button"
                                                         onClick={() =>
-                                                            handleAddToCart(
-                                                                product.id,
-                                                            )
+                                                            handleAddToCart(product.id)
                                                         }>
                                                         <FontAwesomeIcon
                                                             icon={faHeart}
@@ -207,7 +206,7 @@ const Dashboard = () => {
                                                                             alt="Image"
                                                                             width="270px"
                                                                             height="200px"
-                                                                            className="rounded-image" // Thêm lớp CSS rounded-image
+                                                                            className="rounded-image"
                                                                         />
                                                                     )
                                                                 },
@@ -227,9 +226,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
-// <Button
-//                         type="submit"
-//                         className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
-//                         Tìm kiếm
-//                     </Button>
