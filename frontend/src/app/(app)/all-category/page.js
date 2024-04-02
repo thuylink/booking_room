@@ -16,7 +16,12 @@ import {
     TableRow,
     TableCell,
 } from '@nextui-org/react'
-
+import {
+    Navbar,
+    NavbarBrand,
+    NavbarContent,
+    NavbarItem,
+} from '@nextui-org/react'
 import { EyeIcon } from '../../../components/EyeIcon'
 import { DeleteIcon } from '../../../components/DeleteIcon'
 import { EditIcon } from '../../../components/EditIcon'
@@ -25,7 +30,6 @@ const AllCategory = () => {
     const { category, error, mutate } = useCategory()
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredCategory, setFilteredCategory] = useState([])
-    const [showImage360, setShowImage360] = useState(false)
 
     const handleDelete = async id => {
         try {
@@ -65,9 +69,46 @@ const AllCategory = () => {
             console.error('Lỗi:', error)
         }
     }
-
+    console.log("category là:", category)
     return (
         <div className="table-container">
+        <Navbar>
+                <NavbarBrand>
+                    <p className="font-bold text-inherit">AirBnb</p>
+                </NavbarBrand>
+                <NavbarContent
+                    className="hidden sm:flex gap-4"
+                    justify="center">
+                    <NavbarItem>
+                        <Link color="foreground" href="#">
+                            Features
+                        </Link>
+                    </NavbarItem>
+                    <NavbarItem isActive>
+                        <Link href="#" aria-current="page">
+                            Customers
+                        </Link>
+                    </NavbarItem>
+                    <NavbarItem>
+                        <Link color="foreground" href="#">
+                            Integrations
+                        </Link>
+                    </NavbarItem>
+                </NavbarContent>
+                <NavbarContent justify="end">
+                    <NavbarItem>
+                        <div>
+                            <Link
+                                href={`/add-category`}
+                                className="text-lg text-white cursor-pointer active:opacity-50">
+                                <Button className="ml-4 bg-pink-500">
+                                    Thêm mới category
+                                </Button>
+                            </Link>
+                        </div>
+                    </NavbarItem>
+                </NavbarContent>
+            </Navbar>
             <Table aria-label="Example static collection table">
                 <TableHeader>
                     <TableColumn>STT</TableColumn>

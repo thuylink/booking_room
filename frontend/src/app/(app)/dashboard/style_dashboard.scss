@@ -5,7 +5,7 @@
   .py-4 {
     margin-top: -10%;
     height: 300%;
-    width: 101%; 
+    width: 100%; 
   }
   
   .text-sm{
@@ -20,7 +20,8 @@
     color: white;
     background: #ff385c;
     margin-top: 1%;
-  }
+    margin-left: 0%;
+}
   
   .book {
     background-color: white ;
@@ -51,7 +52,7 @@
 
 .gap-4 {
 
-    gap: -10rem;
+    gap: -0rem;
 }
 
 .text-left {
@@ -62,7 +63,7 @@
 .py-36 {
   padding-top: 3rem;
   padding-bottom: 0rem;
-  margin-left: 3%;
+  margin-left: 20%;
 }
 
 .flex-1 {
@@ -90,13 +91,111 @@ img, video {
   height: auto;
   margin-left: 1%;
   margin-top: -2%;
+  height: 259px;
 }
 
 .nav{
-  background-color: aqua;
+  background-color: #fbfcfd;
 }
 
 .mt-4 {
   margin-top: 1rem;
   text-align: center;
+}
+
+.yeu{
+  margin-left: 85%;
+}
+
+
+.timkiem{
+  margin-left: 30%;
+}
+
+section {
+  margin-bottom: 0.1rem; /* Khoảng cách giữa các sản phẩm */
+}
+
+.grid {
+  gap: 1rem; /* Khoảng cách giữa các sản phẩm */
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 0.01fr);
+}
+
+
+.all {
+  width: 100px;
+}
+
+.rounded-image {
+  border-radius: 5%; /* Bo tròn góc của ảnh */
+}
+
+.square-image {
+  width: 200px; /* Kích thước chiều rộng của hình vuông */
+  height: 200px; /* Kích thước chiều cao của hình vuông */
+  object-fit: cover; /* Hiển thị hình ảnh bằng cách cắt hoặc co dãn để lấp đầy kích thước */
+}
+
+.slick-next {
+  right: -25px;
+  background: #290909;
+}
+
+.slick-next:before {
+  content: '→';
+}
+
+.slick-prev:before, .slick-next:before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
+  opacity: .75;
+  color: #ff385c;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: pink;
+}
+.navbar {
+  display: flex;
+  flex-wrap: nowrap; /* Không cho phần tử xuống dòng */
+  overflow-x: auto; /* Cho phép cuộn ngang nếu nội dung vượt quá */
+}
+
+.navbar-item {
+  flex: 0 0 auto; /* Không co dãn phần tử, giữ nguyên kích thước */
+  margin-right: 10px; /* Để cách giữa các phần tử */
+}
+
+.custom-button {
+  background-color: white;
+  border: 2px solid dodgerblue;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: -15px;
+}
+
+.button-text {
+  color: #ff385c;
+}
+
+.heart-icon {
+  color: #ff385c;
+  margin-right: 5px;
+}
+
+.unlike{
+  background-color: white;
+  border: 2px solid dodgerblue;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 3%;
 }

@@ -6,7 +6,7 @@
   margin-top: 1%;
   height: 303%;
   width: 100%;
-  margin-left: -70px;
+  margin-left: -25px;
   margin-right: -91px;
 }
 
@@ -93,7 +93,7 @@
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 26px;
 }
 
 .heart-icon {
@@ -121,11 +121,10 @@
   border: 2px solid dodgerblue;
   border-radius: 10px;
   padding: 10px 20px;
-  // display: inline-flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 10px;
-  width: 300;
+  margin-left: 27px;
+  width: 374px;
   margin-top: 10px;
 }
 
@@ -198,3 +197,231 @@ body{
   width: 376px;
   margin-top: 10px;
 }
+
+.rightCol{
+  margin-left: 40px;
+}
+
+
+
+.nav{
+  width: 102%;
+}
+
+.slick-prev:before, .slick-next:before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
+  opacity: .75;
+  color: #ff385c;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.slick-next:before {
+  content: '→';
+  background: #ff385c;
+}
+
+.highlighted-box {
+  background-color: white;
+  border: 2px solid dodgerblue;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 8px;
+  width: 270px;
+  margin-left: 150px;
+}
+
+.pink-cell {
+  margin-left: 10px;
+}
+
+.mail {
+  margin-left: 59px;
+  margin-top: -70px;
+}
+
+.cmt {
+  background-color: white;
+  border: 2px solid dodgerblue;
+  border-radius: 10px;
+  padding: 10px 20px;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 444px;
+  width: 790px;
+  margin-top: -657px;
+  height: 640px;
+}
+
+
+.user-img{
+
+  margin-top: 4px;
+}
+
+.check-icon{
+
+  font-size: 17px;
+  color: #c3bfbf;
+  top: 1px;
+  position: relative;
+  margin-left: 3px;
+}
+
+.form-check-input{
+  margin-top: 6px;
+  margin-left: -24px !important;
+  cursor: pointer;
+}
+
+
+.form-check-input:focus{
+  box-shadow: none;
+}
+
+
+.icons i{
+
+  margin-left: 8px;
+}
+.reply{
+
+  margin-left: 12px;
+}
+
+.comment-box{
+    
+    padding:5px;
+}
+
+.comment-area textarea{
+   resize: none; 
+        border: 1px solid #ad9f9f;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #ffffff;
+    outline: 0;
+    box-shadow: 0 0 0 1px #ff385c !important;
+}
+
+.send {
+    color: #fff;
+    background-color: #ff385c;
+    border-color: #ff385c;
+}
+
+
+
+
+.rating {
+ display: flex;
+        margin-top: -10px;
+    flex-direction: row-reverse;
+    margin-left: -4px;
+        float: left;
+}
+
+.rating>input {
+    display: none
+}
+
+.rating>label {
+        position: relative;
+    width: 19px;
+    font-size: 25px;
+    color: #ff385c;
+    cursor: pointer;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
+
+html,
+body {
+    height: 100%
+}
+
+// body {
+//     display: grid;
+//    place-items: center;
+//     font-family: 'Manrope', sans-serif;
+//    background: red;
+    
+// }
+
+
+// .comment-box{
+    
+//     padding:5px;
+// }
+
+
+
+// .comment-area textarea{
+//    resize: none; 
+//         border: 1px solid #ad9f9f;
+// }
+
+
+// .form-control:focus {
+//     color: #495057;
+//     background-color: #fff;
+//     border-color: #ffffff;
+//     outline: 0;
+//     box-shadow: 0 0 0 1px rgb(255, 0, 0) !important;
+// }
+
+// .send {
+//     color: #fff;
+//     background-color: #ff0000;
+//     border-color: #ff0000;
+// }
+
+// .send:hover {
+//     color: #fff;
+//     background-color: #f50202;
+//     border-color: #f50202;
+// }
+
+
+// .rating {
+//  display: flex;
+//         margin-top: -10px;
+//     flex-direction: row-reverse;
+//     margin-left: -4px;
+//         float: left;
+// }
+
+// .rating>rinput {
+//     display: none
+// }
+
+// .rating>label {
+//         position: relative;
+//     width: 19px;
+//     font-size: 25px;
+//     color: #ff0000;
+//     cusor: pointer;
+// }
+
+.rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before {
+    opacity: 1 !important
+}
+
+.rating>input:checked~label:before {
+    opacity: 1
+}
+
+// .rating:hover>input:checked~label:before {
+//     opacity: 0.4
+// }

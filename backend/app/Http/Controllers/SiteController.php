@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CartResource;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Cart;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\ProductResource;
+use Illuminate\Support\Facades\Log;
 
 class SiteController extends Controller
 {
-    public function product_()
+    public function product()
     {
         $products = Product::all();
 
@@ -38,8 +44,24 @@ class SiteController extends Controller
     }
 
     public function viewCart() {
-        $total = DB::table('gio_hang')
-        ->where('id_user', Auth::user()->id);
+        $cart = Cart::all();
+        return response()->json($cart);
+    }
+    public function viewCart_($id) {
+        try {
+            $cart = Cart::findOrFail($id);
+
+            $products = $cart->products()->get();
+            // var_dump("hii", $products);
+            Log::info($cart);
+
+            return ProductResource::collection($products);
+                // return CartResource::collection($cart); //trả về danh sách sản phẩm
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Cart not found.'], 404);
+        }
+
     }
 
 }

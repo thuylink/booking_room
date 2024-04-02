@@ -5,7 +5,7 @@ import './all_product_css.scss'
 import Link from 'next/link'
 import Button from '@/components/Button'
 import { useState } from 'react'
-// import { Pannellum } from 'pannellum-react'
+import { Pannellum } from 'pannellum-react'
 import {
     Table,
     TableHeader,
@@ -26,11 +26,27 @@ import {
 import { Input } from '@nextui-org/react'
 import { SearchIcon } from '../../../components/SearchIcon'
 import { Pagination } from '@nextui-org/react'
+import { useCategory } from '../../../hooks/category'
 
 const AllProduct = () => {
     const { product, error } = useProduct()
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredProduct, setFilteredProduct] = useState([])
+    const { category, error2, mutate } = useCategory()
+
+    console.log('lấy được category chưa: ', category)
+
+    if (category && category.length > 0) {
+        category.forEach(categoryItem => {
+            if (categoryItem && categoryItem.length > 0) {
+                categoryItem.forEach(item => {
+                    // console.log('item_name:', item.name_category)
+                })
+            }
+            // console.log('length', category.length)
+        })
+    }
+
 
     const handleDelete = async id => {
         try {
@@ -68,63 +84,22 @@ const AllProduct = () => {
             console.error('Lỗi:', error)
         }
     }
+    const findCategoryName = (categoryId, categoryList) => {
+        const foundCategory = categoryList.find(cat => cat.id === categoryId);
+        return foundCategory ? foundCategory.name_category : '';
+        console.log('nsme', name_category)
+
+      };
 
     return (
         <>
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        placeholder="Tìm kiếm theo địa chỉ nhà"
-                        className="formsearch"
-                    />
-                    <button type="submit">Tìm kiếm</button>
-                </form>
-            </div>
-            <Navbar>
-                <NavbarBrand>
-                    <p className="font-bold text-inherit">AirBnb</p>
-                </NavbarBrand>
-                <NavbarContent
-                    className="hidden sm:flex gap-4"
-                    justify="center">
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-                            Features
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem isActive>
-                        <Link href="#" aria-current="page">
-                            Customers
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-                            Integrations
-                        </Link>
-                    </NavbarItem>
-                </NavbarContent>
-                <NavbarContent justify="end">
-                    <NavbarItem>
-                        <div>
-                            <Link
-                                href={`/add-product`}
-                                className="text-lg text-white cursor-pointer active:opacity-50">
-                                <Button className="ml-4 bg-pink-500">
-                                    Thêm mới nhà
-                                </Button>
-                            </Link>
-                        </div>
-                    </NavbarItem>
-                </NavbarContent>
-            </Navbar>
+            
 
             <Table aria-label="Example static collection table">
                 <TableHeader>
                     <TableColumn className="text stt">STT</TableColumn>
                     <TableColumn className="text">Tiêu đề</TableColumn>
+                    <TableColumn className="text">Kiểu kiến trúc</TableColumn>
                     <TableColumn className="text">Địa chỉ</TableColumn>
                     <TableColumn className="text">Ảnh</TableColumn>
                     <TableColumn className="text">Ảnh 360</TableColumn>
@@ -140,6 +115,9 @@ const AllProduct = () => {
                                 </TableCell>
                                 <TableCell className="text2">
                                     {product.title}
+                                </TableCell>
+                                <TableCell className="text2">
+                                    {product.id_category}
                                 </TableCell>
                                 <TableCell className="text2">
                                     {product.location}
@@ -173,7 +151,22 @@ const AllProduct = () => {
                                         )}
                                 </TableCell>
                                 <TableCell className="text2">
-                                    
+                                    {product.image360 &&
+                                        JSON.parse(
+                                            product.image360,
+                                        ).map((image360, index) => (
+                                            <Pannellum
+                                                key={index}
+                                                width="350px"
+                                                height="150px"
+                                                image={`data:image/png;base64,${image360}`}
+                                                pitch={10}
+                                                yaw={180}
+                                                hfov={110}
+                                                autoLoad
+                                                alt="image360"
+                                            />
+                                        ))}
                                 </TableCell>
                                 <TableCell className="text2">
                                     {product.price}
@@ -218,6 +211,7 @@ const AllProduct = () => {
                     )}
                 </TableBody>
             </Table>
+            
             <Pagination
                 isDisabled
                 total={10}
@@ -231,19 +225,54 @@ const AllProduct = () => {
 export default AllProduct
 
 
-// {product.image360 &&
-//     JSON.parse(
-//         product.image360,
-//     ).map((image360, index) => (
-//         <Pannellum
-//             key={index}
-//             width="350px"
-//             height="150px"
-//             image={`data:image/png;base64,${image360}`}
-//             pitch={10}
-//             yaw={180}
-//             hfov={110}
-//             autoLoad
-//             alt="image360"
-//         />
-//     ))}
+// <div>
+//                 <form onSubmit={handleSubmit}>
+//                     <input
+//                         type="text"
+//                         value={searchTerm}
+//                         onChange={handleSearchChange}
+//                         placeholder="Tìm kiếm theo địa chỉ nhà"
+//                         className="formsearch"
+//                     />
+//                     <button type="submit">Tìm kiếm</button>
+//                 </form>
+//             </div>
+//             <Navbar>
+//                 <NavbarBrand>
+//                     <p className="font-bold text-inherit">AirBnb</p>
+//                 </NavbarBrand>
+//                 <NavbarContent
+//                     className="hidden sm:flex gap-4"
+//                     justify="center">
+//                     <NavbarItem>
+//                         <Link color="foreground" href="#">
+//                             Features
+//                         </Link>
+//                     </NavbarItem>
+//                     <NavbarItem isActive>
+//                         <Link href="#" aria-current="page">
+//                             Customers
+//                         </Link>
+//                     </NavbarItem>
+//                     <NavbarItem>
+//                         <Link color="foreground" href="#">
+//                             Integrations
+//                         </Link>
+//                     </NavbarItem>
+//                 </NavbarContent>
+//                 <NavbarContent justify="end">
+//                     <NavbarItem>
+//                         <div>
+//                             <Link
+//                                 href={`/add-product`}
+//                                 className="text-lg text-white cursor-pointer active:opacity-50">
+//                                 <Button className="ml-4 bg-pink-500">
+//                                     Thêm mới nhà
+//                                 </Button>
+//                             </Link>
+//                         </div>
+//                     </NavbarItem>
+//                 </NavbarContent>
+//             </Navbar>
+
+

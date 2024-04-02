@@ -1,18 +1,19 @@
 'use client'
 
+import { useCategory } from '../../../hooks/category'
 import Input from '@/components/Input'
 import Label from '@/components/Label'
 import InputError from '@/components/InputError'
 import Link from 'next/link'
 import Button from '@/components/Button'
 import { useProduct } from '../../../hooks/product'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import './add_product.css'
 import { useRouter } from 'next/navigation'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import {CameraIcon} from '../../../components/CameraIcon';
+import { CameraIcon } from '../../../components/CameraIcon'
 // import {Button} from "@nextui-org/react";
 
 const CreateProductPage = () => {
@@ -22,6 +23,9 @@ const CreateProductPage = () => {
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
     })
+    const { category, error, mutate } = useCategory()
+    console.log('category của product', category)
+
     const [id_category, setIdCategory] = useState('')
     const [selectedPrivacy, setSelectedPrivacy] = useState('')
     const [location, setLocation] = useState('')
@@ -36,34 +40,43 @@ const CreateProductPage = () => {
     const [price, setPrice] = useState('')
     const [errors, setErrors] = useState([])
 
-    const [categories, setCategories] = useState([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState('');
-   
-    function convertImageToBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(file);
-        });
-      }
- useEffect(() => {
-    const fetchCategories = async () => {
-        try {
-            const response = await axios.get('/category');
-            setCategories(response.data.categories);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    // const [categories, setCategories] = useState([]);
+    // const [selectedCategoryId, setSelectedCategoryId] = useState('');
 
-    fetchCategories();
-}, []);
-      const handleImageUpload = async (event) => {
-        const file = event.target.files[0];
-        const base64Image = await convertImageToBase64(file);
-        setImage360s([...image360s, base64Image]);
-      };
+    if (error) {
+        return <div>{error}</div>
+    }
+
+    if (!category) {
+        return <div>Loading...</div>
+    }
+
+    //    const [filteredCategory, setFilteredCategory] = useState([]);
+    // function convertImageToBase64(file) {
+    //     return new Promise((resolve, reject) => {
+    //       const reader = new FileReader();
+    //       reader.onload = () => resolve(reader.result);
+    //       reader.onerror = (error) => reject(error);
+    //       reader.readAsDataURL(file);
+    //     });
+    //   }
+    //  useEffect(() => {
+    //     const fetchCategories = async () => {
+    //         try {
+    //             const response = await axios.get('/category');
+    //             setCategories(response.data.categories);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+
+    //     fetchCategories();
+    // }, []);
+    //   const handleImageUpload = async (event) => {
+    //     const file = event.target.files[0];
+    //     const base64Image = await convertImageToBase64(file);
+    //     setImage360s([...image360s, base64Image]);
+    //   };
 
     const privacyOptions = [
         { value: 'Toàn bộ nhà', label: 'Toàn bộ nhà' },
@@ -103,6 +116,10 @@ const CreateProductPage = () => {
         }
     }
 
+    const handleCategoryChange = event => {
+        setIdCategory(event.target.value)
+    }
+
     const submitForm = event => {
         event.preventDefault()
 
@@ -126,19 +143,20 @@ const CreateProductPage = () => {
             router.push('/all-product')
         })
     }
-
+    console.log('category là:', category)
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
-        <Button className='addproduct' color="primary">Thêm mới nhà</Button>
+            <Button className="addproduct" color="primary">
+                Thêm mới nhà
+            </Button>
 
             <div className="flex gap-4 items-center">
-                <Button color="success" endContent={<CameraIcon/>}>
+                <Button color="success" endContent={<CameraIcon />}>
                     Tải lên ảnh
-                </Button>    
+                </Button>
             </div>
             <div className="flex">
                 <div className="w-1/2 pr-2">
-
                     <div className="border rounded-lg p-4 w-full">
                         <div className="mt-4">
                             <Label htmlFor="image">Hình ảnh:</Label>
@@ -184,7 +202,7 @@ const CreateProductPage = () => {
                                     </div>
                                 ))}
 
-                                <Input
+                            <Input
                                 id="image360"
                                 type="file"
                                 className="block w-full"
@@ -205,26 +223,29 @@ const CreateProductPage = () => {
                 </div>
                 <div className="w-1/2 pl-2">
                     <div className="border rounded-lg p-4-2">
-                        <div className="mt-4">
-                            <Label htmlFor="id_category">Kiểu kiến trúc:</Label>
-
-                            <Input
-                                type="number"
-                                id="id_category"
-                                value={id_category}
-                                className="block w-full"
-                                onChange={event =>
-                                    setIdCategory(event.target.value)
-                                }
-                                required
-                                autoFocus
-                            />
-
-                            <InputError
-                                messages={errors.id_category}
-                                className="mt-2"
-                            />
-                        </div>
+                        <select
+                            id="id_category"
+                            value={id_category}
+                            className="block w-full"
+                            onChange={event => {
+                                const selectedId = event.target.value // Lấy giá trị id được chọn từ event
+                                setIdCategory(selectedId) // Cập nhật id_category
+                            }}
+                            required
+                            autoFocus>
+                            <option value="">Chọn kiểu kiến trúc</option>
+                            <option value="all">Tất cả các danh mục</option>
+                            {category &&
+                                category.length > 0 &&
+                                category[0].map((categoryItem, index) => (
+                                    <option
+                                        key={categoryItem.id}
+                                        value={categoryItem.id} // Thiết lập giá trị value bằng id của danh mục
+                                    >
+                                        {categoryItem.name_category}
+                                    </option>
+                                ))}
+                        </select>
 
                         <div className="mt-4">
                             <Label htmlFor="privacy_type">

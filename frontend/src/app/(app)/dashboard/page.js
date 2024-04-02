@@ -1,31 +1,44 @@
 'use client'
 import React from 'react'
 import { useState } from 'react'
-
+import Link from 'next/link'
 import { useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
-
-// import { Pannellum } from 'pannellum-react'
-import Image from 'next/image'
-// import Link from 'next/link'
-
-// import { Button } from '@nextui-org/button'
 import { Card, CardBody } from '@nextui-org/card'
 import './style_dashboard.scss'
-import { Navbar, NavbarContent, Link, Button } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+// import './nav.css'
+import {
+    Navbar,
+    NavbarBrand,
+    NavbarContent,
+    NavbarItem,
+    NavbarMenuToggle,
+    NavbarMenu,
+    NavbarMenuItem,
+} from '@nextui-org/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 const Dashboard = () => {
     const { product, error } = useProduct()
-    const { category, error2 } = useCategory()
+    const { category } = useCategory()
     const [searchValue, setSearchValue] = useState('')
-    // const [filteredProducts, setFilteredProducts] = useState([]);
+    const { addToCart } = useCart()
 
-    const filteredProducts = product?.filter(product =>
-        product.location.toLowerCase().includes(searchValue.toLowerCase()),
-    )
-
-    console.log('category đây', category)
-
+    if (category && category.length > 0) {
+        category.forEach(categoryItem => {
+            if (categoryItem && categoryItem.length > 0) {
+                categoryItem.forEach(item => {
+                    console.log('item_name:', item.name_category)
+                })
+            }
+            console.log('length', category.length)
+        })
+    }
     const handleSearchSubmit = e => {
         e.preventDefault()
         const filtered = product?.filter(product =>
@@ -34,119 +47,189 @@ const Dashboard = () => {
         setFilteredProducts(filtered)
     }
 
+    const handleAddToCart = id_product => {
+        addToCart(id_product)
+        console.log('id_product đây thây', id_product)
+    }
+
     if (error) {
         return <div>Error loading products</div>
     }
 
-    if (error2) {
-        return <div>Error2 loading categories</div>
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 8,
+        slidesToScroll: 5,
     }
 
+    const filteredProducts = product?.filter(product =>
+        product.location.toLowerCase().includes(searchValue.toLowerCase()),
+    )
     return (
-        <div>
-            <form className="mt-4" onSubmit={handleSearchSubmit}>
-                <input
-                    type="text"
-                    value={searchValue}
-                    onChange={e => setSearchValue(e.target.value)}
-                    placeholder="Tìm kiếm..."
-                    className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
-                    Tìm kiếm
-                </button>
-            </form>
-            <Navbar isBordered>
-                <NavbarContent className="nav sm:flex gap-4" justify="center">
-                    {category && category.length > 0 ? (
-                        category.map(item => (
-                            <div key={item.id} className="flex flex-col gap-6">
-                                <h2 className="text-lg font-bold uppercase">
-                                    {item.name_category}
-                                </h2>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No categories found.</p>
-                    )}
+        <div className="al">
+            <Navbar>
+                <NavbarBrand>
+                    <p className="font-bold text-inherit">BNB</p>
+                </NavbarBrand>
+                <NavbarContent
+                    className="hidden sm:flex gap-4"
+                    justify="center"></NavbarContent>
+                <NavbarContent className="timkiem">
+                    <NavbarItem>
+                        <form className="timkiem" onSubmit={handleSearchSubmit}>
+                            <input
+                                type="text"
+                                value={searchValue}
+                                onChange={e => setSearchValue(e.target.value)}
+                                placeholder="Tìm kiếm..."
+                                className="timkiem border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </form>
+                    </NavbarItem>
+                </NavbarContent>
+                <NavbarContent justify="end">
+                    <NavbarItem>
+                        <Link href={`/all-cart`} passHref>
+                            <Button className="yeu bg-pink-500">
+                                <span className="yeu1 text-white cursor-pointer active:opacity-50">
+                                    Danh sách yêu thích
+                                </span>
+                            </Button>
+                        </Link>
+                    </NavbarItem>
                 </NavbarContent>
             </Navbar>
 
-            <div className="grid grid-cols-4 gap-4">
-                {filteredProducts?.map(product => (
-                    <section key={product.id} className="py-36">
-                        <div className="container flex items-center justify-center">
-                            <Card className="py-4 lg:w-3/4 xl:w-1/2">
-                                <CardBody className="overflow-visible py-2">
-                                    <div className="flex flex-col-reverse gap-6">
-                                        <div className="right">
-                                            <h2 className="text-lg font-bold uppercase">
-                                                {product.location}
-                                            </h2>
+            <Slider {...settings}>
+                {category &&
+                    category.length > 0 &&
+                    category.flatMap(categoryItem => {
+                        if (categoryItem && categoryItem.length > 0) {
+                            return categoryItem.map(item => {
+                                console.log('item_name:', item.name_category)
+                                return (
+                                    <Link
+                                        key={item.name_category}
+                                        href={`/category/${item.name_category}`}
+                                        passHref>
+                                        <h1 className="nav-item">
+                                            {item.name_category}
+                                        </h1>
+                                    </Link>
+                                )
+                            })
+                        }
+                        return null
+                    })}
+            </Slider>
 
-                                            <div className="mb-6 mt-2 flex gap-3">
-                                                <span className="font-bold">
-                                                    Gía tiền: {product.price}
-                                                </span>
-                                            </div>
+            <div className="sticky-element"></div>
 
-                                            <div className="mt-6 flex gap-6">
-                                                <Link
-                                                    href={`/show-product/${product.id}`}
-                                                    className="underline-none text-sm hover:text-gray-900">
-                                                    <Button className="ml-4 bg-pink-500">
-                                                        <span className="text-lg text-white cursor-pointer active:opacity-50">
-                                                            Xem Chi Tiết
+            <div className="other-elements">
+                <div className="grid grid-cols-4 gap-21">
+                    {filteredProducts?.map(product => (
+                        <section key={product.id} className="py-36">
+                            <div className="container flex items-center justify-center">
+                                <Card className="py-4 lg:w-3/4 xl:w-1/2">
+                                    <CardBody className="overflow-visible py-2">
+                                        <div className="flex flex-col-reverse gap-4">
+                                            <div className="right">
+                                                <h2 className="text-lg font-bold uppercase">
+                                                    {product.location}
+                                                </h2>
+
+                                                <div className="mb-6 mt-2 flex gap-3">
+                                                    <span className="font-bold">
+                                                        Gía tiền:{' '}
+                                                        {product.price}
+                                                    </span>
+                                                </div>
+
+                                                <div className="mt-6 flex gap-6">
+                                                    <Link
+                                                        href={`/show-product/${product.id}`}
+                                                        passHref>
+                                                        <Button className="ml-4 bg-pink-500">
+                                                            <span className="text-lg text-white cursor-pointer active:opacity-50">
+                                                                Xem Chi Tiết
+                                                            </span>
+                                                        </Button>
+                                                    </Link>
+
+                                                    <Button
+                                                        className="custom-button"
+                                                        onClick={() =>
+                                                            handleAddToCart(
+                                                                product.id,
+                                                            )
+                                                        }>
+                                                        <FontAwesomeIcon
+                                                            icon={faHeart}
+                                                            className="heart-icon"
+                                                        />
+                                                        <span className="button-text">
+                                                            Yêu thích
                                                         </span>
                                                     </Button>
-                                                </Link>
-
-                                                <Button
-                                                    color="primary"
-                                                    variant="bordered"
-                                                    radius="full">
-                                                    Yêu thích
-                                                </Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        {product.image &&
-                                            Array.isArray(
-                                                JSON.parse(product.image),
-                                            ) && (
-                                                <>
-                                                    {JSON.parse(product.image)
-                                                        .slice(0, 1)
-                                                        .map((image, index) => {
-                                                            const cleanedImagePath = image.replace(
-                                                                /[\[\]"]/g,
-                                                                '',
-                                                            )
-                                                            const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
 
-                                                            return (
-                                                                <img
-                                                                    key={index}
-                                                                    src={
-                                                                        imagePath
-                                                                    }
-                                                                    alt="Image"
-                                                                    width="270px"
-                                                                    height="200px"
-                                                                />
-                                                            )
-                                                        })}
-                                                </>
-                                            )}
-                                    </div>
-                                </CardBody>
-                            </Card>
-                        </div>
-                    </section>
-                ))}
+                                            {product.image &&
+                                                Array.isArray(
+                                                    JSON.parse(product.image),
+                                                ) && (
+                                                    <>
+                                                        {JSON.parse(
+                                                            product.image,
+                                                        )
+                                                            .slice(0, 1)
+                                                            .map(
+                                                                (
+                                                                    image,
+                                                                    index,
+                                                                ) => {
+                                                                    const cleanedImagePath = image.replace(
+                                                                        /[\[\]"]/g,
+                                                                        '',
+                                                                    )
+                                                                    const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
+
+                                                                    return (
+                                                                        <img
+                                                                            key={
+                                                                                index
+                                                                            }
+                                                                            src={
+                                                                                imagePath
+                                                                            }
+                                                                            alt="Image"
+                                                                            width="270px"
+                                                                            height="200px"
+                                                                            className="rounded-image" // Thêm lớp CSS rounded-image
+                                                                        />
+                                                                    )
+                                                                },
+                                                            )}
+                                                    </>
+                                                )}
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </div>
+                        </section>
+                    ))}
+                </div>{' '}
             </div>
         </div>
     )
 }
+
 export default Dashboard
+
+// <Button
+//                         type="submit"
+//                         className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
+//                         Tìm kiếm
+//                     </Button>

@@ -5,7 +5,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RatingController;
 use App\Models\Profile;
+use App\Models\Rating;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
@@ -104,7 +106,7 @@ Route::delete('/delete-product/{id}', [ProductController::class, 'delete'])->nam
 
 
 
-Route::get('/profile', [ProfileController::class, 'index_'])->name('profile.all');
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.all');
 
 Route::get('/san-pham', [SiteController::class, 'product'])->name('san_pham');
 Route::get('/customerhome', [SiteController::class, 'product'])->name('user.products');
@@ -113,6 +115,13 @@ Route::get('/dashboard', [SiteController::class, 'product']);
 
 Route::get('/dashboard', [SiteController::class, 'indexCate']);
 
-// Route::get('/fe-a-home/{id}',[SiteController::class,'show'])->name('product.show');
+Route::post('/gio-hang/them', [CartController::class,'addToCart'])->name('cart.add');
 
-// Route::get('/cart', [CartController])
+Route::get('/gio-hang/{id}', [SiteController::class, 'viewCart'])->name('gio-hang');
+Route::delete('/delete-cart/{id}', [CartController::class, 'delete'])->name('cart.delete');
+
+// Route::post('/favorite/{id}', [ProductController::class, 'addToFavorites'])->name('product.addToFavorites');
+
+
+Route::post('/add-rating', [RatingController::class, 'store'])->name('rating.add');
+Route::get('/rating', [RatingController::class, 'getRating'])->name('rating.all');
