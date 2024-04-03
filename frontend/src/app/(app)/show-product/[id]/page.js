@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import { useProduct, getProductById } from '../../../../hooks/product'
 import { useCart } from '../../../../hooks/cart'
-
+// import { useCategory } from '../../../hooks/category'
+import { useCategory } from '@/hooks/category'
 import '../show_product_css.scss'
 import { Pannellum } from 'pannellum-react'
 import Image from 'next/image'
@@ -25,14 +26,18 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
+
 export const ProductDetailWithPannellum = () => {
     const id = window.location.pathname.split('/').pop()
     const { getProductById, error } = useProduct()
-    const [product, setProduct] = useState(null)
+
+    const { product, error2 } = useProduct()
+
+    const [product2, setProduct2] = useState(null)
     const [showImage360, setShowImage360] = useState(false)
     const [showImageGallery, setShowImageGallery] = useState(false)
-
     const { addToCart } = useCart()
+    const { category } = useCategory()
 
     const handleAddToCart = async (id_product) => {
         try {
@@ -46,7 +51,7 @@ export const ProductDetailWithPannellum = () => {
         const fetchProduct = async () => {
             try {
                 const response = await getProductById(id)
-                setProduct(response)
+                setProduct2(response)
                 if (response.image360) {
                     setShowImage360(true)
                 }
@@ -62,11 +67,15 @@ export const ProductDetailWithPannellum = () => {
         return <div>Error: {error}</div>
     }
 
-    if (!product) {
+    if (!product2) {
         return <div>Loading...</div>
     }
+    if (category && category.length > 0) {
+        const found = category[0].find(item => item.id === product2.id_category)
+        product2.name_category = found.name_category;
+    }
 
-    const productFields = Object.keys(product)
+    const productFields = Object.keys(product2)
 
     return (
         <div className="container">
@@ -102,7 +111,7 @@ export const ProductDetailWithPannellum = () => {
                 <div>
                     <Button color="primary" className="title">
                         {' '}
-                        {product.title}
+                        {product2.title}
                     </Button>
 
                     {productFields.map(field => (
@@ -118,13 +127,13 @@ export const ProductDetailWithPannellum = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="container">
                                         <div className="image-section">
-                                            {product.image &&
+                                            {product2.image &&
                                                 Array.isArray(
-                                                    JSON.parse(product.image),
+                                                    JSON.parse(product2.image),
                                                 ) && (
                                                     <Slider slidesToShow={2}>
                                                         {JSON.parse(
-                                                            product.image,
+                                                            product2.image,
                                                         ).map(
                                                             (image, index) => {
                                                                 const cleanedImagePath = image.replace(
@@ -162,15 +171,15 @@ export const ProductDetailWithPannellum = () => {
 
                                         <div className="content-section">
                                             <div className="flex-1">
-                                                {product.image360 &&
+                                                {product2.image360 &&
                                                     Array.isArray(
                                                         JSON.parse(
-                                                            product.image360,
+                                                            product2.image360,
                                                         ),
                                                     ) && (
                                                         <Slider>
                                                             {JSON.parse(
-                                                                product.image360,
+                                                                product2.image360,
                                                             ).map(
                                                                 (
                                                                     image360,
@@ -234,7 +243,7 @@ export const ProductDetailWithPannellum = () => {
 
                                                     <td>
                                                         <div className="highlighted-box">
-                                                            {product.description.replace(
+                                                            {product2.description.replace(
                                                                 /<\/?p>/g,
                                                                 '',
                                                             )}
@@ -247,7 +256,7 @@ export const ProductDetailWithPannellum = () => {
                                                     </th>
                                                     <td>
                                                         <div className="highlighted-box">
-                                                            {product.location}
+                                                            {product2.location}
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -258,7 +267,7 @@ export const ProductDetailWithPannellum = () => {
 
                                                     <td>
                                                         <div className="highlighted-box">
-                                                            {product.price}{' '}
+                                                            {product2.price}{' '}
                                                             VNĐ/ngày đêm
                                                         </div>
                                                     </td>
@@ -269,7 +278,7 @@ export const ProductDetailWithPannellum = () => {
                                                     </th>
                                                     <td>
                                                         <div className="highlighted-box">
-                                                            {product.capacity}{' '}
+                                                            {product2.capacity}{' '}
                                                             Người
                                                         </div>
                                                     </td>
@@ -281,7 +290,7 @@ export const ProductDetailWithPannellum = () => {
                                                     <td>
                                                         <div className="highlighted-box">
                                                             {
-                                                                product.id_category
+                                                                product2.name_category
                                                             }
                                                         </div>
                                                     </td>
@@ -293,7 +302,7 @@ export const ProductDetailWithPannellum = () => {
                                                     <td>
                                                         <div className="highlighted-box">
                                                             {
-                                                                product.privacy_type
+                                                                product2.privacy_type
                                                             }
                                                         </div>
                                                     </td>
@@ -304,7 +313,7 @@ export const ProductDetailWithPannellum = () => {
                                                     </th>
                                                     <td>
                                                         <div className="highlighted-box">
-                                                            {product.amenities
+                                                            {product2.amenities
                                                                 .split(',')
                                                                 .map(
                                                                     (
@@ -332,7 +341,7 @@ export const ProductDetailWithPannellum = () => {
                                             <Button
                                                 className="custom-button"
                                                 onClick={() =>
-                                                    handleAddToCart(product.id)
+                                                    handleAddToCart(product2.id)
                                                 }>
                                                 <FontAwesomeIcon
                                                     icon={faHeart}

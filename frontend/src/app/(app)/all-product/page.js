@@ -4,7 +4,7 @@ import { useProduct, deleteProductById } from '../../../hooks/product'
 import './all_product_css.scss'
 import Link from 'next/link'
 import Button from '@/components/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Pannellum } from 'pannellum-react'
 import {
     Table,
@@ -29,24 +29,41 @@ import { Pagination } from '@nextui-org/react'
 import { useCategory } from '../../../hooks/category'
 
 const AllProduct = () => {
-    const { product, error } = useProduct()
+    const { product, error, mutate } = useProduct()
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredProduct, setFilteredProduct] = useState([])
-    const { category, error2, mutate } = useCategory()
+    const { category, error2, mutate2 } = useCategory()
 
     console.log('lấy được category chưa: ', category)
+    console.log('có product chưa: ', product)
 
     if (category && category.length > 0) {
         category.forEach(categoryItem => {
             if (categoryItem && categoryItem.length > 0) {
                 categoryItem.forEach(item => {
-                    // console.log('item_name:', item.name_category)
+                    console.log('item_name:', item.name_category)
                 })
             }
             // console.log('length', category.length)
         })
     }
 
+    if (product && product.length > 0) {
+        const show = product.map(test => {
+            // Tìm phần tử trong mảng category
+            if (category && category.length > 0) {
+            const foundCategory = category[0].find(item => item.id === test.id_category);
+        
+            // Nếu tìm thấy phần tử trong category
+            if (foundCategory) {
+                // Lấy tên của phần tử tìm thấy và thêm vào đối tượng product
+                test.name_category = foundCategory.name_category; // Giả sử name của categoryItem là name, thay bằng tên thật của trường
+            }
+        }
+            return test;
+        });
+        
+    }
 
     const handleDelete = async id => {
         try {
@@ -56,7 +73,6 @@ const AllProduct = () => {
             console.error('Lỗi:', error)
         }
     }
-
     if (error) {
         return <div>{error}</div>
     }
@@ -84,12 +100,7 @@ const AllProduct = () => {
             console.error('Lỗi:', error)
         }
     }
-    const findCategoryName = (categoryId, categoryList) => {
-        const foundCategory = categoryList.find(cat => cat.id === categoryId);
-        return foundCategory ? foundCategory.name_category : '';
-        console.log('nsme', name_category)
-
-      };
+  
 
     return (
         <>
@@ -117,7 +128,7 @@ const AllProduct = () => {
                                     {product.title}
                                 </TableCell>
                                 <TableCell className="text2">
-                                    {product.id_category}
+                                    {product.name_category}
                                 </TableCell>
                                 <TableCell className="text2">
                                     {product.location}

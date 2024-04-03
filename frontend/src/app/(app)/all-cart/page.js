@@ -17,10 +17,7 @@ const Dashboard = () => {
 
     const handleDelete = async (id) => {
         try {
-            // Gọi hàm deleteCartById từ hook useCart để xóa sản phẩm khỏi danh sách yêu thích
             await deleteCartById(id)
-            
-            // Sau khi xóa thành công, cập nhật danh sách yêu thích bằng cách gọi mutate
             mutate()
         } catch (error) {
             console.error('Lỗi:', error)

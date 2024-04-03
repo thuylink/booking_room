@@ -25,6 +25,8 @@ const Dashboard = () => {
     const { category } = useCategory()
     const [searchValue, setSearchValue] = useState('')
     const { addToCart } = useCart();
+    
+
 
     if (category && category.length > 0) {
         category.forEach(categoryItem => {
