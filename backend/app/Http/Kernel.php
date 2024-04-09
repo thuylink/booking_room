@@ -22,6 +22,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\MiddleWareCheckUserType::class,
+        \App\Http\Middleware\MiddlewareAuthenticate::class,
     ];
 
     /**
@@ -37,7 +38,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\EmailVerificationMiddleware::class,
+            'checkMiddlewareAuthenticate' => \App\Http\Middleware\EmailVerificationMiddleware::class,
         ],
 
         'api' => [

@@ -1,6 +1,6 @@
 .p-4 {
     padding: 1rem;
-    width: 350px;
+    width: 410px;
     margin-left: -120%;
     margin-top: 13%;
 }
@@ -32,4 +32,23 @@
     background-color: #ff385c;
     color: white;
     margin-left: 20%;
+    margin-top: 4%;
+}
+
+.part1{
+    margin-left: -80%;
+}
+
+.part2{
+    margin-left: -5%;
+}
+
+.part3{
+    margin-left: -2%;
+}
+
+.fly {
+    margin-left: 125%;
+    margin-top: 0%;
+    width: 76%;
 }

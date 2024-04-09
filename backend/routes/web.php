@@ -54,7 +54,6 @@ require __DIR__.'/auth.php';
 Route::get('/', [HomeMainController::class,'index'])->name('index');
 Route::get('/login', [RegisteredUserController::class,'login'])->name('login');
 Route::post('/login', [RegisteredUserController::class,'postLogin']);
-
 Route::post('/loginHost', [RegisteredUserController::class,'postLoginHost']);
 
 //đi đến trang đki
@@ -93,6 +92,20 @@ Route::get('/show-category/{id}',[CategoryController::class,'show'])->name('cate
 Route::get('/search', [CategoryController::class, 'search'])->name('category.search');
 
 
+//middleware
+Route::post('/add-category', [CategoryController::class, 'store'])
+->name('category.add')
+->middleware('checkMiddlewareAuthenticate');
+
+Route::put('/update-category/{id}', [CategoryController::class, 'update'])
+->name('category.update')
+->middleware('checkMiddlewareAuthenticate');
+
+Route::delete('/delete-category/{id}', [CategoryController::class, 'delete'])
+->name('category.delete')
+->middleware('checkMiddlewareAuthenticate');
+
+
 
 Route::get('/product',[ProductController::class,'index'])->name('product.all');
 Route::get('/add-product',[ProductController::class,'add'])->name('product.add');
@@ -120,8 +133,10 @@ Route::post('/gio-hang/them', [CartController::class,'addToCart'])->name('cart.a
 Route::get('/gio-hang/{id}', [SiteController::class, 'viewCart'])->name('gio-hang');
 Route::delete('/delete-cart/{id}', [CartController::class, 'delete'])->name('cart.delete');
 
-// Route::post('/favorite/{id}', [ProductController::class, 'addToFavorites'])->name('product.addToFavorites');
-
-
 Route::post('/add-rating', [RatingController::class, 'store'])->name('rating.add');
-Route::get('/rating', [RatingController::class, 'getRating'])->name('rating.all');
+Route::get('/rating', [RatingController::class, 'index'])->name('rating.all');
+
+Route::get('products/{name_category}', [ProductController::class, 'getProductByCategory']);
+
+
+Route::get('/users', [RegisteredUserController::class, 'index']);

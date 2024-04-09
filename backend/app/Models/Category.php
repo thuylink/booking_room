@@ -18,6 +18,9 @@ class Category extends Model
         'status'
     ];
 
+    /**mqh hasMany giữa Category và Product
+     * mỗi category có nhiều product
+     */
     public function products() {
         return $this->hasMany(Product::class, 'id_category', 'id');
     }

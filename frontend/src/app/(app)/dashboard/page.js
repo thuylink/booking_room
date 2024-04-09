@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
-import { useCart } from '../../../hooks/cart'; 
+import { useCart } from '../../../hooks/cart'
 import { Card, CardBody } from '@nextui-org/card'
 import './style_dashboard.scss'
 import { Button } from '@nextui-org/react'
@@ -24,9 +24,7 @@ const Dashboard = () => {
     const { product, error } = useProduct()
     const { category } = useCategory()
     const [searchValue, setSearchValue] = useState('')
-    const { addToCart } = useCart();
-    
-
+    const { addToCart } = useCart()
 
     if (category && category.length > 0) {
         category.forEach(categoryItem => {
@@ -38,6 +36,35 @@ const Dashboard = () => {
             console.log('length', category.length)
         })
     }
+
+    // if (category && category.length > 0) {
+    //     category.forEach(categoryItem => {
+    //         if (categoryItem && categoryItem.length > 0) {
+    //             categoryItem.forEach(item => {
+    //                 console.log('item_name:', item.name_category)
+    //             })
+    //         }
+    //         // console.log('length', category.length)
+    //     })
+    // }
+
+    if (product && product.length > 0) {
+        const show = product.map(test => {
+            // Tìm phần tử trong mảng category
+            if (category && category.length > 0) {
+            const foundCategory = category[0].find(item => item.id === test.id_category);
+        
+            // Nếu tìm thấy phần tử trong category
+            if (foundCategory) {
+                // Lấy tên của phần tử tìm thấy và thêm vào đối tượng product
+                test.name_category = foundCategory.name_category; // Giả sử name của categoryItem là name, thay bằng tên thật của trường
+            }
+        }
+            return test;
+        });
+        
+    }
+
     const handleSearchSubmit = e => {
         e.preventDefault()
         const filtered = product?.filter(product =>
@@ -46,14 +73,14 @@ const Dashboard = () => {
         setFilteredProducts(filtered)
     }
 
-    const handleAddToCart = async (id_product) => {
+    const handleAddToCart = async id_product => {
         try {
-            await addToCart(id_product); // Gọi hàm addToCart từ hook useCart để thêm sản phẩm vào giỏ hàng
-            console.log('Đã thêm sản phẩm vào giỏ hàng');
+            await addToCart(id_product) // Gọi hàm addToCart từ hook useCart để thêm sản phẩm vào giỏ hàng
+            console.log('Đã thêm sản phẩm vào giỏ hàng')
         } catch (error) {
-            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error)
         }
-    };
+    }
 
     if (error) {
         return <div>Error loading products</div>
@@ -86,7 +113,7 @@ const Dashboard = () => {
                                 type="text"
                                 value={searchValue}
                                 onChange={e => setSearchValue(e.target.value)}
-                                placeholder="Tìm kiếm..."
+                                placeholder="Tìm kiếm theo địa chỉ..."
                                 className="timkiem border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </form>
@@ -149,7 +176,12 @@ const Dashboard = () => {
                                                         {product.price}
                                                     </span>
                                                 </div>
-
+                                                <div className="mb-6 mt-2 flex gap-3">
+                                                    <span className="font-bold">
+                                                        Kiểu kiến trúc:{' '}
+                                                        {product.name_category}
+                                                    </span>
+                                                </div>
                                                 <div className="mt-6 flex gap-6">
                                                     <Link
                                                         href={`/show-product/${product.id}`}
@@ -164,7 +196,9 @@ const Dashboard = () => {
                                                     <Button
                                                         className="custom-button"
                                                         onClick={() =>
-                                                            handleAddToCart(product.id)
+                                                            handleAddToCart(
+                                                                product.id,
+                                                            )
                                                         }>
                                                         <FontAwesomeIcon
                                                             icon={faHeart}
@@ -174,6 +208,8 @@ const Dashboard = () => {
                                                             Yêu thích
                                                         </span>
                                                     </Button>
+                                                    
+                                                    
                                                 </div>
                                             </div>
 

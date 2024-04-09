@@ -22,4 +22,15 @@ class Product extends Model
         'description',
         'price',
     ];
+
+    /**mqh belongsTo giữa Product và Category
+     * mỗi product thuộc về một category
+    */
+    public function category () {
+        return $this->belongsTo(Category::class, 'id_category');
+    }
+
+    public function cart() {
+        return $this->belongsTo(Cart::class);
+    }
 }

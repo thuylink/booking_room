@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import React, { useEffect } from 'react';
 const Navigation = ({ user }) => {
+    console.log('user', user)
     const router = useRouter()
 
     const { logout } = useAuth()
@@ -65,11 +66,11 @@ const Navigation = ({ user }) => {
                             }>
                             {/* Authentication */}
                             <DropdownButton onClick={logout}>
-                                Logout
+                                Đăng xuất
                             </DropdownButton>
 
                             <DropdownButton onClick={profile}>
-                                Profile
+                                Cập nhật tài khoản
                             </DropdownButton>
                         </Dropdown>
                     </div>

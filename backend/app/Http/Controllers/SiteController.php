@@ -61,7 +61,6 @@ class SiteController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Cart not found.'], 404);
         }
-
     }
 
 }

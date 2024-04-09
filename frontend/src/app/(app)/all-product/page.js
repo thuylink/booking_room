@@ -23,8 +23,6 @@ import {
     NavbarContent,
     NavbarItem,
 } from '@nextui-org/react'
-import { Input } from '@nextui-org/react'
-import { SearchIcon } from '../../../components/SearchIcon'
 import { Pagination } from '@nextui-org/react'
 import { useCategory } from '../../../hooks/category'
 
@@ -52,7 +50,8 @@ const AllProduct = () => {
         const show = product.map(test => {
             // Tìm phần tử trong mảng category
             if (category && category.length > 0) {
-            const foundCategory = category[0].find(item => item.id === test.id_category);
+            const foundCategory = 
+            category[0].find(item => item.id === test.id_category);
         
             // Nếu tìm thấy phần tử trong category
             if (foundCategory) {
@@ -104,8 +103,49 @@ const AllProduct = () => {
 
     return (
         <>
-            
+            <div className="table-container">
+          
+            <Navbar>
+                <NavbarBrand>
+                    <p className="font-bold text-inherit">AirBnb</p>
+                </NavbarBrand>
+                <NavbarContent
+                    className="hidden sm:flex gap-4"
+                    justify="center">
+                    <NavbarItem>
+                    <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        placeholder="Tìm kiếm theo địa chỉ nhà"
+                        className="formsearch"
+                    />
+                    <Button className="ml-4 bg-pink-500" type="submit">
+                                    Tìm kiếm
+                                </Button>
+                </form>
+                    </NavbarItem>
+                    
+                </NavbarContent>
+                <NavbarContent justify="end">
+                    <NavbarItem>
+                        <div>
+                            <Link
+                                href={`/add-product`}
+                                className="text-lg text-white cursor-pointer active:opacity-50">
+                                <Button className="ml-4 bg-pink-500">
+                                    Thêm mới nhà
+                                </Button>
+                            </Link>
+                        </div>
+                    </NavbarItem>
+                </NavbarContent>
+            </Navbar>
 
+
+
+            
             <Table aria-label="Example static collection table">
                 <TableHeader>
                     <TableColumn className="text stt">STT</TableColumn>
@@ -222,6 +262,9 @@ const AllProduct = () => {
                     )}
                 </TableBody>
             </Table>
+            </div>
+
+            
             
             <Pagination
                 isDisabled
@@ -234,56 +277,5 @@ const AllProduct = () => {
 }
 
 export default AllProduct
-
-
-// <div>
-//                 <form onSubmit={handleSubmit}>
-//                     <input
-//                         type="text"
-//                         value={searchTerm}
-//                         onChange={handleSearchChange}
-//                         placeholder="Tìm kiếm theo địa chỉ nhà"
-//                         className="formsearch"
-//                     />
-//                     <button type="submit">Tìm kiếm</button>
-//                 </form>
-//             </div>
-//             <Navbar>
-//                 <NavbarBrand>
-//                     <p className="font-bold text-inherit">AirBnb</p>
-//                 </NavbarBrand>
-//                 <NavbarContent
-//                     className="hidden sm:flex gap-4"
-//                     justify="center">
-//                     <NavbarItem>
-//                         <Link color="foreground" href="#">
-//                             Features
-//                         </Link>
-//                     </NavbarItem>
-//                     <NavbarItem isActive>
-//                         <Link href="#" aria-current="page">
-//                             Customers
-//                         </Link>
-//                     </NavbarItem>
-//                     <NavbarItem>
-//                         <Link color="foreground" href="#">
-//                             Integrations
-//                         </Link>
-//                     </NavbarItem>
-//                 </NavbarContent>
-//                 <NavbarContent justify="end">
-//                     <NavbarItem>
-//                         <div>
-//                             <Link
-//                                 href={`/add-product`}
-//                                 className="text-lg text-white cursor-pointer active:opacity-50">
-//                                 <Button className="ml-4 bg-pink-500">
-//                                     Thêm mới nhà
-//                                 </Button>
-//                             </Link>
-//                         </div>
-//                     </NavbarItem>
-//                 </NavbarContent>
-//             </Navbar>
 
 

@@ -14,6 +14,41 @@ import { Navbar, NavbarContent, Button } from '@nextui-org/react'
 import { deleteCartById } from '../../../hooks/cart'
 const Dashboard = () => {
     const { cart, mutate } = useCart()
+    const { product, error } = useProduct()
+    const { category } = useCategory()
+
+    if (product && product.length > 0) {
+        product.forEach(productItem => {
+            if (productItem && productItem.length > 0) {
+                productItem.forEach(item => {
+                    console.log('item_product:', item.location)
+                })
+            }
+            // console.log('length', category.length)
+        })
+    }
+    console.log('product trong cart', product)
+
+    if (cart && cart.length > 0) {
+        const show = cart.map(test => {
+            // Tìm phần tử trong mảng product
+            if (product && product.length > 0) {
+            const foundProduct = 
+            product.find(item => item.id === test.id_product);
+        
+            // Nếu tìm thấy phần tử trong product
+            if (foundProduct) {
+                // Lấy tên của phần tử tìm thấy và thêm vào đối tượng product
+                test.location = foundProduct.location; 
+                test.price = foundProduct.price; 
+                test.image = foundProduct.image; 
+
+            }
+        }
+            return test;
+        });
+        
+    }
 
     const handleDelete = async (id) => {
         try {
@@ -35,14 +70,53 @@ const Dashboard = () => {
                                 <div className="flex flex-col-reverse gap-4">
                                     {' '}
                                     <div className="right">
+                                    {product.image &&
+                                        Array.isArray(
+                                            JSON.parse(product.image),
+                                        ) && (
+                                            <>
+                                                {JSON.parse(
+                                                    product.image,
+                                                )
+                                                    .slice(0, 1)
+                                                    .map(
+                                                        (
+                                                            image,
+                                                            index,
+                                                        ) => {
+                                                            const cleanedImagePath = image.replace(
+                                                                /[\[\]"]/g,
+                                                                '',
+                                                            )
+                                                            const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
+
+                                                            return (
+                                                                <img
+                                                                    key={
+                                                                        index
+                                                                    }
+                                                                    src={
+                                                                        imagePath
+                                                                    }
+                                                                    alt="Image"
+                                                                    width="270px"
+                                                                    height="200px"
+                                                                    className="rounded-image"
+                                                                />
+                                                            )
+                                                        },
+                                                    )}
+                                            </>
+                                        )}
                                         <h2 className="text-lg font-bold uppercase">
                                             {product.location}
                                         </h2>
 
                                         <div className="mb-6 mt-2 flex gap-3">
-                                            <span className="font-bold">
-                                                ID Product: {product.id_product}
-                                            </span>
+                                                    <span className="font-bold">
+                                                        Gía tiền:{' '}
+                                                        {product.price}
+                                                    </span>
                                         </div>
 
                                         <div className="mt-6 flex gap-6">

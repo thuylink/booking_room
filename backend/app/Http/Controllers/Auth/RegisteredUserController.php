@@ -122,4 +122,11 @@ public function postLoginHost(Request $request)
 
     // return redirect()->route('login')->with('error', 'Sai mật khẩu hoặc email'); // Chuyển hướng và truyền thông báo
 }
+
+public function index() {
+    $users = User::all();
+    return response()->json($users);
+}
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -22,6 +23,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'id_category' => 'required|integer',
             'privacy_type' => 'required|string',
@@ -187,20 +189,20 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-            $product = Product::find($id);
-            $image = 'uploads/product/' . $product->image;
-            if (File::exists($image)) {
-                File::delete($image);
-            }
-            $image360 = 'uploads/product360/' . $product->image360;
-            if (File::exists($image360)) {
-                File::delete($image360);
-            }
-            $product->delete();
-            return response()->json(['status' => 'Xóa nhà thành công'], 201);
-            // return redirect()->back()->with('status', 'Đã xóa 1 nhà');
-
+        $product = Product::find($id);
+        $image = 'uploads/product/' . $product->image;
+        if (File::exists($image)) {
+            File::delete($image);
         }
+        $image360 = 'uploads/product360/' . $product->image360;
+        if (File::exists($image360)) {
+            File::delete($image360);
+        }
+        $product->delete();
+        return response()->json(['status' => 'Xóa nhà thành công'], 201);
+        // return redirect()->back()->with('status', 'Đã xóa 1 nhà');
+
+    }
 
 
     //read - show
@@ -211,17 +213,23 @@ class ProductController extends Controller
     }
 
     public function show($id)
-{
-    $product = Product::find($id);
-    return response()->json($product);
-}
+    {
+        $product = Product::find($id);
+        return response()->json($product);
+    }
 
-public function search(Request $request)
-{
-    $search = $request->search;
-    $products = Product::where('location', 'like', "%$search%")->get();
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        $products = Product::where('location', 'like', "%$search%")->get();
 
-    return response()->json($products);
-}
+        return response()->json($products);
+    }
+
+    public function getProductsByCategory($name_category)
+    {
+        $products = Product::where('name_category', $name_category)->get();
+        return response()->json($products);
+    }
 
 }

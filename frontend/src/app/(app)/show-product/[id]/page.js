@@ -25,28 +25,52 @@ import { NavbarBrand, NavbarItem } from '@nextui-org/react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import { useRating } from '@/hooks/rating'
+import { useUser } from '@/hooks/info_user'
+import { useAuth } from '@/hooks/auth'
 
 
 export const ProductDetailWithPannellum = () => {
+    const { user } = useAuth({ middleware: 'guest' })
     const id = window.location.pathname.split('/').pop()
     const { getProductById, error } = useProduct()
 
-    const { product, error2 } = useProduct()
-
+    const { product } = useProduct()
     const [product2, setProduct2] = useState(null)
     const [showImage360, setShowImage360] = useState(false)
     const [showImageGallery, setShowImageGallery] = useState(false)
     const { addToCart } = useCart()
     const { category } = useCategory()
+    const [ratings, setRatings] = useState(0)
+    const [comment, setComment] = useState('')
+    const { addRating } = useRating()
+    const {rating} = useRating()
+    console.log ('all rating', rating)
 
     const handleAddToCart = async (id_product) => {
         try {
-            await addToCart(id_product); // Gọi hàm addToCart từ hook useCart để thêm sản phẩm vào giỏ hàng
+            await addToCart(id_product); 
             console.log('Đã thêm sản phẩm vào giỏ hàng');
         } catch (error) {
             console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
         }
     };
+
+    const handleRatingsChange = event => {
+        setRatings(parseInt(event.target.value))
+    }
+
+    const handleCommentChange = event => {
+        setComment(event.target.value)
+    }
+    const handleSubmit = async () => {
+        try {
+            await addRating(id, user.id, ratings, comment)
+            console.log('Đánh giá thành công');
+        } catch (error) {
+            console.error('Lỗi khi gửi đánh giá:', error)
+        }
+    }
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -555,80 +579,49 @@ export const ProductDetailWithPannellum = () => {
                         </div>
 
                         <div className="inputcmt">
-                            <div className="row">
-                                <div className="col-10">
-                                    <div className="comment-box ml-2">
-                                        <h4>Add a comment</h4>
-                                        <div className="rating">
-                                            <input
-                                                type="radio"
-                                                name="rating"
-                                                value="5"
-                                                id="5"
-                                            />
-                                            <label for="5">☆</label>
-                                            <input
-                                                type="radio"
-                                                name="rating"
-                                                value="4"
-                                                id="4"
-                                            />
-                                            <label for="4">☆</label>
-                                            <input
-                                                type="radio"
-                                                name="rating"
-                                                value="3"
-                                                id="3"
-                                            />
-                                            <label for="3">☆</label>
-                                            <input
-                                                type="radio"
-                                                name="rating"
-                                                value="2"
-                                                id="2"
-                                            />
-                                            <label for="2">☆</label>
-                                            <input
-                                                type="radio"
-                                                name="rating"
-                                                value="1"
-                                                id="1"
-                                            />
-                                            <label for="1">☆</label>
-                                        </div>
-                                        <div className="comment-area">
-                                            <textarea
-                                                className="form-control"
-                                                placeholder="what is your view?"
-                                                rows="4"></textarea>
-                                        </div>
-                                        <div className="comment-btns mt-2">
-                                            <div className="row">
-                                                <div className="col-6">
-                                                    <div className="pull-left">
-                                                        <button
-                                                            type="submit"
-                                                            className="btn btn-success btn-sm">
-                                                            Cancel
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div className="col-6">
-                                                    <div className="pull-right">
-                                                        <button
-                                                            type="submit"
-                                                            className="btn btn-success send btn-sm">
-                                                            Send{' '}
-                                                            <i className="fa fa-long-arrow-right ml-1"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <div className="row">
+                <div className="col-10">
+                    <div className="comment-box ml-2">
+                        <h4>Add a comment</h4>
+                        <div className="rating">
+                            {[...Array(5)].map((_, index) => (
+                                <React.Fragment key={index}>
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        value={5 - index}
+                                        id={5 - index}
+                                        onChange={handleRatingsChange}
+                                    />
+                                    <label htmlFor={5 - index}>☆</label>
+                                </React.Fragment>
+                            ))}
+                        </div>
+                        <div className="comment-area">
+                            <textarea
+                                className="form-control"
+                                placeholder="what is your view?"
+                                rows="4"
+                                value={comment}
+                                onChange={handleCommentChange}
+                            ></textarea>
+                        </div>
+                        <div className="comment-btns mt-2">
+                            <div className="mt-6 flex gap-6">
+                                <Button
+                                    className="custom-button"
+                                    onClick={handleSubmit}
+                                >
+                                    <span className="button-text">
+                                        Đánh giá
+                                    </span>
+                                </Button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
                     </CardBody>
                 </Card>
             </div>
