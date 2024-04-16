@@ -24,11 +24,6 @@
   margin-top: 1%;
 }
 
-.book {
-  background-color: white ;
-  color: #ff385c;
-}
-
 .product-title {
   color: blue;
   font-size: 24px;
@@ -78,6 +73,7 @@
   padding: 10px;
   margin-top: 8px;
   width: 270px;
+  margin-left: 20px;
 }
 
 .highlighted-value {
@@ -93,7 +89,7 @@
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 26px;
+  margin-left: 96px;
 }
 
 .heart-icon {
@@ -129,14 +125,22 @@
 }
 
 .form-control {
-  /* Thêm các thuộc tính CSS tùy chỉnh cho ô nhập */
-  /* Ví dụ: */
   background-color: #f2f2f2;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px;
-  width: 100%;
+  width: 70%;
   box-sizing: border-box;
+}
+
+.form-control-tra-phong{
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  width: 70%;
+  box-sizing: border-box;
+  margin-left: 18%;
 }
 
 .mb-3 {
@@ -202,34 +206,8 @@ body{
   margin-left: 40px;
 }
 
-
-
-.nav{
-  width: 102%;
-}
-
-.slick-prev:before, .slick-next:before {
-  font-family: 'slick';
-  font-size: 20px;
-  line-height: 1;
-  opacity: .75;
-  color: #ff385c;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.slick-next:before {
-  content: '→';
-  background: #ff385c;
-}
-
-.highlighted-box {
-  background-color: white;
-  border: 2px solid dodgerblue;
-  border-radius: 10px;
-  padding: 10px;
-  margin-top: 8px;
-  width: 270px;
-  margin-left: 150px;
+.nav {
+  width: 106%;
 }
 
 .pink-cell {
@@ -250,8 +228,8 @@ body{
   cursor: pointer;
   margin-left: 444px;
   width: 790px;
-  margin-top: -657px;
-  height: 640px;
+  margin-top: -51.2%;
+  height: 630px;
 }
 
 
@@ -290,9 +268,9 @@ body{
   margin-left: 12px;
 }
 
-.comment-box{
-    
-    padding:5px;
+.comment-box {
+  padding: 5px;
+  width: 32%;
 }
 
 .comment-area textarea{
@@ -314,15 +292,12 @@ body{
     border-color: #ff385c;
 }
 
-
-
-
 .rating {
- display: flex;
-        margin-top: -10px;
-    flex-direction: row-reverse;
-    margin-left: -4px;
-        float: left;
+  display: flex;
+  margin-top: -10px;
+  flex-direction: row-reverse;
+  margin-left: 106px;
+  float: left;
 }
 
 .rating>input {
@@ -344,68 +319,6 @@ body {
     height: 100%
 }
 
-// body {
-//     display: grid;
-//    place-items: center;
-//     font-family: 'Manrope', sans-serif;
-//    background: red;
-    
-// }
-
-
-// .comment-box{
-    
-//     padding:5px;
-// }
-
-
-
-// .comment-area textarea{
-//    resize: none; 
-//         border: 1px solid #ad9f9f;
-// }
-
-
-// .form-control:focus {
-//     color: #495057;
-//     background-color: #fff;
-//     border-color: #ffffff;
-//     outline: 0;
-//     box-shadow: 0 0 0 1px rgb(255, 0, 0) !important;
-// }
-
-// .send {
-//     color: #fff;
-//     background-color: #ff0000;
-//     border-color: #ff0000;
-// }
-
-// .send:hover {
-//     color: #fff;
-//     background-color: #f50202;
-//     border-color: #f50202;
-// }
-
-
-// .rating {
-//  display: flex;
-//         margin-top: -10px;
-//     flex-direction: row-reverse;
-//     margin-left: -4px;
-//         float: left;
-// }
-
-// .rating>rinput {
-//     display: none
-// }
-
-// .rating>label {
-//         position: relative;
-//     width: 19px;
-//     font-size: 25px;
-//     color: #ff0000;
-//     cusor: pointer;
-// }
 
 .rating>label::before {
     content: "\2605";
@@ -422,6 +335,144 @@ body {
     opacity: 1
 }
 
-// .rating:hover>input:checked~label:before {
-//     opacity: 0.4
+.scrollable-container {
+  max-height: 300px; /* Điều chỉnh chiều cao tối đa của khung chứa */
+  // overflow-y: auto; /* Tạo thanh cuộn cho phần nội dung khi vượt quá kích thước */
+  width: 100%; /* Đảm bảo khung chứa chiếm toàn bộ chiều rộng của phần tử cha */
+}
+
+.my-view{
+  width: 320%;
+}
+
+.tieude{
+  text-align: center;
+  font-weight: bold;
+}
+
+.slick-next {
+  right: 1px;
+  color: #583c41;
+  background: #9a2d40;
+}
+
+
+.heading {
+  font-size: 25px;
+  margin-right: 25px;
+}
+
+.fa {
+  font-size: 25px;
+}
+
+.checked {
+  color: orange;
+}
+
+/* Three column layout */
+.side {
+  float: left;
+  width: 15%;
+  margin-top:10px;
+}
+
+.middle {
+  margin-top:10px;
+  float: left;
+  width: 70%;
+}
+
+/* Place text to the right */
+// .right {
+//   text-align: right;
 // }
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The bar container */
+.bar-container {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+}
+
+/* Individual bars */
+.bar-5 {height: 18px; background-color: #04AA6D;}
+.bar-4 {height: 18px; background-color: #2196F3;}
+.bar-3 {height: 18px; background-color: #00bcd4;}
+.bar-2 {height: 18px; background-color: #ff9800;}
+.bar-1 {height: 18px; background-color: #f44336;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+  .side, .middle {
+    width: 100%;
+  }
+  .right {
+    display: none;
+  }
+}
+
+.all-stars{
+  width: 80%;
+}
+
+.stars {
+  background-color: white;
+  border: 2px solid dodgerblue;
+  border-radius: 10px;
+  padding: 10px 20px;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 35%;
+  width: 64.5%;
+  margin-top: -24.4%;
+  height: 268px;
+}
+
+.stars2 {
+  width: 88%;
+  margin-left: 25%;
+}
+
+.average{
+  margin-left: 10%;
+}
+
+.overall{
+  margin-left: -163%;
+}
+
+.line-star{
+  margin-top: -2%;
+}
+
+.average-rating{
+  margin-left: 10%;
+  margin-top: 10%;
+}
+
+.card {
+  max-height: 550px; /* Đặt chiều cao tối đa cho container */
+  overflow-y: auto; /* Tạo thanh cuộn dọc khi cần */
+}
+
+.label-tra-phong{
+  margin-left: -6%;
+}
+
+.table {
+  display: table;
+  margin-left: 12%;
+}
+
+.table td {
+  text-align: left;
+}

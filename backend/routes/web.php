@@ -138,5 +138,6 @@ Route::get('/rating', [RatingController::class, 'index'])->name('rating.all');
 
 Route::get('products/{name_category}', [ProductController::class, 'getProductByCategory']);
 
-
 Route::get('/users', [RegisteredUserController::class, 'index']);
+
+Route::get('products/category/{name_category}', [ProductController::class, 'getProductsByCategory']);

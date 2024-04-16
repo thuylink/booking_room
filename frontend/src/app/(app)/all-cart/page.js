@@ -16,6 +16,10 @@ const Dashboard = () => {
     const { cart, mutate } = useCart()
     const { product, error } = useProduct()
     const { category } = useCategory()
+    const [favoriteStatus, setFavoriteStatus] = useState({});
+
+
+    
 
     if (product && product.length > 0) {
         product.forEach(productItem => {
@@ -52,12 +56,15 @@ const Dashboard = () => {
 
     const handleDelete = async (id) => {
         try {
-            await deleteCartById(id)
-            mutate()
+            await deleteCartById(id); // Xóa sản phẩm khỏi danh sách all-cart
+            const updatedFavorites = { ...favoriteStatus };
+            delete updatedFavorites[id]; // Xóa sản phẩm khỏi danh sách yêu thích
+            setFavoriteStatus(updatedFavorites); // Cập nhật lại danh sách yêu thích
+            mutate(); // Cập nhật lại giao diện
         } catch (error) {
             console.error('Lỗi:', error)
         }
-    }
+    };
 
     return (
         <div className="grid grid-cols-4 gap-2">

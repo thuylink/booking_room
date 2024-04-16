@@ -20,7 +20,6 @@
     color: white;
     background: #ff385c;
     margin-top: 1%;
-    margin-left: 0%;
 }
   
   .book {
@@ -103,6 +102,11 @@ img, video {
   text-align: center;
 }
 
+.mt-6 {
+  margin-top: 1.5rem;
+  margin-left: -4%;
+}
+
 .yeu{
   margin-left: 85%;
 }
@@ -157,6 +161,8 @@ section {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: pink;
+  margin-left: -279%;
+
 }
 .navbar {
   display: flex;
@@ -200,3 +206,7 @@ section {
   margin-left: 3%;
 }
 
+.category-slider-wrapper{
+  width: 80%;
+  margin-left: 13%;
+}

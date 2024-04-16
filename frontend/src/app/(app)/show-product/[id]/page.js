@@ -1,34 +1,27 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useProduct, getProductById } from '../../../../hooks/product'
+import { useProduct } from '../../../../hooks/product'
 import { useCart } from '../../../../hooks/cart'
-// import { useCategory } from '../../../hooks/category'
 import { useCategory } from '@/hooks/category'
 import '../show_product_css.scss'
 import { Pannellum } from 'pannellum-react'
-import Image from 'next/image'
-import Input from '@/components/Input'
-
 import { Button } from '@nextui-org/button'
 import { Card, CardBody } from '@nextui-org/card'
 import { Navbar, NavbarContent, Link } from '@nextui-org/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
-import { faDollarSign } from '@fortawesome/free-solid-svg-icons'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
-import { faPerson } from '@fortawesome/free-solid-svg-icons'
-import { faPenFancy } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { NavbarBrand, NavbarItem } from '@nextui-org/react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { useRating } from '@/hooks/rating'
-import { useUser } from '@/hooks/info_user'
 import { useAuth } from '@/hooks/auth'
-
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import styled from 'styled-components'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { addDays } from 'date-fns'
 
 export const ProductDetailWithPannellum = () => {
     const { user } = useAuth({ middleware: 'guest' })
@@ -44,17 +37,117 @@ export const ProductDetailWithPannellum = () => {
     const [ratings, setRatings] = useState(0)
     const [comment, setComment] = useState('')
     const { addRating } = useRating()
-    const {rating} = useRating()
-    console.log ('all rating', rating)
+    const { rating } = useRating()
+    const [startDate, setStartDate] = useState(new Date())
+    const [endDate, setEndDate] = useState(null)
 
-    const handleAddToCart = async (id_product) => {
-        try {
-            await addToCart(id_product); 
-            console.log('Đã thêm sản phẩm vào giỏ hàng');
-        } catch (error) {
-            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+    const handleStartDateChange = date => {
+        setStartDate(date)
+
+        if (!endDate || date.getTime() > endDate.getTime()) {
+            // Nếu ngày kết thúc không được đặt hoặc ngày bắt đầu sau ngày kết thúc
+            setEndDate(addDays(date, 1)) // Đặt ngày kết thúc sau ngày bắt đầu ít nhất 1 ngày
         }
-    };
+    }
+
+    const handleEndDateChange = date => {
+        setEndDate(date)
+    }
+
+    const starCounts = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+    }
+    let comments = []
+    if (rating && rating.length > 0) {
+        rating.forEach(item => {
+            if (item.id_product === parseInt(id)) {
+                comments.push(item)
+            }
+        })
+    }
+    comments.forEach(comment => {
+        starCounts[comment.star]++
+    })
+
+    const totalReviews =
+        starCounts[1] +
+        starCounts[2] +
+        starCounts[3] +
+        starCounts[4] +
+        starCounts[5]
+    const totalStars =
+        starCounts[1] * 1 +
+        starCounts[2] * 2 +
+        starCounts[3] * 3 +
+        starCounts[4] * 4 +
+        starCounts[5] * 5
+    const averageRating = totalStars / totalReviews
+
+    const totalComments = totalReviews //tổng số lượt bình luận
+
+    const percentage5Stars = [starCounts[5] / totalComments] * 100
+    const percentage4Stars = [starCounts[4] / totalComments] * 100
+    const percentage3Stars = [starCounts[3] / totalComments] * 100
+    const percentage2Stars = [starCounts[2] / totalComments] * 100
+    const percentage1Star = [starCounts[1] / totalComments] * 100
+
+    const calculateNumberOfNights = (startDate, endDate) => {
+        // Chuyển đổi ngày nhận và ngày trả thành đối tượng Date
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+      
+        // Kiểm tra xem ngày trả có hợp lệ không
+        if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+          // Tính số milliseconds giữa hai ngày
+          const difference = end.getTime() - start.getTime();
+      
+          // Chuyển đổi số milliseconds thành số ngày và làm tròn xuống
+          const numberOfNights = Math.floor(difference / (1000 * 60 * 60 * 24));
+      
+          return numberOfNights;
+        } else {
+          // Ngày không hợp lệ, trả về 0 hoặc giá trị mặc định khác
+          return 0;
+        }
+      };
+      
+        const numberOfNights = calculateNumberOfNights(startDate, endDate);
+        console.log('Số ngày:', numberOfNights);
+    
+        const BarContainer = styled.div`
+        .bar-5 {
+            width: ${props => props.percentage5Stars}%;
+        }
+
+        .bar-4 {
+            width: ${props => props.percentage4Stars}%;
+        }
+
+        .bar-3 {
+            width: ${props => props.percentage3Stars}%;
+        }
+
+        .bar-2 {
+            width: ${props => props.percentage2Stars}%;
+        }
+
+        .bar-1 {
+            width: ${props => props.percentage1Star}%;
+        }
+    `
+
+    const handleAddToCart = async id_product => {
+        try {
+            await addToCart(id_product)
+            console.log('Đã thêm sản phẩm vào giỏ hàng')
+        } catch (error) {
+            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error)
+        }
+    }
 
     const handleRatingsChange = event => {
         setRatings(parseInt(event.target.value))
@@ -66,7 +159,7 @@ export const ProductDetailWithPannellum = () => {
     const handleSubmit = async () => {
         try {
             await addRating(id, user.id, ratings, comment)
-            console.log('Đánh giá thành công');
+            console.log('Đánh giá thành công')
         } catch (error) {
             console.error('Lỗi khi gửi đánh giá:', error)
         }
@@ -96,7 +189,7 @@ export const ProductDetailWithPannellum = () => {
     }
     if (category && category.length > 0) {
         const found = category[0].find(item => item.id === product2.id_category)
-        product2.name_category = found.name_category;
+        product2.name_category = found.name_category
     }
 
     const productFields = Object.keys(product2)
@@ -113,19 +206,19 @@ export const ProductDetailWithPannellum = () => {
                     <NavbarItem>
                         <Link
                             color="foreground"
-                            href="#"
+                            href="#image-section"
                             onClick={() => setShowImageGallery(true)}>
                             Ảnh
                         </Link>
                     </NavbarItem>
                     <NavbarItem isActive>
-                        <Link href="#" aria-current="page">
+                        <Link href="#book-section" passHref aria-current="page">
                             Thông tin chi tiết và đặt phòng
                         </Link>
                     </NavbarItem>
                     <NavbarItem>
-                        <Link color="foreground" href="#">
-                            Đánh giá
+                        <Link color="foreground" href="#rate-section" passHref>
+                            Phản hồi
                         </Link>
                     </NavbarItem>
                 </NavbarContent>
@@ -375,8 +468,10 @@ export const ProductDetailWithPannellum = () => {
                                                     Thêm vào yêu thích
                                                 </span>
                                             </Button>
-                                            
-                                            <Link href={`/rating`} passHref>
+
+                                            <Link
+                                                href="#comment-section"
+                                                passHref>
                                                 <Button className="yeu bg-pink-500">
                                                     <span className="yeu1 text-white cursor-pointer active:opacity-50">
                                                         Đánh giá
@@ -389,7 +484,7 @@ export const ProductDetailWithPannellum = () => {
                             </div>
                         </div>
 
-                        <div>
+                        <div id="book-section">
                             <div>
                                 <div>
                                     <div className="container">
@@ -398,51 +493,60 @@ export const ProductDetailWithPannellum = () => {
                                             method="post"
                                             id="myform">
                                             <div className="row mb-3">
-                                                <div className="col-sm-3">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="event_date">
-                                                        Nhận phòng:
-                                                    </label>
-                                                    <input
-                                                        className="form-control"
-                                                        type="date"
-                                                        noValidate="novalidate"
-                                                        name="event_date"
-                                                        id="event_date"
-                                                    />
+                                                <div className="row mb-3">
+                                                    <div className="col-sm-3">
+                                                        <label
+                                                            className="form-label"
+                                                            htmlFor="event_date">
+                                                            Nhận phòng{' '}
+                                                        </label>
+                                                        <DatePicker
+                                                            className="form-control"
+                                                            type="date"
+                                                            noValidate="novalidate"
+                                                            name="event_date"
+                                                            id="event_date"
+                                                            selected={startDate}
+                                                            onChange={
+                                                                handleStartDateChange
+                                                            }
+                                                            dateFormat="dd/MM/yyyy"
+                                                            minDate={new Date()}
+                                                        />
+                                                    </div>
                                                 </div>
 
-                                                <div className="col-sm-3">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="event_date">
-                                                        Trả phòng:
-                                                    </label>
-                                                    <input
-                                                        className="form-control"
-                                                        type="date"
-                                                        noValidate="novalidate"
-                                                        name="event_date"
-                                                        id="event_date"
-                                                    />
+                                                <div className="row mb-3">
+                                                    <div className="col-sm-3">
+                                                        <label
+                                                            className="label-tra-phong"
+                                                            htmlFor="event_date">
+                                                            Trả phòng{' '}
+                                                        </label>
+                                                        <DatePicker
+                                                            className="form-control-tra-phong"
+                                                            type="date"
+                                                            noValidate="novalidate"
+                                                            name="event_date"
+                                                            id="event_date"
+                                                            selected={endDate}
+                                                            dateFormat="dd/MM/yyyy"
+                                                            minDate={
+                                                                startDate
+                                                                    ? addDays(
+                                                                          startDate,
+                                                                          1,
+                                                                      )
+                                                                    : new Date()
+                                                            }
+                                                            onChange={
+                                                                handleEndDateChange
+                                                            }
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="row mb-3">
-                                                <div className="col-sm-3">
-                                                    <label
-                                                        className="form-label"
-                                                        htmlFor="phone">
-                                                        Số khách:
-                                                    </label>
-                                                    <input
-                                                        className="form-control"
-                                                        type="text"
-                                                        name="phone"
-                                                        id="phone"
-                                                    />
-                                                </div>
-                                            </div>
+
                                             <div className="row mb-3">
                                                 <Link
                                                     href={`/show-product/${product.id}`}
@@ -455,10 +559,31 @@ export const ProductDetailWithPannellum = () => {
                                                 </Link>
                                                 <div className="col-sm-6"></div>
                                             </div>
+                                            
+                                            <div className="col">
+    <table className="table">
+        <tbody>
+            <tr>
+                <th scope="row">Chi phí:</th>
+                <td className='tt'>{product2.price} / Ngày đêm</td> 
+            </tr>
+            <tr>
+                <th scope="row">Thời gian:</th>
+                <td className='tt'>{numberOfNights + 1}</td> 
+            </tr>
+            <tr>
+                <th scope="row">Tổng tiền:</th>
+                <td className='tt'>{(numberOfNights + 1)*product2.price}</td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+
                                         </form>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="container bootdey flex-grow-1 container-p-y">
                                 <div class="bg-white p-4 ">
                                     <div class="infor">
@@ -540,34 +665,87 @@ export const ProductDetailWithPannellum = () => {
                             </div>
                         </div>
 
-                        <div>
-                            <div>
-                                <div className="cmt">
-                                    <div class="container mt-5">
-                                        <div class="row  d-flex justify-content-center">
-                                            <div class="col-md-8">
-                                                <div class="card p-3">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="user d-flex flex-row align-items-center">
-                                                            <span>
-                                                                <small class="font-weight-bold text-primary">
-                                                                    james_olesenn
-                                                                </small>{' '}
-                                                                <small class="font-weight-bold">
-                                                                    Hmm, This
-                                                                    poster looks
-                                                                    cool
-                                                                </small>
-                                                            </span>
+                        <div id="rate-section">
+                            <div className="container">
+                                <div className="scrollable-container">
+                                    <div className="cmt">
+                                        <div class="container mt-5">
+                                            <h1 className="tieude">
+                                                Phản hồi từ khách hàng
+                                            </h1>
+                                            <div class="row  d-flex justify-content-center">
+                                                <div class="col-md-8">
+                                                    <div class="card p-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="user d-flex flex-row align-items-center">
+                                                                <div className="grid grid-cols-1 gap-1">
+                                                                    {' '}
+                                                                    {comments?.map(
+                                                                        rating => (
+                                                                            <div
+                                                                                key={
+                                                                                    rating.id
+                                                                                }
+                                                                                className="rating-item">
+                                                                                <div className="container">
+                                                                                    <div className="row justify-content-center">
+                                                                                        <div className="col-md-8">
+                                                                                            <div className="card p-3 mb-4">
+                                                                                                <div className="d-flex justify-content-between align-items-center">
+                                                                                                    <div className="user d-flex flex-row align-items-center">
+                                                                                                        <span>
+                                                                                                            <small class="font-weight-bold text-primary">
+                                                                                                                {
+                                                                                                                    user.name
+                                                                                                                }
+                                                                                                            </small>
+                                                                                                            <small className="d-flex align-items-center">
+                                                                                                                <div>
+                                                                                                                    {Array.from(
+                                                                                                                        {
+                                                                                                                            length:
+                                                                                                                                rating.star,
+                                                                                                                        },
+                                                                                                                        (
+                                                                                                                            _,
+                                                                                                                            i,
+                                                                                                                        ) => (
+                                                                                                                            <FontAwesomeIcon
+                                                                                                                                icon={
+                                                                                                                                    faStar
+                                                                                                                                }
+                                                                                                                                key={
+                                                                                                                                    i
+                                                                                                                                }
+                                                                                                                                className="text-pink-500"
+                                                                                                                            />
+                                                                                                                        ),
+                                                                                                                    )}
+                                                                                                                </div>
+                                                                                                            </small>
+                                                                                                            <small className="font-weight-bold">
+                                                                                                                {
+                                                                                                                    rating.cmt
+                                                                                                                }
+                                                                                                            </small>
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        ),
+                                                                    )}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <small>
-                                                            2 days ago
-                                                        </small>
-                                                    </div>
-                                                    <div class="action d-flex justify-content-between mt-2 align-items-center">
-                                                        <div class="icons align-items-center">
-                                                            <i class="fa fa-star text-warning"></i>
-                                                            <i class="fa fa-check-circle-o check-icon"></i>
+                                                        <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                            <div class="icons align-items-center">
+                                                                <i class="fa fa-star text-warning"></i>
+                                                                <i class="fa fa-check-circle-o check-icon"></i>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -578,50 +756,242 @@ export const ProductDetailWithPannellum = () => {
                             </div>
                         </div>
 
-                        <div className="inputcmt">
-            <div className="row">
-                <div className="col-10">
-                    <div className="comment-box ml-2">
-                        <h4>Add a comment</h4>
-                        <div className="rating">
-                            {[...Array(5)].map((_, index) => (
-                                <React.Fragment key={index}>
-                                    <input
-                                        type="radio"
-                                        name="rating"
-                                        value={5 - index}
-                                        id={5 - index}
-                                        onChange={handleRatingsChange}
-                                    />
-                                    <label htmlFor={5 - index}>☆</label>
-                                </React.Fragment>
-                            ))}
-                        </div>
-                        <div className="comment-area">
-                            <textarea
-                                className="form-control"
-                                placeholder="what is your view?"
-                                rows="4"
-                                value={comment}
-                                onChange={handleCommentChange}
-                            ></textarea>
-                        </div>
-                        <div className="comment-btns mt-2">
-                            <div className="mt-6 flex gap-6">
-                                <Button
-                                    className="custom-button"
-                                    onClick={handleSubmit}
-                                >
-                                    <span className="button-text">
-                                        Đánh giá
-                                    </span>
-                                </Button>
+                        <div id="comment-section">
+                            <div class="container bootdey flex-grow-1 container-p-y">
+                                <div class="bg-white p-4 ">
+                                    <div class="infor">
+                                        <div class="media align-items-center py-3 mb-3">
+                                            <div className="container">
+                                                <div className="inputcmt">
+                                                    <div className="row">
+                                                        <div className="col-10">
+                                                            <div className="comment-box">
+                                                                <div className="rating">
+                                                                    {[
+                                                                        ...Array(
+                                                                            5,
+                                                                        ),
+                                                                    ].map(
+                                                                        (
+                                                                            _,
+                                                                            index,
+                                                                        ) => (
+                                                                            <React.Fragment
+                                                                                key={
+                                                                                    index
+                                                                                }>
+                                                                                <input
+                                                                                    type="radio"
+                                                                                    name="rating"
+                                                                                    value={
+                                                                                        5 -
+                                                                                        index
+                                                                                    }
+                                                                                    id={
+                                                                                        5 -
+                                                                                        index
+                                                                                    }
+                                                                                    onChange={
+                                                                                        handleRatingsChange
+                                                                                    }
+                                                                                />
+                                                                                <label
+                                                                                    htmlFor={
+                                                                                        5 -
+                                                                                        index
+                                                                                    }>
+                                                                                    ☆
+                                                                                </label>
+                                                                            </React.Fragment>
+                                                                        ),
+                                                                    )}
+                                                                </div>
+                                                                <div className="comment-area">
+                                                                    <textarea
+                                                                        className="my-view"
+                                                                        placeholder="Viết phản hồi sau khi trải nghiệm nơi ở của bạn ... "
+                                                                        rows="4"
+                                                                        value={
+                                                                            comment
+                                                                        }
+                                                                        onChange={
+                                                                            handleCommentChange
+                                                                        }></textarea>
+                                                                </div>
+                                                                <div className="comment-btns mt-2">
+                                                                    <div className="mt-6 flex gap-6">
+                                                                        <Button
+                                                                            className="custom-button"
+                                                                            onClick={
+                                                                                handleSubmit
+                                                                            }>
+                                                                            <span className="button-text">
+                                                                                Đánh
+                                                                                giá
+                                                                            </span>
+                                                                        </Button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+                        <div id="stars-section">
+                            <div className="container bootdey flex-grow-1 container-p-y">
+                                <div className="bg-white p-4 ">
+                                    <div className="stars">
+                                        <div className="media align-items-center py-3 mb-3">
+                                            <div className="container">
+                                                <div className="stars2">
+                                                    <div className="line-star">
+                                                        <div className="col-10">
+                                                            <div className="all-stars">
+                                                                <div className="heading">
+                                                                    <span className="average-rating">
+                                                                        <FontAwesomeIcon
+                                                                            icon={
+                                                                                faStar
+                                                                            }
+                                                                            className="text-pink-500"
+                                                                        />
+                                                                        {averageRating.toFixed(
+                                                                            1,
+                                                                        )}{' '}
+                                                                        và{' '}
+                                                                        {
+                                                                            totalReviews
+                                                                        }{' '}
+                                                                        đánh giá
+                                                                    </span>
+                                                                </div>
+                                                                <div className="rightside">
+                                                                    <div className="col-md-7">
+                                                                        <div className="row-stars">
+                                                                            <div class="side">
+                                                                                <div>
+                                                                                    5
+                                                                                    star
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="middle">
+                                                                                <BarContainer
+                                                                                    percentage5Stars={
+                                                                                        percentage5Stars
+                                                                                    }>
+                                                                                    <div className="bar-5"></div>
+                                                                                </BarContainer>
+                                                                            </div>
+                                                                            <div class="side right">
+                                                                                <div>
+                                                                                    {
+                                                                                        starCounts[5]
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="side">
+                                                                                <div>
+                                                                                    4
+                                                                                    star
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="middle">
+                                                                                <BarContainer
+                                                                                    percentage4Stars={
+                                                                                        percentage4Stars
+                                                                                    }>
+                                                                                    <div className="bar-4"></div>
+                                                                                </BarContainer>
+                                                                            </div>
+                                                                            <div class="side right">
+                                                                                <div>
+                                                                                    {
+                                                                                        starCounts[4]
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="side">
+                                                                                <div>
+                                                                                    3
+                                                                                    star
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="middle">
+                                                                                <BarContainer
+                                                                                    percentage3Stars={
+                                                                                        percentage3Stars
+                                                                                    }>
+                                                                                    <div className="bar-3"></div>
+                                                                                </BarContainer>
+                                                                            </div>
+                                                                            <div class="side right">
+                                                                                <div>
+                                                                                    {
+                                                                                        starCounts[3]
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="side">
+                                                                                <div>
+                                                                                    2
+                                                                                    star
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="middle">
+                                                                                <BarContainer
+                                                                                    percentage2Stars={
+                                                                                        percentage2Stars
+                                                                                    }>
+                                                                                    <div className="bar-2"></div>
+                                                                                </BarContainer>
+                                                                            </div>
+                                                                            <div class="side right">
+                                                                                <div>
+                                                                                    {
+                                                                                        starCounts[2]
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="side">
+                                                                                <div>
+                                                                                    1
+                                                                                    star
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="middle">
+                                                                                <BarContainer
+                                                                                    percentage1Star={
+                                                                                        percentage1Star
+                                                                                    }>
+                                                                                    <div className="bar-1"></div>
+                                                                                </BarContainer>
+                                                                            </div>
+                                                                            <div class="side right">
+                                                                                <div>
+                                                                                    {
+                                                                                        starCounts[1]
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </CardBody>
                 </Card>
             </div>

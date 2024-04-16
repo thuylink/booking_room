@@ -69,17 +69,21 @@ const UpdateCategoryPage = () => {
 
         try {
             await Promise.all([
-                setImages(images),
-                ...images.map(async image => {
-                    const imageFormData = new FormData()
-                    imageFormData.append('image[]', image)
-                    // await axios.post(`/upload-image/${id}`, imageFormData);
-                }),
-                ...image360s.map(async image360 => {
-                    const image360FormData = new FormData()
-                    image360FormData.append('image360[]', image360)
-                    // await axios.post(`/upload-image360/${id}`, image360FormData);
-                }),
+                // setImages(images),
+                // ...images.map(async image => {
+                //     const imageFormData = new FormData()
+                //     imageFormData.append('image[]', image)
+                //     await axios.put(`/upload-image/${id}`, imageFormData);
+                // }),
+
+                // ...image360s.map(async image360 => {
+                //     const image360FormData = new FormData()
+                //     image360FormData.append('image360[]', image360)
+                //     await axios.put(`/upload-image360/${id}`, image360FormData);
+                // }),
+
+                
+
                 console.log('formdata', formData),
             ])
 

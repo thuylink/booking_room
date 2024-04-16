@@ -69,8 +69,10 @@ const Navigation = ({ user }) => {
                                 Đăng xuất
                             </DropdownButton>
 
-                            <DropdownButton onClick={profile}>
-                                Cập nhật tài khoản
+                            <DropdownButton >
+                                <Link href="/update-profile">
+                                    Cập nhật tài khoản
+                                </Link>
                             </DropdownButton>
                         </Dropdown>
                     </div>

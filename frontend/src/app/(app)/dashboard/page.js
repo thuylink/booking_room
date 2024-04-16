@@ -25,90 +25,109 @@ const Dashboard = () => {
     const { category } = useCategory()
     const [searchValue, setSearchValue] = useState('')
     const { addToCart } = useCart()
+    const [selectedCategory, setSelectedCategory] = useState(null)
+
+    const handleClickCategory = name_category => {
+        setSelectedCategory(name_category)
+    }
 
     if (category && category.length > 0) {
         category.forEach(categoryItem => {
             if (categoryItem && categoryItem.length > 0) {
                 categoryItem.forEach(item => {
-                    console.log('item_name:', item.name_category)
+                    // console.log('item_name:', item.name_category)
                 })
             }
-            console.log('length', category.length)
+            // console.log('length', category.length)
         })
     }
 
-    // if (category && category.length > 0) {
-    //     category.forEach(categoryItem => {
-    //         if (categoryItem && categoryItem.length > 0) {
-    //             categoryItem.forEach(item => {
-    //                 console.log('item_name:', item.name_category)
-    //             })
-    //         }
-    //         // console.log('length', category.length)
-    //     })
-    // }
-
     if (product && product.length > 0) {
         const show = product.map(test => {
-            // Tìm phần tử trong mảng category
             if (category && category.length > 0) {
-            const foundCategory = category[0].find(item => item.id === test.id_category);
-        
-            // Nếu tìm thấy phần tử trong category
-            if (foundCategory) {
-                // Lấy tên của phần tử tìm thấy và thêm vào đối tượng product
-                test.name_category = foundCategory.name_category; // Giả sử name của categoryItem là name, thay bằng tên thật của trường
+                const foundCategory = category[0].find(
+                    item => item.id === test.id_category,
+                )
+                if (foundCategory) {
+                    test.name_category = foundCategory.name_category
+                }
             }
-        }
-            return test;
-        });
-        
-    }
-
-    const handleSearchSubmit = e => {
-        e.preventDefault()
-        const filtered = product?.filter(product =>
-            product.location.toLowerCase().includes(searchValue.toLowerCase()),
-        )
-        setFilteredProducts(filtered)
+            return test
+        })
     }
 
     const handleAddToCart = async id_product => {
         try {
-            await addToCart(id_product) // Gọi hàm addToCart từ hook useCart để thêm sản phẩm vào giỏ hàng
+            await addToCart(id_product)
             console.log('Đã thêm sản phẩm vào giỏ hàng')
         } catch (error) {
             console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error)
         }
     }
 
-    if (error) {
-        return <div>Error loading products</div>
-    }
-
     const settings = {
-        dots: true,
+        dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 8,
-        slidesToScroll: 5,
-    }
+        slidesToShow: 9,
+        slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: false
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    initialSlide: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    };
 
     const filteredProducts = product?.filter(product =>
         product.location.toLowerCase().includes(searchValue.toLowerCase()),
     )
+
+    const filteredProductsAll =
+        filteredProducts && filteredProducts.length > 0
+            ? filteredProducts.filter(product => {
+                  if (!selectedCategory) {
+                      return true
+                  }
+                  return product.name_category === selectedCategory
+              })
+            : []
+
     return (
         <div className="al">
             <Navbar>
                 <NavbarBrand>
-                    <p className="font-bold text-inherit">BNB</p>
+                    <Link href="/dashboard" passHref>
+                        <p className="font-bold text-inherit">BNB</p>
+                    </Link>
                 </NavbarBrand>
                 <NavbarContent
                     className="hidden sm:flex gap-4"
-                    justify="center"></NavbarContent>
+                    justify="center">
+                </NavbarContent>
                 <NavbarContent className="timkiem">
                     <NavbarItem>
-                        <form className="timkiem" onSubmit={handleSearchSubmit}>
+                        <form className="timkiem">
                             <input
                                 type="text"
                                 value={searchValue}
@@ -132,34 +151,34 @@ const Dashboard = () => {
                 </NavbarContent>
             </Navbar>
 
-            <Slider {...settings}>
-                {category &&
-                    category.length > 0 &&
-                    category.flatMap(categoryItem => {
-                        if (categoryItem && categoryItem.length > 0) {
-                            return categoryItem.map(item => {
-                                console.log('item_name:', item.name_category)
-                                return (
-                                    <Link
+            <div className="category-slider-wrapper">
+    <Slider {...settings}>
+                    {category &&
+                        category.length > 0 &&
+                        category.flatMap(categoryItem => {
+                            if (categoryItem && categoryItem.length > 0) {
+                                return categoryItem.map(item => (
+                                    <h1
                                         key={item.name_category}
-                                        href={`/category/${item.name_category}`}
-                                        passHref>
-                                        <h1 className="nav-item">
-                                            {item.name_category}
-                                        </h1>
-                                    </Link>
-                                )
-                            })
-                        }
-                        return null
-                    })}
-            </Slider>
+                                        className="nav-item"
+                                        onClick={() =>
+                                            handleClickCategory(item.name_category)
+                                        }>
+                                        {item.name_category}
+                                    </h1>
+                                ))
+                            }
+                            return null
+                        })}
+                </Slider>
+            </div>
 
+            
             <div className="sticky-element"></div>
 
             <div className="other-elements">
                 <div className="grid grid-cols-4 gap-21">
-                    {filteredProducts?.map(product => (
+                    {filteredProductsAll?.map(product => (
                         <section key={product.id} className="py-36">
                             <div className="container flex items-center justify-center">
                                 <Card className="py-4 lg:w-3/4 xl:w-1/2">
@@ -195,21 +214,20 @@ const Dashboard = () => {
 
                                                     <Button
                                                         className="custom-button"
-                                                        onClick={() =>
+                                                        onClick={() => {
                                                             handleAddToCart(
                                                                 product.id,
                                                             )
-                                                        }>
+                                                        }}>
                                                         <FontAwesomeIcon
                                                             icon={faHeart}
                                                             className="heart-icon"
                                                         />
+
                                                         <span className="button-text">
                                                             Yêu thích
                                                         </span>
                                                     </Button>
-                                                    
-                                                    
                                                 </div>
                                             </div>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -228,8 +229,17 @@ class ProductController extends Controller
 
     public function getProductsByCategory($name_category)
     {
-        $products = Product::where('name_category', $name_category)->get();
-        return response()->json($products);
+        try {
+            //tìm danh mục theo tên
+            $category = Category::where('name_category', $name_category)->firstOrFail();
+            //lấy tất cả sản phẩm thuộc danh mục đó
+            $products = $category->products;
+            // Trả về danh sách sản phẩm dưới dạng JSON
+            return response()->json($products);
+        } catch (\Exception $e) {
+            // Xử lý nếu có lỗi
+            return response()->json(['message' => 'Không tìm thấy danh mục hoặc sản phẩm'], 404);
+        }
     }
 
 }

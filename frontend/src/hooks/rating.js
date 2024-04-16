@@ -7,6 +7,15 @@ export const useRating = () => {
     )
 
     const addRating = async (id_product, id_user, star, cmt) => {
+      //kiểm tra người dùng đã cmt chưa
+      const existingRating = rating.find(
+        item => item.id_product === id_product &&
+        item.id_user === id_user);
+
+      if (existingRating) {
+        throw new Error('Đã đánh giá trước đó.');
+      }  
+
       try {
         axios.post('/add-rating', { id_product, id_user, star,cmt });
         mutate();
@@ -14,16 +23,6 @@ export const useRating = () => {
         throw new Error(error.message);
       }
     };
-
-    // const addRating = async (id_product, id_user) => {
-    //   try {
-    //     const userId = parseInt(id_user); //đảm bảo id_user là 1 số nguyên 
-    //     axios.post('/add-rating', { id_product: id_product, id_user: userId });
-    //     mutate();
-    //   } catch (error) {
-    //     throw new Error(error.message);
-    //   }
-    // };
 
     return {
         rating,
