@@ -9,6 +9,8 @@ import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
+import { Pannellum } from 'pannellum-react'
+import './loginhost.css'
 
 const Login = () => {
     const router = useRouter()
@@ -32,6 +34,14 @@ const Login = () => {
         }
     })
 
+    useEffect(() => {
+        const panorama = pannellum.viewer('panorama-container', {
+            type: 'equirectangular',
+            // panorama: 'C:/Users/PC/OneDrive/Pictures/căn hộ.jpg',
+            // Các tùy chọn khác của Pannellum
+        });
+    }, []);
+
     const submitForm = async event => {
         event.preventDefault()
 
@@ -47,79 +57,129 @@ const Login = () => {
     return (
         <>
             <AuthSessionStatus className="mb-4" status={status} />
-            <form onSubmit={submitForm}>
-                {/* Email Address */}
-                <h1 style={{ display: 'flex', justifyContent: 'center' }}>Đăng nhập cho chủ nhà</h1>
+            <form onSubmit={submitForm} className="max-w-sm mx-auto">
+            <div class="container right-panel-active">
+            <div class="container__form container--signup">
+                <div class="form">
+                    <h1 className="head">
+                        Đăng nhập cho chủ nhà
+                    </h1>
 
-                <div>
-                    <Label htmlFor="email">Email</Label>
-
-                    <Input
-                        id="email"
-                        type="email"
-                        value={email}
-                        className="block mt-1 w-full"
-                        onChange={event => setEmail(event.target.value)}
-                        required
-                        autoFocus
-                    />
-
-                    <InputError messages={errors.email} className="mt-2" />
-                </div>
-
-                {/* Password */}
-                <div className="mt-4">
-                    <Label htmlFor="password">Password</Label>
-
-                    <Input
-                        id="password"
-                        type="password"
-                        value={password}
-                        className="block mt-1 w-full"
-                        onChange={event => setPassword(event.target.value)}
-                        required
-                        autoComplete="current-password"
-                    />
-
-                    <InputError
-                        messages={errors.password}
-                        className="mt-2"
-                    />
-                </div>
-
-                {/* Remember Me */}
-                <div className="block mt-4">
-                    <label
-                        htmlFor="remember_me"
-                        className="inline-flex items-center">
-                        <input
-                            id="remember_me"
-                            type="checkbox"
-                            name="remember"
-                            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    <div>
+                        <Input
+                            id="email"
+                            type="email"
+                            value={email}
+                            className="input"
+                            placeholder="Email"
                             onChange={event =>
-                                setShouldRemember(event.target.checked)
+                                setEmail(event.target.value)
                             }
+                            required
+                            autoFocus
                         />
 
-                        <span className="ml-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
-                    </label>
-                </div>
+                        <InputError
+                            messages={errors.email}
+                            className="mt-2"
+                        />
+                    </div>
 
-                <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href="/"
-                        className="underline text-sm text-gray-600 hover:text-gray-900">
-                        Back?
-                    </Link>
+                    <div className="mt-4">
+                        <Input
+                            id="password"
+                            type="password"
+                            value={password}
+                            className="input"
+                            placeholder="Mật khẩu"
+                            onChange={event =>
+                                setPassword(event.target.value)
+                            }
+                            required
+                            autoComplete="current-password"
+                        />
 
-                    <Button className="ml-3">Login</Button>
+                        <InputError
+                            messages={errors.password}
+                            className="mt-2"
+                        />
+                    </div>
+
+                    <div>
+                            <Button className="btn">Đăng nhập</Button>
+                        <Link
+                            href="/"
+                            className="back"
+                            style={{ marginTop: '10px' }}>
+                            Quay lại?
+                        </Link>
+                    </div>
                 </div>
+            </div>
+
+            <div className="container__overlay">
+            <div id="panorama-container" style={{ width: '100%', height: '500px' }}></div>
+
+            </div>
+        </div>
             </form>
         </>
     )
 }
 
 export default Login
+//   <div>
+//                     <Label htmlFor="email">Email</Label>
+
+//                     <Input
+//                         id="email"
+//                         type="email"
+//                         value={email}
+//                         className="block mt-1 w-full"
+//                         onChange={event => setEmail(event.target.value)}
+//                         required
+//                         autoFocus
+//                     />
+
+//                     <InputError messages={errors.email} className="mt-2" />
+//                 </div>
+
+//                 <div className="mt-4">
+//                     <Label htmlFor="password">Password</Label>
+
+//                     <Input
+//                         id="password"
+//                         type="password"
+//                         value={password}
+//                         className="block mt-1 w-full"
+//                         onChange={event => setPassword(event.target.value)}
+//                         required
+//                         autoComplete="current-password"
+//                     />
+
+//                     <InputError
+//                         messages={errors.password}
+//                         className="mt-2"
+//                     />
+//                 </div>
+
+//                 {/* Remember Me */}
+//                 <div className="block mt-4">
+//                     <label
+//                         htmlFor="remember_me"
+//                         className="inline-flex items-center">
+//                         <input
+//                             id="remember_me"
+//                             type="checkbox"
+//                             name="remember"
+//                             className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+//                             onChange={event =>
+//                                 setShouldRemember(event.target.checked)
+//                             }
+//                         />
+
+//                         <span className="ml-2 text-sm text-gray-600">
+//                             Remember me
+//                         </span>
+//                     </label>
+//                 </div>

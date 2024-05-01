@@ -30,10 +30,10 @@
 
                     </div>
                     <div class="card-body">
-                        <form method="PUT" action="{{ route('profile.update')}}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('profile.store')}}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="id_user" value="2">
-                            <h1>sửa profile đi</h1>
+
                             <div class="form-group mb-3">
                                 <label for="">Tên </label>
                                 <input type="text" name="name" id="" class="form-control">

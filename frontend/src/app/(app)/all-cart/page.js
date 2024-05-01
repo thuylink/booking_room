@@ -12,6 +12,11 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { Navbar, NavbarContent, Button } from '@nextui-org/react'
 import { deleteCartById } from '../../../hooks/cart'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeartBroken } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faComment } from '@fortawesome/free-solid-svg-icons';
+
 const Dashboard = () => {
     const { cart, mutate } = useCart()
     const { product, error } = useProduct()
@@ -74,81 +79,85 @@ const Dashboard = () => {
                     <div className="container flex items-center justify-center">
                         <Card className="py-4 lg:w-3/4 xl:w-1/2">
                             <CardBody className="overflow-visible py-2">
-                                <div className="flex flex-col-reverse gap-4">
-                                    {' '}
-                                    <div className="right">
-                                    {product.image &&
-                                        Array.isArray(
-                                            JSON.parse(product.image),
-                                        ) && (
-                                            <>
-                                                {JSON.parse(
-                                                    product.image,
-                                                )
-                                                    .slice(0, 1)
-                                                    .map(
-                                                        (
-                                                            image,
-                                                            index,
-                                                        ) => {
-                                                            const cleanedImagePath = image.replace(
-                                                                /[\[\]"]/g,
-                                                                '',
-                                                            )
-                                                            const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
+                            <div className="flex flex-col-reverse gap-4">
+                                            <div className="right">
+                                                <h2 className="text-lg font-bold uppercase">
+                                                    {product.location}
+                                                </h2>
 
-                                                            return (
-                                                                <img
-                                                                    key={
-                                                                        index
-                                                                    }
-                                                                    src={
-                                                                        imagePath
-                                                                    }
-                                                                    alt="Image"
-                                                                    width="270px"
-                                                                    height="200px"
-                                                                    className="rounded-image"
-                                                                />
-                                                            )
-                                                        },
-                                                    )}
-                                            </>
-                                        )}
-                                        <h2 className="text-lg font-bold uppercase">
-                                            {product.location}
-                                        </h2>
+                                                <div className=" gia mb-6 mt-2 flex gap-3">
+                                                        {product.price} VNĐ/đêm
+                                                </div>
+                                                <div className=" kt mb-6 mt-2 flex gap-3">
+                                                        {product.name_category}
+                                                </div>
+                                                
 
-                                        <div className="mb-6 mt-2 flex gap-3">
-                                                    <span className="font-bold">
-                                                        Gía tiền:{' '}
-                                                        {product.price}
-                                                    </span>
-                                        </div>
+                                                <div className="mt-6 flex gap-6">
+                                                    
 
-                                        <div className="mt-6 flex gap-6">
-                                            <Link
-                                                href={`/show-product/${product.id}`}
-                                                passHref>
-                                                <Button className="ml-4 bg-pink-500">
-                                                    <span className="text-lg text-white cursor-pointer active:opacity-50">
-                                                        Xem
-                                                    </span>
-                                                </Button>
-                                            </Link>
-
-                                            <Button
+                                                <span
                                                 className="unlike"
                                                 onClick={() =>
                                                     handleDelete(product.id)
                                                 }>
-                                                <span className="button-text">
-                                                    Xóa khỏi yêu thích
-                                                </span>
-                                            </Button>
+                                                <FontAwesomeIcon
+                                                    icon={faHeartBroken}
+                                                    className="heart-icon"
+                                                    style={{ marginTop: "40px" }}
+                                                />
+
+                                            </span>
+                                                </div>
+                                            </div>
+
+                                            {product.image &&
+                                                Array.isArray(
+                                                    JSON.parse(product.image),
+                                                ) && (
+                                                    <>
+                                                        {JSON.parse(
+                                                            product.image,
+                                                        )
+                                                            .slice(0, 1)
+                                                            .map(
+                                                                (
+                                                                    image,
+                                                                    index,
+                                                                ) => {
+                                                                    const cleanedImagePath = image.replace(
+                                                                        /[\[\]"]/g,
+                                                                        '',
+                                                                    )
+                                                                    const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
+
+                                                                    return (
+                                                                        <a href={`/show-product/${product.id}`} key={index}>
+
+                                                                        <img
+                                                                            key={
+                                                                                index
+                                                                            }
+                                                                            src={
+                                                                                imagePath
+                                                                            }
+
+                                                                            alt="Image"
+                                                                            width="270px"
+                                                                            height="200px"
+                                                                            className="rounded-image"
+                                                                        />
+                                                                        </a>
+
+                                                                    )
+                                                                },
+                                                            )}
+                                                    </>
+                                                )}
                                         </div>
-                                    </div>
-                                </div>
+
+
+                               
                             </CardBody>
                         </Card>
                     </div>

@@ -9,7 +9,6 @@ import { useCategory } from '../../../hooks/category'
 import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { MailIcon } from '../../../components/MailIcon'
 
 const CreateCategoryPage = () => {
     const router = useRouter()
@@ -23,7 +22,6 @@ const CreateCategoryPage = () => {
     const [image360s, setImage360s] = useState([])
     const [status, setStatus] = useState('')
     const [errors, setErrors] = useState([])
-    const [categoryOptions, setCategoryOptions] = useState([])
 
     const submitForm = event => {
         event.preventDefault()
@@ -46,24 +44,6 @@ const CreateCategoryPage = () => {
         )
     }
 
-    const previewImage360s = () => {
-        if (image360s.length > 0) {
-            return image360s.map((image360, index) => (
-                <div key={index} className="w-32 h-32">
-                    <Image
-                        src={URL.createObjectURL(image360)}
-                        alt={`Preview ${index}`}
-                        layout="responsive"
-                        width={200}
-                        height={200}
-                    />
-                </div>
-            ))
-        }
-        return null
-    }
-
-   
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
             <div className="border rounded-lg p-4" color="blue">

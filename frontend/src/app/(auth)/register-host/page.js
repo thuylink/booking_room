@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-// import './register-host.scss'
+import './register-host.css'
 
 const Page = () => {
     const router = useRouter()
@@ -34,94 +34,194 @@ const Page = () => {
             usertype: 1,
             password_confirmation: passwordConfirmation,
             setErrors,
-        }).then(()=> {
-            router.push('/login-host'); 
+        }).then(() => {
+            router.push('/login-host')
         })
     }
 
     return (
-        <form onSubmit={submitForm}>
-            <h1 style={{ display: 'flex', justifyContent: 'center' }}>Đăng ký cho chủ nhà</h1>
-            <div>
-                <Label htmlFor="name">Tên đăng nhập</Label>
+        <form onSubmit={submitForm} className="max-w-sm mx-auto">
+            <div class="container right-panel-active">
+                <div class="container__form container--signup">
+                    <div class="form">
+                        <h1 className="head">Đăng ký cho chủ nhà</h1>
 
-                <Input
-                    id="name"
-                    type="text"
-                    value={name}
-                    className="block mt-1 w-full"
-                    onChange={event => setName(event.target.value)}
-                    required
-                    autoFocus
-                />
+                        <div>
+                            <Input
+                                id="name"
+                                type="text"
+                                value={name}
+                                placeholder="Tên đăng nhập"
+                                className="input"
+                                onChange={event => setName(event.target.value)}
+                                required
+                                autoFocus
+                            />
 
-                <InputError messages={errors.name} className="mt-2" />
-            </div>
-            
-            <div className="mt-4">
-                <Label htmlFor="email">Email</Label>
+                            <InputError
+                                messages={errors.name}
+                                className="mt-2"
+                            />
+                        </div>
 
-                <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    className="block mt-1 w-full"
-                    onChange={event => setEmail(event.target.value)}
-                    required
-                />
+                        <div className="mt-4">
 
-                <InputError messages={errors.email} className="mt-2" />
-            </div>
+                            <Input
+                                id="email"
+                                type="email"
+                                value={email}
+                                placeholder="Email"
+                                className="input"
+                                onChange={event => setEmail(event.target.value)}
+                                required
+                            />
 
-            <div className="mt-4">
-                <Label htmlFor="password">Mật khẩu</Label>
+                            <InputError
+                                messages={errors.email}
+                                className="mt-2"
+                            />
+                        </div>
 
-                <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    className="block mt-1 w-full"
-                    onChange={event => setPassword(event.target.value)}
-                    required
-                    autoComplete="new-password"
-                />
+                        <div className="mt-4">
 
-                <InputError messages={errors.password} className="mt-2" />
-            </div>
+                            <Input
+                                id="password"
+                                type="password"
+                                value={password}
+                                placeholder="Mật khẩu"
+                                className="input"
+                                onChange={event =>
+                                    setPassword(event.target.value)
+                                }
+                                required
+                                autoComplete="new-password"
+                            />
 
-            <div className="mt-4">
-                <Label htmlFor="passwordConfirmation">
-                    Xác nhận mật khẩu
-                </Label>
+                            <InputError
+                                messages={errors.password}
+                                className="mt-2"
+                            />
+                        </div>
 
-                <Input
-                    id="passwordConfirmation"
-                    type="password"
-                    value={passwordConfirmation}
-                    className="block mt-1 w-full"
-                    onChange={event =>
-                        setPasswordConfirmation(event.target.value)
-                    }
-                    required
-                />
+                        <div className="mt-4">
 
-                <InputError
-                    messages={errors.password_confirmation}
-                    className="mt-2"
-                />
-            </div>
+                            <Input
+                                id="passwordConfirmation"
+                                type="password"
+                                value={passwordConfirmation}
+                                placeholder="Xác nhận mật khẩu"
+                                className="input"
+                                onChange={event =>
+                                    setPasswordConfirmation(event.target.value)
+                                }
+                                required
+                            />
 
-            <div className="flex items-center justify-end mt-4">
-                <Link
-                    href="/"
-                    className="underline text-sm text-gray-600 hover:text-gray-900">
-                    Quay lại
-                </Link>
-                
-                <Button className="ml-4">Đăng ký</Button>
+                            <InputError
+                                messages={errors.password_confirmation}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <Button className="btn">Đăng ký</Button>
+                            <Link
+                                href="/"
+                                className="back"
+                                style={{ marginTop: '10px' }}>
+                                Quay lại?
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="container__overlay">
+                    <div
+                        id="panorama-container"
+                        style={{ width: '100%', height: '500px' }}></div>
+                </div>
             </div>
         </form>
     )
 }
 
 export default Page
+// <h1 style={{ display: 'flex', justifyContent: 'center' }}>Đăng ký cho chủ nhà</h1>
+// <div>
+//     <Label htmlFor="name">Tên đăng nhập</Label>
+
+//     <Input
+//         id="name"
+//         type="text"
+//         value={name}
+//         className="block mt-1 w-full"
+//         onChange={event => setName(event.target.value)}
+//         required
+//         autoFocus
+//     />
+
+//     <InputError messages={errors.name} className="mt-2" />
+// </div>
+
+// <div className="mt-4">
+//     <Label htmlFor="email">Email</Label>
+
+//     <Input
+//         id="email"
+//         type="email"
+//         value={email}
+//         className="block mt-1 w-full"
+//         onChange={event => setEmail(event.target.value)}
+//         required
+//     />
+
+//     <InputError messages={errors.email} className="mt-2" />
+// </div>
+
+// <div className="mt-4">
+//     <Label htmlFor="password">Mật khẩu</Label>
+
+//     <Input
+//         id="password"
+//         type="password"
+//         value={password}
+//         className="block mt-1 w-full"
+//         onChange={event => setPassword(event.target.value)}
+//         required
+//         autoComplete="new-password"
+//     />
+
+//     <InputError messages={errors.password} className="mt-2" />
+// </div>
+
+// <div className="mt-4">
+//     <Label htmlFor="passwordConfirmation">
+//         Xác nhận mật khẩu
+//     </Label>
+
+//     <Input
+//         id="passwordConfirmation"
+//         type="password"
+//         value={passwordConfirmation}
+//         className="block mt-1 w-full"
+//         onChange={event =>
+//             setPasswordConfirmation(event.target.value)
+//         }
+//         required
+//     />
+
+//     <InputError
+//         messages={errors.password_confirmation}
+//         className="mt-2"
+//     />
+// </div>
+
+//             <div className="flex items-center justify-end mt-4">
+//                 <Link
+//                     href="/"
+//                     className="underline text-sm text-gray-600 hover:text-gray-900">
+//                     Quay lại
+//                 </Link>
+
+//                 <Button className="ml-4">Đăng ký</Button>
+//             </div>

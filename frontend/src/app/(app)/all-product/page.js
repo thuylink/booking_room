@@ -225,7 +225,7 @@ const AllProduct = () => {
                                 <TableCell className="text2">
                                     <div>
                                         <Link
-                                            href={`/show-product/${product.id}`}
+                                            href={`/fe-a-home/${product.id}`}
                                             className="underline text-sm hover:text-gray-900">
                                             <Button className="ml-4 bg-pink-500">
                                                 <span className="text-lg text-white cursor-pointer active:opacity-50">

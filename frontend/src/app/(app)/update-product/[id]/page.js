@@ -10,6 +10,7 @@ import Button from '@/components/Button'
 import { useProduct } from '../../../../hooks/product'
 import Image from 'next/image'
 import '../update_product.css'
+import { useCategory } from '../../../../hooks/category'
 
 const UpdateProductPage = () => {
     const router = useRouter()
@@ -19,6 +20,8 @@ const UpdateProductPage = () => {
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard-host',
     })
+
+    const { category, error, mutate } = useCategory()
 
     const [id_category, setIdCategory] = useState('')
     const [selectedPrivacy, setSelectedPrivacy] = useState('')
@@ -50,36 +53,23 @@ const UpdateProductPage = () => {
                 setTempAmenities(response.amenities)
                 setTempTitle(response.title)
                 setTempDescription(response.description)
-                setTempPrice(response.description)
+                setTempPrice(response.price)
             } catch (error) {
                 console.error('Error:', error)
             }
         }
         fetchProduct()
     }, [id])
-    useEffect(() => {
-        setLocation(tempLocation)
-    }, [tempLocation])
 
     useEffect(() => {
-        setDescription(tempDescription)
-    }, [tempDescription])
-
-    useEffect(() => {
-        setTitle(tempTitle)
-    }, [tempTitle])
-
-    useEffect(() => {
-        setPrice(tempPrice)
-    }, [tempPrice])
-
-    useEffect(() => {
-        setCapacity(tempCapacity)
-    }, [tempCapacity])
-
-    useEffect(() => {
-        setAmenities(tempAmenities)
-    }, [tempAmenities])
+        setLocation(tempLocation);
+        setDescription(tempDescription);
+        setTitle(tempTitle);
+        setPrice(tempPrice);
+        setCapacity(tempCapacity);
+        setAmenities(tempAmenities);
+    }, [tempLocation, tempDescription, tempTitle, tempPrice, tempCapacity, tempAmenities]);
+    
 
     const privacyOptions = [
         { value: 'Toàn bộ nhà', label: 'Toàn bộ nhà' },
@@ -118,6 +108,26 @@ const UpdateProductPage = () => {
             )
         }
     }
+
+    // const handleAmenitiesChange = event => {
+    //     const value = event.target.value;
+    //     const isChecked = event.target.checked;
+    
+    //     if (isChecked) {
+    //         setSelectedAmenities(prevSelected => [...prevSelected, value]);
+    //     } else {
+    //         setSelectedAmenities(prevSelected =>
+    //             prevSelected.filter(item => item !== value)
+    //         );
+    //     }
+    
+    //     // Update tempAmenities
+    //     setTempAmenities(prevAmenities =>
+    //         isChecked
+    //             ? [...prevAmenities, value] // Add the new amenity
+    //             : prevAmenities.filter(item => item !== value) // Remove the amenity
+    //     );
+    // };
 
     const submitForm = async event => {
         event.preventDefault()
@@ -248,25 +258,29 @@ const UpdateProductPage = () => {
                 </div>
                 <div className="w-1/2 pl-2">
                     <div className="border rounded-lg p-4-2">
-                        <div className="mt-4">
-                            <Label htmlFor="id_category">Kiểu kiến trúc:</Label>
-                            <Input
-                                type="number"
-                                id="id_category"
-                                value={id_category}
-                                className="block w-full"
-                                onChange={event =>
-                                    setIdCategory(event.target.value)
-                                }
-                                required
-                                autoFocus
-                            />
-
-                            <InputError
-                                messages={errors.id_category}
-                                className="mt-2"
-                            />
-                        </div>
+                    <select
+                    id="id_category"
+                    value={id_category}
+                    className="block w-full"
+                    onChange={event => {
+                        const selectedId = event.target.value // Lấy giá trị id được chọn từ event
+                        setIdCategory(selectedId) // Cập nhật id_category
+                    }}
+                    required
+                    autoFocus>
+                    <option value="">Chọn kiểu kiến trúc</option>
+                    <option value="all">Tất cả các danh mục</option>
+                    {category &&
+                        category.length > 0 &&
+                        category[0].map((categoryItem, index) => (
+                            <option
+                                key={categoryItem.id}
+                                value={categoryItem.id} // Thiết lập giá trị value bằng id của danh mục
+                            >
+                                {categoryItem.name_category}
+                            </option>
+                        ))}
+                </select>
 
                         <div className="mt-4">
                             <Label htmlFor="privacy_type">

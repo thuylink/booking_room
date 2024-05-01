@@ -55,18 +55,30 @@ const CreateProductPage = () => {
     ]
 
     const amenitiesOptions = [
-        { id: 1, label: 'Wifi' },
+        { id: 1, label: 'Wifi - TV' },
         { id: 2, label: 'Tủ lạnh' },
-        { id: 3, label: 'Bếp nướng BBQ' },
-        { id: 4, label: 'Điều hòa' },
-        { id: 5, label: 'Máy giặt' },
-        { id: 8, label: 'Bể bơi' },
-        { id: 6, label: 'Không gian riêng để làm việc' },
-        { id: 7, label: 'Chỗ đỗ xe miễn phí' },
-        { id: 9, label: 'Khu vực ăn uống ngoài trời' },
-        { id: 10, label: 'Bếp đốt lửa trại' },
-        { id: 11, label: 'Nhạc cụ' },
-        { id: 12, label: 'Thiết bị chữa cháy, bộ sơ cứu' },
+        { id: 3, label: 'Bếp BBQ' },
+        { id: 4, label: 'Bể bơi' },
+        { id: 5, label: 'Nhạc cụ' },
+        { id: 6, label: 'Bồn tắm' },
+        { id: 8, label: 'Sách' },
+        { id: 9, label: 'Camera' },
+        { id: 10, label: 'Đồ ăn nhanh' },
+        { id: 7, label: 'Hàng rào' },
+        { id: 11, label: 'Ban công' },
+
+
+        { id: 12, label: 'Không gian riêng để làm việc' },
+        { id: 13, label: 'Chỗ đỗ xe miễn phí' },
+        { id: 14, label: 'Khu vực ăn uống ngoài trời' },
+        { id: 15, label: 'Bếp đốt lửa trại' },
+        { id: 16, label: 'Máy giặt - Máy sấy' },
+        { id: 17, label: 'Hướng - Đường đi ra biển' },
+        { id: 18, label: 'Sách và đồ chơi trẻ em' },
+        { id: 19, label: 'Điều hòa - Máy sưởi - Quạt' },
+        { id: 20, label: 'Bát đĩa - Thiết bị nấu ăn' },
+        { id: 21, label: 'Móc - giá phơi - tủ quần áo' },
+        { id: 22, label: 'Thiết bị chữa cháy - Sơ cứu' },
     ]
 
     const handlePrivacyTypeChange = event => {
@@ -118,289 +130,302 @@ const CreateProductPage = () => {
 
             <div className="flex">
                 {/* Phần thứ nhất */}
-                <div className='part1'>
-                <div className=" w-1/3 pr-2 ">
-                    <div className="border rounded-lg p-4 w-full">
-                    <div className="mt-4">
-                    <Label htmlFor="image">Hình ảnh:</Label>
-                    <div className="grid grid-cols-2 gap-4">
-                        {images.length > 0 &&
-                            images.map((image, index) => (
-                                <div key={index} className="w-32 h-32">
-                                    <Image
-                                        src={URL.createObjectURL(image)}
-                                        layout="responsive"
-                                        width={200}
-                                        height={200}
-                                    />
+                <div className="part1">
+                    <div className=" w-1/3 pr-2 ">
+                        <div className="border rounded-lg p-4 w-full">
+                            <div className="mt-4">
+                                <Label htmlFor="image">Hình ảnh:</Label>
+                                <div className="grid grid-cols-2 gap-4">
+                                    {images.length > 0 &&
+                                        images.map((image, index) => (
+                                            <div
+                                                key={index}
+                                                className="w-32 h-32">
+                                                <Image
+                                                    src={URL.createObjectURL(
+                                                        image,
+                                                    )}
+                                                    layout="responsive"
+                                                    width={200}
+                                                    height={200}
+                                                />
+                                            </div>
+                                        ))}
                                 </div>
-                            ))}
-                    </div>
-                    <Input
-                        id="image"
-                        type="file"
-                        className="block w-full"
-                        onChange={event =>
-                            setImages([
-                                ...images,
-                                event.target.files[0],
-                            ])
-                        }
-                    />
-                    <InputError
-                        messages={errors.image}
-                        className="mt-2"
-                    />
-                </div>
+                                <Input
+                                    id="image"
+                                    type="file"
+                                    className="block w-full"
+                                    onChange={event =>
+                                        setImages([
+                                            ...images,
+                                            event.target.files[0],
+                                        ])
+                                    }
+                                />
+                                <InputError
+                                    messages={errors.image}
+                                    className="mt-2"
+                                />
+                            </div>
 
-                <div className="mt-4">
-                    <Label htmlFor="image">Hình ảnh 360:</Label>
-                    <div className="grid grid-cols-2 gap-4">
-                        {image360s.length > 0 &&
-                            image360s.map((image360, index) => (
-                                <div key={index} className="w-32 h-32">
-                                    <Image
-                                        src={URL.createObjectURL(
-                                            image360,
-                                        )}
-                                        layout="responsive"
-                                        width={200}
-                                        height={200}
-                                    />
+                            <div className="mt-4">
+                                <Label htmlFor="image">Hình ảnh 360:</Label>
+                                <div className="grid grid-cols-2 gap-4">
+                                    {image360s.length > 0 &&
+                                        image360s.map((image360, index) => (
+                                            <div
+                                                key={index}
+                                                className="w-32 h-32">
+                                                <Image
+                                                    src={URL.createObjectURL(
+                                                        image360,
+                                                    )}
+                                                    layout="responsive"
+                                                    width={200}
+                                                    height={200}
+                                                />
+                                            </div>
+                                        ))}
                                 </div>
-                            ))}
+
+                                <Input
+                                    id="image360"
+                                    type="file"
+                                    className="block w-full"
+                                    onChange={event =>
+                                        setImage360s([
+                                            ...image360s,
+                                            event.target.files[0],
+                                        ])
+                                    }
+                                />
+
+                                <InputError
+                                    messages={errors.image}
+                                    className="mt-2"
+                                />
+                            </div>
+                        </div>
                     </div>
-
-                    <Input
-                        id="image360"
-                        type="file"
-                        className="block w-full"
-                        onChange={event =>
-                            setImage360s([
-                                ...image360s,
-                                event.target.files[0],
-                            ])
-                        }
-                    />
-
-                    <InputError
-                        messages={errors.image}
-                        className="mt-2"
-                    />
-                </div>
-                    </div>
-                </div>
-                </div>
-                
-                <div className='part2'>
-                <div className="w-1/3 px-2">
-                    <div className="border rounded-lg p-4 w-full">
-                    <select
-                    id="id_category"
-                    value={id_category}
-                    className="block w-full"
-                    onChange={event => {
-                        const selectedId = event.target.value // Lấy giá trị id được chọn từ event
-                        setIdCategory(selectedId) // Cập nhật id_category
-                    }}
-                    required
-                    autoFocus>
-                    <option value="">Chọn kiểu kiến trúc</option>
-                    <option value="all">Tất cả các danh mục</option>
-                    {category &&
-                        category.length > 0 &&
-                        category[0].map((categoryItem, index) => (
-                            <option
-                                key={categoryItem.id}
-                                value={categoryItem.id} // Thiết lập giá trị value bằng id của danh mục
-                            >
-                                {categoryItem.name_category}
-                            </option>
-                        ))}
-                </select>
-
-                <div className="mt-4">
-                    <Label htmlFor="privacy_type">
-                        Phạm vi sử dụng:
-                    </Label>
-                    <select
-                        id="privacy_type"
-                        value={selectedPrivacy}
-                        className="block w-full"
-                        onChange={handlePrivacyTypeChange}
-                        required
-                        autoFocus>
-                        <option value="">Chọn</option>
-                        {privacyOptions.map(option => (
-                            <option
-                                key={option.value}
-                                value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                    <InputError
-                        messages={errors.privacy_type}
-                        className="mt-2"
-                    />
                 </div>
 
-                <div className="mt-4">
-                    <Label htmlFor="location">Địa chỉ:</Label>
-                    <Input
-                        type="text"
-                        id="location"
-                        value={location}
-                        className="block w-full"
-                        onChange={event =>
-                            setLocation(event.target.value)
-                        }
-                        required
-                        autoFocus
-                    />
+                <div className="part2">
+                    <div className="w-1/3 px-2">
+                        <div className="border rounded-lg p-4 w-full">
+                            <select
+                                id="id_category"
+                                value={id_category}
+                                className="block w-full"
+                                onChange={event => {
+                                    const selectedId = event.target.value // Lấy giá trị id được chọn từ event
+                                    setIdCategory(selectedId) // Cập nhật id_category
+                                }}
+                                required
+                                autoFocus>
+                                <option value="">Chọn kiểu kiến trúc</option>
+                                <option value="all">Tất cả các danh mục</option>
+                                {category &&
+                                    category.length > 0 &&
+                                    category[0].map((categoryItem, index) => (
+                                        <option
+                                            key={categoryItem.id}
+                                            value={categoryItem.id} // Thiết lập giá trị value bằng id của danh mục
+                                        >
+                                            {categoryItem.name_category}
+                                        </option>
+                                    ))}
+                            </select>
 
-                    <InputError
-                        messages={errors.location}
-                        className="mt-2"
-                    />
-                </div>
-
-                <div className="mt-4">
-                    <Label htmlFor="capacity">Sức chứa:</Label>
-                    <Input
-                        type="text"
-                        id="capacity"
-                        value={capacity}
-                        className="block w-full"
-                        onChange={event =>
-                            setCapacity(event.target.value)
-                        }
-                        required
-                        autoFocus
-                    />
-
-                    <InputError
-                        messages={errors.capacity}
-                        className="mt-2"
-                    />
-                </div>
-
-                <div className="mt-4">
-                    <Label htmlFor="amenities">Tiện ích:</Label>
-
-                    <div className="mt-4">
-                        <div className="amenities-column-left">
-                            {amenitiesOptions
-                                .slice(0, 6)
-                                .map(option => (
-                                    <div key={option.id}>
-                                        <input
-                                            type="checkbox"
-                                            id={option.label}
-                                            value={option.label}
-                                            checked={selectedAmenities.includes(
-                                                option.label,
-                                            )}
-                                            onChange={
-                                                handleAmenitiesChange
-                                            }
-                                        />
-                                        <label htmlFor={option.label}>
+                            <div className="mt-4">
+                                <Label htmlFor="privacy_type">
+                                    Phạm vi sử dụng:
+                                </Label>
+                                <select
+                                    id="privacy_type"
+                                    value={selectedPrivacy}
+                                    className="block w-full"
+                                    onChange={handlePrivacyTypeChange}
+                                    required
+                                    autoFocus>
+                                    <option value="">Chọn</option>
+                                    {privacyOptions.map(option => (
+                                        <option
+                                            key={option.value}
+                                            value={option.value}>
                                             {option.label}
-                                        </label>
-                                    </div>
-                                ))}
-                        </div>
-                        <div className="amenities-column-right">
-                            {amenitiesOptions.slice(6).map(option => (
-                                <div key={option.id}>
-                                    <input
-                                        type="checkbox"
-                                        id={option.label}
-                                        value={option.label}
-                                        checked={selectedAmenities.includes(
-                                            option.label,
-                                        )}
-                                        onChange={handleAmenitiesChange}
-                                    />
-                                    <label htmlFor={option.label}>
-                                        {option.label}
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <InputError
-                        messages={errors.amenities}
-                        className="mt-2"
-                    />
-                </div>
-                    </div>
-                </div>
-                </div>
+                                        </option>
+                                    ))}
+                                </select>
+                                <InputError
+                                    messages={errors.privacy_type}
+                                    className="mt-2"
+                                />
+                            </div>
 
-                
+                            <div className="mt-4">
+                                <Label htmlFor="location">Địa chỉ:</Label>
+                                <Input
+                                    type="text"
+                                    id="location"
+                                    value={location}
+                                    className="block w-full"
+                                    onChange={event =>
+                                        setLocation(event.target.value)
+                                    }
+                                    required
+                                    autoFocus
+                                />
+
+                                <InputError
+                                    messages={errors.location}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            <div className="mt-4">
+                                <Label htmlFor="capacity">Sức chứa:</Label>
+                                <Input
+                                    type="text"
+                                    id="capacity"
+                                    value={capacity}
+                                    className="block w-full"
+                                    onChange={event =>
+                                        setCapacity(event.target.value)
+                                    }
+                                    required
+                                    autoFocus
+                                />
+
+                                <InputError
+                                    messages={errors.capacity}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            <div className="mt-4">
+                                <Label htmlFor="amenities">Tiện ích:</Label>
+
+                                <div className="mt-4">
+                                    <div className="amenities-column-left">
+                                        {amenitiesOptions
+                                            .slice(0, 11)
+                                            .map(option => (
+                                                <div key={option.id}>
+                                                    <input
+                                                        type="checkbox"
+                                                        id={option.label}
+                                                        value={option.label}
+                                                        checked={selectedAmenities.includes(
+                                                            option.label,
+                                                        )}
+                                                        onChange={
+                                                            handleAmenitiesChange
+                                                        }
+                                                    />
+                                                    <label
+                                                        htmlFor={option.label}>
+                                                        {option.label}
+                                                    </label>
+                                                </div>
+                                            ))}
+                                    </div>
+                                    <div className="amenities-column-right">
+                                        {amenitiesOptions
+                                            .slice(11)
+                                            .map(option => (
+                                                <div key={option.id}>
+                                                    <input
+                                                        type="checkbox"
+                                                        id={option.label}
+                                                        value={option.label}
+                                                        checked={selectedAmenities.includes(
+                                                            option.label,
+                                                        )}
+                                                        onChange={
+                                                            handleAmenitiesChange
+                                                        }
+                                                    />
+                                                    <label
+                                                        htmlFor={option.label}>
+                                                        {option.label}
+                                                    </label>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
+                                <InputError
+                                    messages={errors.amenities}
+                                    className="mt-2"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 {/* Phần thứ ba */}
-                <div className='part3'>
-                 <div className="w-1/3 pl-2">
-                    <div className="border rounded-lg p-4 w-full">
-                    <div className="mt-4">
-                    <Label htmlFor="title">Tiêu đề:</Label>
-                    <Input
-                        type="text"
-                        id="title"
-                        value={title}
-                        className="block w-full"
-                        onChange={event => setTitle(event.target.value)}
-                        required
-                        autoFocus
-                    />
+                <div className="part3">
+                    <div className="w-1/3 pl-2">
+                        <div className="border rounded-lg p-4 w-full">
+                            <div className="mt-4">
+                                <Label htmlFor="title">Tiêu đề:</Label>
+                                <Input
+                                    type="text"
+                                    id="title"
+                                    value={title}
+                                    className="block w-full"
+                                    onChange={event =>
+                                        setTitle(event.target.value)
+                                    }
+                                    required
+                                    autoFocus
+                                />
 
-                    <InputError
-                        messages={errors.title}
-                        className="mt-2"
-                    />
-                </div>
+                                <InputError
+                                    messages={errors.title}
+                                    className="mt-2"
+                                />
+                            </div>
 
-                <div className="mt-4">
-                    <label htmlFor="description">Mô tả:</label>
-                    <CKEditor
-                        editor={ClassicEditor}
-                        data={description}
-                        onChange={(event, editor) => {
-                            const data = editor.getData()
-                            setDescription(data)
-                        }}
-                        required
-                        autoFocus
-                    />
-                    <InputError
-                        messages={errors.description}
-                        className="mt-2"
-                    />
-                </div>
+                            <div className="mt-4">
+                                <label htmlFor="description">Mô tả:</label>
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={description}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData()
+                                        setDescription(data)
+                                    }}
+                                    required
+                                    autoFocus
+                                />
+                                <InputError
+                                    messages={errors.description}
+                                    className="mt-2"
+                                />
+                            </div>
 
-                <div className="mt-4">
-                    <Label htmlFor="price">Chi phí:</Label>
-                    <Input
-                        id="price"
-                        type="text"
-                        value={price}
-                        className="block w-full"
-                        onChange={event => setPrice(event.target.value)}
-                        required
-                    />
+                            <div className="mt-4">
+                                <Label htmlFor="price">Chi phí:</Label>
+                                <Input
+                                    id="price"
+                                    type="text"
+                                    value={price}
+                                    className="block w-full"
+                                    onChange={event =>
+                                        setPrice(event.target.value)
+                                    }
+                                    required
+                                />
 
-                    <InputError
-                        messages={errors.price}
-                        className="mt-2"
-                    />
-                </div>
+                                <InputError
+                                    messages={errors.price}
+                                    className="mt-2"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </div>
-               
             </div>
 
             <div className="fly">
@@ -411,9 +436,8 @@ const CreateProductPage = () => {
                 </Link>
 
                 <Button className="ml-4" color="pink">
-                Thêm mới nhà
-            </Button>
-
+                    Thêm mới nhà
+                </Button>
             </div>
         </form>
     )

@@ -8,12 +8,15 @@ use Illuminate\Http\Request;
 class RatingController extends Controller
 {
     public function store(Request $request) {
+        // dd('hii',$request->all());
+
         $validatedData = $request->validate([
             'id_product' => 'required|integer',
             'id_user'=> 'required|integer',
             'star'=>'required|integer',
             'cmt'=>'required|string',
         ]);
+        // dd('hii',$request->all());
 
         $existingRating = Rating::where('id_product', $validatedData['id_product'])
         ->where('id_user', $validatedData['id_user'])
@@ -23,6 +26,9 @@ class RatingController extends Controller
             return response()
             ->json(['message' => 'Người dùng đã đánh giá sản phẩm trước đó.'], 400);
         }
+        dd('hii',$request->all());
+
+
 
         $rating = new Rating();
         $rating->id_product = $request->id_product;

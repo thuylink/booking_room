@@ -112,41 +112,48 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $category = Category::find($id);
-        $category->name_category = $request->input('name_category');
+{
+    $category = Category::find($id);
+    $category->update($request->all());
 
-        if ($request->hasFile('image')) {
-            $oldImage = 'uploads/category/' . $category->image;
-            if (File::exists($oldImage)) {
-                File::delete($oldImage);
-            }
-
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/category', $filename);
-            $category->image = $filename;
+    // Xử lý hình ảnh
+    if ($request->hasFile('image')) {
+        $oldImage = 'uploads/category/' . $category->image;
+        if (File::exists($oldImage)) {
+            File::delete($oldImage);
         }
 
-        if ($request->hasFile('image360')) {
-            $oldImage360 = 'uploads/category360/' . $category->image360;
-            if (File::exists($oldImage360)) {
-                File::delete($oldImage360);
-            }
-
-            $file360 = $request->file('image360');
-            $extension360 = $file360->getClientOriginalExtension();
-            $filename360 = time() . '.' . $extension360;
-            $file360->move('uploads/category360', $filename360);
-            $category->image360 = $filename360;
-        }
-
-        $category->status = $request->input('status');
-        $category->update();
-
-        return response()->json(['status' => 'Cập nhật danh mục thành công'], 201);
+        $file = $request->file('image');
+        $extension = $file->getClientOriginalExtension();
+        $filename = time() . '.' . $extension;
+        $file->move('uploads/category', $filename);
+        $category->image = $filename;
     }
+
+    // Xử lý hình ảnh 360
+    if ($request->hasFile('image360')) {
+        // Xóa bản ghi cũ
+        $oldImage360 = 'uploads/category360/' . $category->image360;
+        if (File::exists($oldImage360)) {
+            File::delete($oldImage360);
+        }
+
+        // Xử lý và lưu hình ảnh 360 mới
+        $image360s = $request->file('image360');
+        $image360Base64s = [];
+        foreach ($image360s as $image360) {
+            $image360Contents = file_get_contents($image360->getPathname());
+            $image360Base64 = base64_encode($image360Contents); // Chuyển đổi sang base64
+            $image360Base64s[] = $image360Base64;
+        }
+        $category->image360 = json_encode($image360Base64s);
+    }
+
+    $category->save();
+
+    return response()->json(['status' => 'Cập nhật danh mục thành công'], 200);
+}
+
 
     //delete
     public function delete_($id)

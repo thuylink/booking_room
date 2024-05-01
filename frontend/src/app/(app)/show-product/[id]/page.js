@@ -22,6 +22,8 @@ import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { addDays } from 'date-fns'
+import { faComment } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 export const ProductDetailWithPannellum = () => {
     const { user } = useAuth({ middleware: 'guest' })
@@ -40,6 +42,17 @@ export const ProductDetailWithPannellum = () => {
     const { rating } = useRating()
     const [startDate, setStartDate] = useState(new Date())
     const [endDate, setEndDate] = useState(null)
+
+    const [selectedImage, setSelectedImage] = useState(null) // State để lưu trữ URL của ảnh được chọn
+    const [selectedImage360, setSelectedImage360] = useState(null);
+
+    const handleImageClick = imagePath => {
+        setSelectedImage(imagePath) // Cập nhật state với URL của ảnh được chọn
+    }
+
+    const handleImage360Click = (image360Path) => {
+        setSelectedImage360(image360Path);
+    };
 
     const handleStartDateChange = date => {
         setStartDate(date)
@@ -96,29 +109,28 @@ export const ProductDetailWithPannellum = () => {
     const percentage1Star = [starCounts[1] / totalComments] * 100
 
     const calculateNumberOfNights = (startDate, endDate) => {
-        // Chuyển đổi ngày nhận và ngày trả thành đối tượng Date
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-      
-        // Kiểm tra xem ngày trả có hợp lệ không
+        // Chuyển đổi ngày nhận và trả thành đối tượng Date
+        const start = new Date(startDate)
+        const end = new Date(endDate)
+
+        // Kiểm tra ngày trả hợp lệ không
         if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
-          // Tính số milliseconds giữa hai ngày
-          const difference = end.getTime() - start.getTime();
-      
-          // Chuyển đổi số milliseconds thành số ngày và làm tròn xuống
-          const numberOfNights = Math.floor(difference / (1000 * 60 * 60 * 24));
-      
-          return numberOfNights;
+            const difference = end.getTime() - start.getTime() // Tính số milliseconds giữa hai ngày
+            const numberOfNights = Math.floor(
+                difference / (1000 * 60 * 60 * 24), // Chuyển đổi số milliseconds thành số ngày và làm tròn xuống
+            )
+
+            return numberOfNights
         } else {
-          // Ngày không hợp lệ, trả về 0 hoặc giá trị mặc định khác
-          return 0;
+            // Ngày không hợp lệ, trả về 0 hoặc giá trị mặc định khác
+            return 0
         }
-      };
-      
-        const numberOfNights = calculateNumberOfNights(startDate, endDate);
-        console.log('Số ngày:', numberOfNights);
-    
-        const BarContainer = styled.div`
+    }
+
+    const numberOfNights = calculateNumberOfNights(startDate, endDate)
+    console.log('Số ngày:', numberOfNights)
+
+    const BarContainer = styled.div`
         .bar-5 {
             width: ${props => props.percentage5Stars}%;
         }
@@ -179,6 +191,7 @@ export const ProductDetailWithPannellum = () => {
 
         fetchProduct()
     }, [])
+    
 
     if (error) {
         return <div>Error: {error}</div>
@@ -196,34 +209,34 @@ export const ProductDetailWithPannellum = () => {
 
     return (
         <div className="container">
-            <Navbar className="nav">
-                <NavbarBrand>
-                    <p className="font-bold text-inherit">LOGO AIRBNB</p>
-                </NavbarBrand>
-                <NavbarContent
-                    className="hidden sm:flex gap-4"
-                    justify="center">
-                    <NavbarItem>
-                        <Link
-                            color="foreground"
-                            href="#image-section"
-                            onClick={() => setShowImageGallery(true)}>
-                            Ảnh
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem isActive>
-                        <Link href="#book-section" passHref aria-current="page">
-                            Thông tin chi tiết và đặt phòng
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link color="foreground" href="#rate-section" passHref>
-                            Phản hồi
-                        </Link>
-                    </NavbarItem>
-                </NavbarContent>
-                <NavbarContent justify="end"></NavbarContent>
-            </Navbar>
+        <Navbar className="nav">
+        <NavbarBrand>
+            <p className="font-bold text-inherit">LOGO AIRBNB</p>
+        </NavbarBrand>
+        <NavbarContent
+            className="hidden sm:flex gap-4"
+            justify="center">
+            <NavbarItem>
+                <Link
+                    color="foreground"
+                    href="#image-section"
+                    onClick={() => setShowImageGallery(true)}>
+                    Ảnh
+                </Link>
+            </NavbarItem>
+            <NavbarItem isActive>
+                <Link href="#book-section" passHref aria-current="page">
+                    Thông tin chi tiết và đặt phòng
+                </Link>
+            </NavbarItem>
+            <NavbarItem>
+                <Link color="foreground" href="#rate-section" passHref>
+                    Phản hồi
+                </Link>
+            </NavbarItem>
+        </NavbarContent>
+        <NavbarContent justify="end"></NavbarContent>
+    </Navbar>
             <div className="left-section">
                 <div>
                     <Button color="primary" className="title">
@@ -244,106 +257,133 @@ export const ProductDetailWithPannellum = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="container">
                                         <div className="image-section">
-                                            {product2.image &&
-                                                Array.isArray(
-                                                    JSON.parse(product2.image),
-                                                ) && (
-                                                    <Slider slidesToShow={2}>
-                                                        {JSON.parse(
-                                                            product2.image,
-                                                        ).map(
-                                                            (image, index) => {
-                                                                const cleanedImagePath = image.replace(
-                                                                    /[\[\]"]/g,
-                                                                    '',
-                                                                )
-                                                                const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
+                                        <>
+            {selectedImage && (
+                <div className="popup">
+                    <img
+                        src={selectedImage}
+                        alt="Selected Image"
+                        style={{
+                            width: '600px', // Kích thước width mong muốn
+                            minHeight: '350px',
+                            minWidth: '600px',
+                            maxHeight: '350px',
+                            maxWidth: '600px',
+                            height: '350px', // Kích thước height mong muốn
+                            overflow: 'hidden', // Tránh tràn ra nếu ảnh quá lớn
+                        }}
+                    />
+                    <button className="close-button" onClick={() => setSelectedImage(null)}>
+                        <FontAwesomeIcon icon={faTimes} className="times-icon" />
+                    </button>
+                </div>
+            )}
 
-                                                                return (
-                                                                    <div
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        className="rounded-lg mb-4"
-                                                                        style={{
-                                                                            marginRight:
-                                                                                '10px',
-                                                                        }}>
-                                                                        <img
-                                                                            src={
-                                                                                imagePath
-                                                                            }
-                                                                            alt="Image"
-                                                                            width="400px"
-                                                                            height="370px"
-                                                                            className="rounded-lg"
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                            },
-                                                        )}
-                                                    </Slider>
-                                                )}
+            {product2.image &&
+                Array.isArray(JSON.parse(product2.image)) && (
+                    <Slider slidesToShow={6}>
+                        {JSON.parse(product2.image).map((image, index) => {
+                            const cleanedImagePath = image.replace(/[\[\]"]/g, '');
+                            const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`;
+
+                            return (
+                                <div
+                                    key={index}
+                                    className="rounded-lg mb-4"
+                                    style={{
+                                        marginRight: '10px',
+                                        width: '50px', // Kích thước width mong muốn
+                                        minHeight: '50px',
+                                        minWidth: '50px',
+                                        maxHeight: '50px',
+                                        maxWidth: '50px',
+                                        height: '50px', // Kích thước height mong muốn
+                                        overflow: 'hidden', // Tránh tràn ra nếu ảnh quá lớn
+                                    }}
+                                >
+                                    <img
+                                        src={imagePath}
+                                        alt="Image"
+                                        width="100%"
+                                        height="100%"
+                                        className="rounded-lg"
+                                        style={{
+                                            marginRight: '10px',
+                                            width: '50px', // Kích thước width mong muốn
+                                            minHeight: '100px',
+                                            minWidth: '100px',
+                                            maxHeight: '100px',
+                                            maxWidth: '100px',
+                                            height: '100px', // Kích thước height mong muốn
+                                            overflow: 'hidden', // Tránh tràn ra nếu ảnh quá lớn
+                                            cursor: 'pointer',
+                                            objectFit: 'cover', // Đảm bảo ảnh điều chỉnh kích thước mà vẫn giữ tỷ lệ khung hình
+                                        }}
+                                        onClick={() => handleImageClick(imagePath)}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </Slider>
+                )}
+        </>
+                                    
                                         </div>
 
                                         <div className="content-section">
                                             <div className="flex-1">
-                                                {product2.image360 &&
-                                                    Array.isArray(
-                                                        JSON.parse(
-                                                            product2.image360,
-                                                        ),
-                                                    ) && (
-                                                        <Slider>
-                                                            {JSON.parse(
-                                                                product2.image360,
-                                                            ).map(
-                                                                (
-                                                                    image360,
-                                                                    index,
-                                                                ) => {
-                                                                    const cleanedImage360Path = image360.replace(
-                                                                        /[\[\]"]/g,
-                                                                        '',
-                                                                    )
-                                                                    const image360Path = `data:image/png;base64,${cleanedImage360Path}`
-                                                                    return (
-                                                                        showImage360 && (
-                                                                            <div
-                                                                                key={
-                                                                                    index
-                                                                                }
-                                                                                className="rounded-lg mb-4"
-                                                                                style={{
-                                                                                    marginRight:
-                                                                                        '10px',
-                                                                                }}>
-                                                                                <Pannellum
-                                                                                    width="620px"
-                                                                                    height="350px"
-                                                                                    image={
-                                                                                        image360Path
-                                                                                    }
-                                                                                    pitch={
-                                                                                        10
-                                                                                    }
-                                                                                    yaw={
-                                                                                        180
-                                                                                    }
-                                                                                    hfov={
-                                                                                        110
-                                                                                    }
-                                                                                    autoLoad
-                                                                                    alt="image360"
-                                                                                    className="rounded-lg" // Thêm lớp CSS rounded-lg ở đây
-                                                                                />
-                                                                            </div>
-                                                                        )
-                                                                    )
-                                                                },
-                                                            )}
-                                                        </Slider>
-                                                    )}
+                                            <>
+                                            {selectedImage360 && (
+                                                <div className="popup-overlay">
+                                                    <div className="popup-content">
+                                                        <Pannellum
+                                                            width="800px"
+                                                            minHeight="500px"
+                                                            minWidth="800px"
+                                                            maxHeight="500px"
+                                                            maxWidth="800px"
+                                                            height="500px"
+                                                            image={selectedImage360}
+                                                            autoLoad
+                                                            alt="Selected Image 360"
+                                                            className="rounded-lg"
+                                                        />
+                                                        <button className="close-button" onClick={() => setSelectedImage360(null)}>
+                                                            <FontAwesomeIcon icon={faTimes} className="times360-icon" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                
+                                            {product2.image360 &&
+                                                Array.isArray(JSON.parse(product2.image360)) && (
+                                                    <Slider slidesToShow={3}>
+                                                        {JSON.parse(product2.image360).map((image360, index) => {
+                                                            const cleanedImage360Path = image360.replace(/[\[\]"]/g, '');
+                                                            const image360Path = `data:image/png;base64,${cleanedImage360Path}`;
+                                
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="rounded-lg mb-4"
+                                                                    style={{ marginRight: '10px' }}
+                                                                    onClick={() => handleImage360Click(image360Path)} // Gọi hàm khi click vào ảnh
+                                                                >
+                                                                    <Pannellum
+                                                                        width="200px" // Kích thước width mong muốn
+                                                                        height="100px" // Kích thước height mong muốn
+                                                                        image={image360Path}
+                                                                        pitch={10}
+                                                                        autoLoad
+                                                                        alt="image360"
+                                                                        className="rounded-lg"
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </Slider>
+                                                )}
+                                        </>
                                             </div>
                                         </div>
                                     </div>
@@ -400,6 +440,7 @@ export const ProductDetailWithPannellum = () => {
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                
                                                 <tr>
                                                     <th className="pink-cell">
                                                         Kiểu kiến trúc
@@ -549,7 +590,7 @@ export const ProductDetailWithPannellum = () => {
 
                                             <div className="row mb-3">
                                                 <Link
-                                                    href={`/show-product/${product.id}`}
+                                                    href={`/booking-form`}
                                                     className="underline-none text-sm hover:text-gray-900">
                                                     <Button className="ml-4 bg-pink-500">
                                                         <span className="text-lg1 text-white cursor-pointer active:opacity-50">
@@ -559,26 +600,45 @@ export const ProductDetailWithPannellum = () => {
                                                 </Link>
                                                 <div className="col-sm-6"></div>
                                             </div>
-                                            
-                                            <div className="col">
-    <table className="table">
-        <tbody>
-            <tr>
-                <th scope="row">Chi phí:</th>
-                <td className='tt'>{product2.price} / Ngày đêm</td> 
-            </tr>
-            <tr>
-                <th scope="row">Thời gian:</th>
-                <td className='tt'>{numberOfNights + 1}</td> 
-            </tr>
-            <tr>
-                <th scope="row">Tổng tiền:</th>
-                <td className='tt'>{(numberOfNights + 1)*product2.price}</td> 
-            </tr>
-        </tbody>
-    </table>
-</div>
 
+                                            <div className="col">
+                                                <table className="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                Chi phí:
+                                                            </th>
+                                                            <td className="tt">
+                                                                {product2.price}{' '}
+                                                                / Ngày đêm
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                Thời gian:
+                                                            </th>
+                                                            <td className="tt">
+                                                                {endDate
+                                                                    ? numberOfNights +
+                                                                      1
+                                                                    : 0}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                Tổng tiền:
+                                                            </th>
+                                                            <td className="tt">
+                                                                {endDate
+                                                                    ? (numberOfNights +
+                                                                          1) *
+                                                                      product2.price
+                                                                    : 0}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -843,7 +903,27 @@ export const ProductDetailWithPannellum = () => {
                             </div>
                         </div>
 
-                        <div id="stars-section">
+                        <div id="heading-section" className="class1">
+                            <div className="number-star">
+                                <span className="class1">
+                                    <FontAwesomeIcon
+                                        icon={faStar}
+                                        className="text-pink-500"
+                                    />
+                                    {averageRating.toFixed(1)}
+                                </span>
+                                <br />
+                                <span className="class1">
+                                    <FontAwesomeIcon
+                                        icon={faComment}
+                                        className="text-pink-500"
+                                    />
+                                    {totalReviews}{' '}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div id="stars-section" className="class2">
                             <div className="container bootdey flex-grow-1 container-p-y">
                                 <div className="bg-white p-4 ">
                                     <div className="stars">
@@ -853,24 +933,6 @@ export const ProductDetailWithPannellum = () => {
                                                     <div className="line-star">
                                                         <div className="col-10">
                                                             <div className="all-stars">
-                                                                <div className="heading">
-                                                                    <span className="average-rating">
-                                                                        <FontAwesomeIcon
-                                                                            icon={
-                                                                                faStar
-                                                                            }
-                                                                            className="text-pink-500"
-                                                                        />
-                                                                        {averageRating.toFixed(
-                                                                            1,
-                                                                        )}{' '}
-                                                                        và{' '}
-                                                                        {
-                                                                            totalReviews
-                                                                        }{' '}
-                                                                        đánh giá
-                                                                    </span>
-                                                                </div>
                                                                 <div className="rightside">
                                                                     <div className="col-md-7">
                                                                         <div className="row-stars">
@@ -895,6 +957,8 @@ export const ProductDetailWithPannellum = () => {
                                                                                     }
                                                                                 </div>
                                                                             </div>
+                                                                        </div>
+                                                                        <div className="row-stars">
                                                                             <div class="side">
                                                                                 <div>
                                                                                     4
@@ -916,6 +980,8 @@ export const ProductDetailWithPannellum = () => {
                                                                                     }
                                                                                 </div>
                                                                             </div>
+                                                                        </div>
+                                                                        <div className="row-stars">
                                                                             <div class="side">
                                                                                 <div>
                                                                                     3
@@ -937,6 +1003,8 @@ export const ProductDetailWithPannellum = () => {
                                                                                     }
                                                                                 </div>
                                                                             </div>
+                                                                        </div>
+                                                                        <div className="row-stars">
                                                                             <div class="side">
                                                                                 <div>
                                                                                     2
@@ -958,6 +1026,8 @@ export const ProductDetailWithPannellum = () => {
                                                                                     }
                                                                                 </div>
                                                                             </div>
+                                                                        </div>
+                                                                        <div className="row-stars">
                                                                             <div class="side">
                                                                                 <div>
                                                                                     1

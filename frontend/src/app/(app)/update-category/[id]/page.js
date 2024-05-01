@@ -19,84 +19,74 @@ const UpdateCategoryPage = () => {
         redirectIfAuthenticated: '/dashboard-host',
     })
 
-    const [name_category, setNameCategory] = useState('')
-    const [images, setImages] = useState([])
-    const [image360s, setImage360s] = useState([])
-    const [status, setStatus] = useState('')
-    const [errors, setErrors] = useState([])
+    const [name_category, setNameCategory] = useState('');
+    const [images, setImages] = useState([]);
+    const [image360s, setImage360s] = useState([]);
+    const [status, setStatus] = useState('');
+    const [errors, setErrors] = useState([]);
 
-    const [tempNameCategory, setTempNameCategory] = useState('')
-    const [tempImages, setTempImages] = useState([]); // Lưu trữ ảnh hiện tại
-    const [tempImage360s, setTempImage360s] = useState([]); // Lưu trữ ảnh 360 hiện tại
+    const [tempNameCategory, setTempNameCategory] = useState('');
+    const [tempImages, setTempImages] = useState([]);
+    const [tempImage360s, setTempImage360s] = useState([]);
 
+    // Sử dụng useEffect để fetch thông tin về danh mục khi component được render
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await getCategoryById(id)
-                setTempNameCategory(response.name_category)
-                setStatus(response.status)
-                setTempImages(response.image)
-                setTempImage360s(response.image360)
+                const response = await getCategoryById(id);
+                setTempNameCategory(response.name_category);
+                setStatus(response.status);
+                setTempImages(response.image);
+                setTempImage360s(response.image360);
             } catch (error) {
-                console.error('Error:', error)
+                console.error('Error:', error);
             }
-        }
+        };
 
-        fetchCategory()
-    }, [id])
+        fetchCategory();
+    }, [id]);
 
+    // Cập nhật state khi thông tin về danh mục thay đổi
     useEffect(() => {
-        setNameCategory(tempNameCategory)
-    }, [tempNameCategory])
+        setNameCategory(tempNameCategory);
+    }, [tempNameCategory]);
 
+    // Hàm xử lý khi thay đổi ảnh
     const handleImageChange = event => {
-        setImages(Array.from(event.target.files))
-    }
+        setImages(Array.from(event.target.files));
+    };
 
+    // Hàm xử lý khi thay đổi ảnh 360°
     const handleImage360Change = event => {
-        setImage360s(Array.from(event.target.files))
-    }
+        setImage360s(Array.from(event.target.files));
+    };
 
+    // Hàm xử lý khi submit form
     const submitForm = async event => {
-        event.preventDefault()
+        event.preventDefault();
 
+        // Tạo formData để gửi lên server
         const formData = {
             name_category: name_category,
             status: status,
             image: images,
             image360: image360s,
-        }
+        };
 
         try {
-            await Promise.all([
-                // setImages(images),
-                // ...images.map(async image => {
-                //     const imageFormData = new FormData()
-                //     imageFormData.append('image[]', image)
-                //     await axios.put(`/upload-image/${id}`, imageFormData);
-                // }),
-
-                // ...image360s.map(async image360 => {
-                //     const image360FormData = new FormData()
-                //     image360FormData.append('image360[]', image360)
-                //     await axios.put(`/upload-image360/${id}`, image360FormData);
-                // }),
-
-                
-
-                console.log('formdata', formData),
-            ])
-
+            // Gọi hàm updateCategoryById từ hook useCategory để cập nhật thông tin danh mục
             await updateCategoryById({
                 id: id,
                 formData: formData,
-            })
-            router.push('/all-category')
+            });
+            router.push('/all-category'); // Chuyển hướng về trang danh sách danh mục sau khi cập nhật thành công
         } catch (error) {
-            console.error('Error:', error)
+            console.error('Error:', error);
+            // Xử lý các lỗi và hiển thị thông báo lỗi nếu có
         }
-    }
+    };
 
+    // Hàm hiển thị ảnh xem trước
     const previewImages = () => {
         if (images.length > 0) {
             return images.map((image, index) => (
@@ -108,11 +98,12 @@ const UpdateCategoryPage = () => {
                         height={300}
                     />
                 </div>
-            ))
+            ));
         }
-        return null
-    }
+        return null;
+    };
 
+    // Hàm hiển thị ảnh 360° xem trước
     const previewImage360s = () => {
         if (image360s.length > 0) {
             return image360s.map((image360, index) => (
@@ -125,10 +116,10 @@ const UpdateCategoryPage = () => {
                         height={300}
                     />
                 </div>
-            ))
+            ));
         }
-        return null
-    }
+        return null;
+    };
 
     return (
         <form

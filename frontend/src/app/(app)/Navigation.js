@@ -9,45 +9,76 @@ import { DropdownButton } from '@/components/DropdownLink'
 import { useAuth } from '@/hooks/auth'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
+import { color } from 'framer-motion'
 const Navigation = ({ user }) => {
     console.log('user', user)
     const router = useRouter()
 
     const { logout } = useAuth()
-    const { profile } = useAuth()
+    // const { profile } = useAuth()
+    const [isNewProfile, setIsNewProfile] = useState(false)
+    const handleProfileClick = () => {
+        if (isNewProfile) {
+            update_profile()
+        } else {
+            profile()
+        }
+    }
 
     const [open, setOpen] = useState(false)
+    const profile = () => {
+        router.push('/profiles')
+    }
+    const update_profile = () => {
+        router.push('/update-profile')
+    }
     useEffect(() => {
         // if (user?.email_verified_at === null) {
         //     setShowVerificationPopup(true);
         // } else {
         //     setShowVerificationPopup(false);
         // }
-    }, [user?.email_verified_at]);
+    }, [user?.email_verified_at])
     return (
         <nav className="bg-white border-b border-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex">
-                        <div className="flex-shrink-0 flex items-center">
-                            
-                        </div>
+                        <div className="flex-shrink-0 flex items-center"></div>
                         <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <NavLink
                                 href="/dashboard"
                                 active={router.pathname === '/dashboard'}>
-                                Dashboard
+                                <div className="flex items-center">
+                                    <img
+                                        src="../../logo-airbnb.jpg"
+                                        alt="Logo"
+                                        className="mr-2"
+                                    />
+                                    <span>Dashboard</span>
+                                </div>
                             </NavLink>
                         </div>
                     </div>
 
                     <div className="hidden sm:flex sm:items-center sm:ml-6">
+                    <div className="upplease" style={{ position: 'fixed', top: '10px', right: '10px', zIndex: '999999' }}>
                         <Dropdown
                             align="right"
+                            className="user-dropdown"
                             width="48"
                             trigger={
-                                <button className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
+                                <button
+                                    className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out"
+                                    style={{
+                                        position: 'absolute',
+                                        top: '13px',
+                                        right: '2px',
+                                        zIndex: 99999,
+                                        color: 'grey',
+                                        
+                                    }}>
                                     <div>{user?.name}</div>
 
                                     <div className="ml-1">
@@ -63,18 +94,24 @@ const Navigation = ({ user }) => {
                                         </svg>
                                     </div>
                                 </button>
-                            }>
+                            }
+                            portal={true} // Sử dụng portal để render Dropdown ngoài cấu trúc DOM hiện tại
+                        >
                             {/* Authentication */}
-                            <DropdownButton onClick={logout}>
+                            
+                            <DropdownButton className="taikhoan" onClick={handleProfileClick}
+                            >
+                                Tài khoản
+                            </DropdownButton>
+                            <DropdownButton onClick={logout} className="dangxuat"
+                           
+                            >
                                 Đăng xuất
                             </DropdownButton>
-
-                            <DropdownButton >
-                                <Link href="/update-profile">
-                                    Cập nhật tài khoản
-                                </Link>
-                            </DropdownButton>
+                        
                         </Dropdown>
+                        </div>
+
                     </div>
 
                     {/* Hamburger */}
@@ -163,7 +200,6 @@ const Navigation = ({ user }) => {
                     </div>
                 </div>
             )}
-              
         </nav>
     )
 }

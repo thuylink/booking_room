@@ -20,7 +20,6 @@
                             <a href="{{ route('category.add') }}" class="btn btn-primary float-end">Thêm danh mục</a>
                         </h3>
                     </div>
-                    {{-- <form action="{{ route('category.search') }}" method="GET"> --}}
                         @csrf
                         <div class="input-group input-group" style="width: 250px;">
                             <input type="text" name="search" class="form-control float-right"

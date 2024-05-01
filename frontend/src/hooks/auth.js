@@ -31,9 +31,9 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .post('/register', props) 
             .then(() => mutate()) 
             .catch(error => {
-                if (error.response.status !== 422) throw error
+                // if (error.response.status !== 422) throw error
 
-                setErrors(error.response.data.errors)
+                // setErrors(error.response.data.errors)
             })
     }
 

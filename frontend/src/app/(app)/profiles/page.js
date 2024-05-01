@@ -1,45 +1,57 @@
 'use client'
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useProfile } from '../../../hooks/profile'
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
-import './profile.css';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Label from '@/components/Label'
+import Image from 'next/image'
+import './pro.css'
 import Button from '@/components/Button'
+import { useAuth } from '@/hooks/auth'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const Profile = () => {
-    const router = useRouter()
+    const { user } = useAuth({ middleware: 'auth' })
+    console.log('user test', user)
     const id = window.location.pathname.split('/').pop()
-    console.log('id user ',id);
-    const [name, setName] = useState('');
-    const [gender, setGender] = useState('');
-    const [birthday, setBirthday] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
-    const [image, setImage] = useState(null);
+    const router = useRouter()
+
+    const { createProfiles } = useProfile({
+        middleware: 'auth',
+        redirectIfAuthenticated: '/profiles',
+    })
+
+    const [name, setName] = useState('')
+    const [gender, setGender] = useState('')
+    const [birthday, setBirthday] = useState(null)
+    const [phone, setPhone] = useState('')
+    const [address, setAddress] = useState('')
     const [errors, setErrors] = useState([])
+    const [status, setStatus] = useState('')
+    const [image, setImage] = useState(null)
 
-    const submitForm = (event) => {
-        event.preventDefault();
+    const submitForm = event => {
+        event.preventDefault()
 
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('gender', gender);
-        formData.append('birthday', birthday);
-        formData.append('phone', phone);
-        formData.append('address', address);
-        formData.append('image', image);
-
-        updateProfileById({
-            id:id,
+        const formData = new FormData()
+        formData.append('name', name)
+        formData.append('gender', gender)
+        formData.append('birthday', birthday)
+        formData.append('phone', phone)
+        formData.append('address', address)
+        formData.append('image', image)
+        formData.append('id_user', user.id)
+        createProfiles({
             formData,
+            setStatus,
             setErrors,
         }).then(() => {
-            router.push('/show-profile');
-        });
-    };
-
+            router.push('/show-profile')
+        })
+        console.log('form profile', formData.getAll('image'))
+    }
     const handleSubmit = async () => {
         try {
             await createProfiles(
@@ -52,9 +64,9 @@ const Profile = () => {
                 address,
                 image,
             )
-            console.log('Cập nhật profile thành công')
+            console.log('Tạo mới profile thành công')
         } catch (error) {
-            console.error('Lỗi khi cập nhật profile:', error)
+            console.error('Lỗi khi tạo mới profile:', error)
         }
     }
 
@@ -64,7 +76,7 @@ const Profile = () => {
                 <div class="container__form container--signup">
                     <form class="form">
                         <div className="head">
-                            <a className="head">Sửa profile</a>
+                            <a className="head">Tạo mới profile</a>
                         </div>
                         <Input
                             type="text"
@@ -159,11 +171,11 @@ const Profile = () => {
             </div>
             <div className="button">
                 <Button className="btn" onClick={handleSubmit}>
-                    Cập nhật
+                    Tạo
                 </Button>
             </div>
         </form>
-    );
-};
+    )
+}
 
-export default Profile;
+export default Profile

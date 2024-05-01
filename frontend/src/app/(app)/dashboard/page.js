@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
+import { useRating } from '../../../hooks/rating'
 import { useCart } from '../../../hooks/cart'
 import { Card, CardBody } from '@nextui-org/card'
 import './style_dashboard.scss'
@@ -19,13 +20,90 @@ import {
 } from '@nextui-org/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { faComment } from '@fortawesome/free-solid-svg-icons'
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
     const { product, error } = useProduct()
     const { category } = useCategory()
+    const { rating } = useRating()
+
     const [searchValue, setSearchValue] = useState('')
     const { addToCart } = useCart()
     const [selectedCategory, setSelectedCategory] = useState(null)
+    const [showFilterPopup, setShowFilterPopup] = useState(false)
+
+    const [priceMin, setPriceMin] = useState(''); // Giá trị giá tiền tối thiểu
+    const [priceMax, setPriceMax] = useState('');
+    const [capacityMin, setCapacityMin] = useState('')
+    const [capacityMax, setCapacityMax] = useState('');
+    const [privacy_type, setPrivacyType] = useState('')
+    const [filteredData, setFilteredData] = useState([]);
+
+    const toggleFilterPopup = () => {
+        setShowFilterPopup(!showFilterPopup);
+    };
+
+    const handleFilterSubmit = () => {
+        const minPrice = parseFloat(priceMin);
+        const maxPrice = parseFloat(priceMax);
+        const minCapacity = parseInt(capacityMin);
+        const maxCapacity = parseInt(capacityMax);
+    
+        const filteredProducts = product.filter(item => {
+            const priceCondition = item.price >= minPrice && item.price <= maxPrice;
+            const capacityCondition = item.capacity >= minCapacity && item.capacity <= maxCapacity;
+            let privacyTypeCondition = true;
+    
+            // Kiểm tra điều kiện của privacy_type
+            if (privacy_type === "Một căn phòng") {
+                privacyTypeCondition = item.privacy_type === "Một căn phòng";
+            } else if (privacy_type === "Phòng chung") {
+                privacyTypeCondition = item.privacy_type === "Phòng chung";
+            } else if (privacy_type === "Toàn bộ căn nhà") {
+                privacyTypeCondition = item.privacy_type === "Toàn bộ căn nhà";
+            }
+    
+            return priceCondition && capacityCondition && privacyTypeCondition;
+        });
+    
+        setFilteredData(filteredProducts);
+    };
+    
+    if (rating && rating.length > 0) {
+        rating.forEach(ratingItem => {
+            if (ratingItem && ratingItem.length > 0) {
+                ratingItem.forEach(item => {
+                    // console.log('item_name:', item.star)
+                })
+            }
+            // console.log('length', rating.length)
+        })
+    }
+
+    if (product && product.length > 0 && rating && rating.length > 0) {
+        const updatedProductList = product.map(productItem => {
+            const relevantRatings = rating.filter(
+                ratingItem => ratingItem.id_product === productItem.id,
+            )
+
+            if (relevantRatings && relevantRatings.length > 0) {
+                const totalStars = relevantRatings.reduce(
+                    (acc, curr) => acc + curr.star,
+                    0,
+                )
+                const averageStars = totalStars / relevantRatings.length
+                const totalReviews = relevantRatings.length
+                productItem.star = averageStars.toFixed(1)
+                productItem.totalReviews = totalReviews
+            } else {
+                productItem.star = 0
+            }
+            return productItem
+        })
+    }
 
     const handleClickCategory = name_category => {
         setSelectedCategory(name_category)
@@ -69,7 +147,7 @@ const Dashboard = () => {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 9,
+        slidesToShow: 5,
         slidesToScroll: 1,
         responsive: [
             {
@@ -78,52 +156,90 @@ const Dashboard = () => {
                     slidesToShow: 4,
                     slidesToScroll: 1,
                     infinite: true,
-                    dots: false
-                }
+                    dots: false,
+                },
             },
             {
                 breakpoint: 768,
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 1,
-                    initialSlide: 2
-                }
+                    initialSlide: 2,
+                },
             },
             {
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 2,
-                    slidesToScroll: 1
-                }
-            }
-        ]
-    };
+                    slidesToScroll: 1,
+                },
+            },
+        ],
+    }
 
     const filteredProducts = product?.filter(product =>
         product.location.toLowerCase().includes(searchValue.toLowerCase()),
     )
 
     const filteredProductsAll =
-        filteredProducts && filteredProducts.length > 0
-            ? filteredProducts.filter(product => {
-                  if (!selectedCategory) {
-                      return true
-                  }
-                  return product.name_category === selectedCategory
-              })
-            : []
+    filteredProducts && filteredProducts.length > 0
+        ? filteredProducts.filter(product => {
+            // Kiểm tra điều kiện của privacy_type
+            let privacyTypeCondition = true;
+            if (privacy_type === "Một căn phòng") {
+                privacyTypeCondition = product.privacy_type === "Một căn phòng";
+            } else if (privacy_type === "Phòng chung") {
+                privacyTypeCondition = product.privacy_type === "Phòng chung";
+            } else if (privacy_type === "Toàn bộ căn nhà") {
+                privacyTypeCondition = product.privacy_type === "Toàn bộ căn nhà";
+            }
+
+            // Kiểm tra điều kiện của category, price và capacity
+            const categoryCondition = !selectedCategory || product.name_category === selectedCategory;
+            const priceCondition = (!priceMin && !priceMax) || (product.price >= parseFloat(priceMin) && product.price <= parseFloat(priceMax));
+            const capacityCondition = (!capacityMin && !capacityMax) || (product.capacity >= parseInt(capacityMin) && product.capacity <= parseInt(capacityMax));
+
+            // Trả về true nếu cả bốn điều kiện đều đúng
+            return privacyTypeCondition && categoryCondition && priceCondition && capacityCondition;
+        })
+        : [];
 
     return (
         <div className="al">
             <Navbar>
-                <NavbarBrand>
-                    <Link href="/dashboard" passHref>
-                        <p className="font-bold text-inherit">BNB</p>
-                    </Link>
-                </NavbarBrand>
                 <NavbarContent
                     className="hidden sm:flex gap-4"
                     justify="center">
+                    <div className="category-slider-wrapper">
+                        <Slider {...settings}>
+                            {category &&
+                                category.length > 0 &&
+                                category.flatMap(categoryItem => {
+                                    if (
+                                        categoryItem &&
+                                        categoryItem.length > 0
+                                    ) {
+                                        return categoryItem.map(item => (
+                                            <div
+                                                className="slide-item"
+                                                key={item.name_category}>
+                                                <button
+                                                    className="nav-item"
+                                                    onClick={() =>
+                                                        handleClickCategory(
+                                                            item.name_category,
+                                                        )
+                                                    }>
+                                                    {item.name_category}
+
+                                                </button>
+                                            </div>
+                                        ))
+                                    }
+                                    return null
+                                })}
+                        </Slider>
+                    </div>
                 </NavbarContent>
                 <NavbarContent className="timkiem">
                     <NavbarItem>
@@ -138,6 +254,91 @@ const Dashboard = () => {
                         </form>
                     </NavbarItem>
                 </NavbarContent>
+
+                <NavbarContent>
+                    <NavbarItem>
+                        <Button
+                            className="boloc bg-pink-500"
+                            onClick={toggleFilterPopup}>
+                            <FontAwesomeIcon
+                                icon={faFilter}
+                                className="heart-icon"
+                                style={{
+                                    color: '#ff385c',
+                                }}
+                            />
+                            <span className="boloc1 text-white cursor-pointer active:opacity-50">
+                                Bộ lọc
+                            </span>
+                        </Button>
+                    </NavbarItem>
+                </NavbarContent>
+
+                {showFilterPopup && (
+
+                    <div className="filter-overlay">
+                    
+    <div className="filter-popup">
+        <form>
+        <Button className='close-button' onClick={toggleFilterPopup}>
+                <FontAwesomeIcon icon={faTimes} />
+            </Button>
+        <div className="question" style={{ display: 'flex' }}>
+        
+        <input 
+            type="text" 
+            value={priceMin}
+            onChange={e => setPriceMin(e.target.value)}
+            placeholder="Giá tối thiểu"
+            style={{ marginRight: '10px' }}
+        />
+        <input 
+            type="text"
+            value={priceMax}
+            onChange={e => setPriceMax(e.target.value)}
+            placeholder="Giá tối đa"
+        />
+    </div>
+    
+            <div className="question" style={{ display: 'flex' }}>
+                <input 
+                    type="text" 
+                    value={capacityMin}
+                    onChange={e => setCapacityMin(e.target.value)}
+                    placeholder="Sức chứa tối thiểu"
+                    style={{ marginRight: '10px'}}
+
+                />
+                <input 
+                    type="text"  
+                    value={capacityMax}
+                    onChange={e => setCapacityMax(e.target.value)}
+                    placeholder="Sức chứa tối đa"
+                />
+            </div>
+
+            <div className="question" style={{ display: 'flex' }}>
+                <select
+                    value={privacy_type}
+                    onChange={e => setPrivacyType(e.target.value)}
+                    className="sel"
+                    placeholder="Phạm vi sử dụng"
+                    style={{ marginRight: '10px' }}
+                >
+                    <option value="phong">Một căn phòng</option>
+                    <option value="phong_chung">Phòng chung</option>
+                    <option value="toan_bo_nha">Toàn bộ căn nhà</option>
+                </select>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+                )}
+
+
+
                 <NavbarContent justify="end">
                     <NavbarItem>
                         <Link href={`/all-cart`} passHref>
@@ -151,29 +352,6 @@ const Dashboard = () => {
                 </NavbarContent>
             </Navbar>
 
-            <div className="category-slider-wrapper">
-    <Slider {...settings}>
-                    {category &&
-                        category.length > 0 &&
-                        category.flatMap(categoryItem => {
-                            if (categoryItem && categoryItem.length > 0) {
-                                return categoryItem.map(item => (
-                                    <h1
-                                        key={item.name_category}
-                                        className="nav-item"
-                                        onClick={() =>
-                                            handleClickCategory(item.name_category)
-                                        }>
-                                        {item.name_category}
-                                    </h1>
-                                ))
-                            }
-                            return null
-                        })}
-                </Slider>
-            </div>
-
-            
             <div className="sticky-element"></div>
 
             <div className="other-elements">
@@ -189,30 +367,35 @@ const Dashboard = () => {
                                                     {product.location}
                                                 </h2>
 
-                                                <div className="mb-6 mt-2 flex gap-3">
-                                                    <span className="font-bold">
-                                                        Gía tiền:{' '}
-                                                        {product.price}
-                                                    </span>
+                                                <div className=" gia mb-6 mt-2 flex gap-3">
+                                                    {product.price} VNĐ/đêm
                                                 </div>
-                                                <div className="mb-6 mt-2 flex gap-3">
-                                                    <span className="font-bold">
-                                                        Kiểu kiến trúc:{' '}
-                                                        {product.name_category}
-                                                    </span>
+                                                <div className=" kt mb-6 mt-2 flex gap-3">
+                                                    {product.name_category}
+                                                    {console.log(product.privacy_type)}
                                                 </div>
-                                                <div className="mt-6 flex gap-6">
-                                                    <Link
-                                                        href={`/show-product/${product.id}`}
-                                                        passHref>
-                                                        <Button className="ml-4 bg-pink-500">
-                                                            <span className="text-lg text-white cursor-pointer active:opacity-50">
-                                                                Xem Chi Tiết
-                                                            </span>
-                                                        </Button>
-                                                    </Link>
 
-                                                    <Button
+                                                <div className=" mb-6 mt-2 flex gap-3">
+                                                    {product.star}
+                                                    <FontAwesomeIcon
+                                                        icon={faStar}
+                                                        className="heart-icon"
+                                                        style={{
+                                                            color: '#ff385c',
+                                                        }}
+                                                    />
+                                                    {product.totalReviews}
+                                                    <FontAwesomeIcon
+                                                        icon={faComment}
+                                                        className="heart-icon"
+                                                        style={{
+                                                            color: '#ff385c',
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                <div className="mt-6 flex gap-6">
+                                                    <span
                                                         className="custom-button"
                                                         onClick={() => {
                                                             handleAddToCart(
@@ -223,11 +406,7 @@ const Dashboard = () => {
                                                             icon={faHeart}
                                                             className="heart-icon"
                                                         />
-
-                                                        <span className="button-text">
-                                                            Yêu thích
-                                                        </span>
-                                                    </Button>
+                                                    </span>
                                                 </div>
                                             </div>
 
@@ -252,18 +431,24 @@ const Dashboard = () => {
                                                                     const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
 
                                                                     return (
-                                                                        <img
+                                                                        <a
+                                                                            href={`/show-product/${product.id}`}
                                                                             key={
                                                                                 index
-                                                                            }
-                                                                            src={
-                                                                                imagePath
-                                                                            }
-                                                                            alt="Image"
-                                                                            width="270px"
-                                                                            height="200px"
-                                                                            className="rounded-image"
-                                                                        />
+                                                                            }>
+                                                                            <img
+                                                                                key={
+                                                                                    index
+                                                                                }
+                                                                                src={
+                                                                                    imagePath
+                                                                                }
+                                                                                alt="Image"
+                                                                                width="270px"
+                                                                                height="200px"
+                                                                                className="rounded-image"
+                                                                            />
+                                                                        </a>
                                                                     )
                                                                 },
                                                             )}

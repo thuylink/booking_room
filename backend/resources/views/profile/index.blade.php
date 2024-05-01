@@ -16,47 +16,68 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3>LARAVEL CRUD Profile
-                            {{-- <a href="{{ route('profile.add') }}" class="btn btn-primary float-end">Thêm danh mục</a> --}}
+                        <h3>Tài khoản của tôi
                         </h3>
                     </div>
-                    @csrf
-                    <div class="input-group input-group" style="width: 250px;">
-                        <input type="text" name="search" class="form-control float-right" placeholder="Search"
-                            value=" {{ isset($search) ? $search : ' ' }}">
 
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default" style="color: aqua">
-                                <i class="fas fa-search" style="color: rgb(13, 17, 241)"></i>
-                            </button>
-                        </div>
-                    </div>
                     <div class="card-body">
                         <table class="table table-stripped">
-                            <thead>
-                                <th>Email: </th>
-                                <th>Username</th>
-                                <th>Thao tác:</th>
-                            </thead>
+
                             <tbody>
-                                @foreach ($userss as $users)
-                                    <tr>
-                                        <td>{{ $users->email }}</td>
-                                        <td>{{ $users->name }}</td>
-                                        <td>
-                                            <a href="{{ route('profile.edit', ['id' => $profile->id]) }}"
-                                                class="btn btn-primary">Edit</a>
-                                            <a href="{{ route('profile.show', ['id' => $profile->id]) }}"
-                                                class="btn btn-danger">Show</a>
-                                            <form action="{{ route('profile.delete', ['id' => $profile->id]) }}"
-                                                method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <div class="column main">
+                                    <div class="block-title">
+                                        <strong>Thông tin tài khoản</strong>
+                                    </div>
+                                    <div class="block-content">
+                                        <div class="account-form form-wrap">
+                                            <?php $getInfo = \App\Models\User::where('id', 5)->first(); ?>
+                                            {{-- @php
+                                                dd($getInfo);
+                                            @endphp --}}
+
+                                            <div class="row mb-4">
+                                                <div class="col-md-3 col-xs-6">
+                                                    {{-- <img src="{{ url('public/upload/avt') . '/' . $getInfo->image }}"
+                                                         alt="" style="max-width: 100%; padding: 0px 20px 20px 0;"> --}}
+                                                </div>
+                                                <div class="col-md-9 col-xs-6">
+                                                <div class="row">
+                                                <div class="form-group col-xs-12 col-md-6">
+                                                    <label>Họ tên</label>
+                                                    <div class="data">{{ $getInfo->name }}</div>
+                                                </div>
+                                                <div class="form-group col-xs-12 col-md-6">
+                                                    <label>Số điện thoại</label>
+                                                    <div class="data">{{ $getInfo->phone }}</div>
+                                                </div>
+                                                <div class="form-group col-xs-12 col-md-6">
+                                                    <label>Email</label>
+                                                    {{-- <?php $user = 5 ?> --}}
+                                                    <div class="data">{{ $getInfo->email }}</div>
+                                                </div>
+                                                <div class="form-group col-xs-12 col-md-6">
+                                                    <label>Giới tính</label>
+                                                    <div class="data">{{ $getInfo->gender }}</div>
+                                                </div>
+                                                <div class="form-group col-xs-12 col-md-6">
+                                                    <label>Ngày sinh</label>
+                                                    <div class="data">{{ $getInfo->birthday }}</div>
+                                                </div>
+
+                                                <div class="form-group col-xs-12 col-md-6">
+                                                    <label>Địa chỉ</label>
+                                                    <div class="data">{{ $getInfo->address }}</div>
+                                                </div>
+
+                                                <div class="btn-edit">
+
+                                                    <a href="{{ route('profile.edit')}}"
+                                                        class="btn btn-primary">Edit</a>
+
+                                                </div>
+                                            </div>
+                                            </div>
+                                </div>
                             </tbody>
                         </table>
                     </div>

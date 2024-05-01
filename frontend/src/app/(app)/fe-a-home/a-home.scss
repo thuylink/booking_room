@@ -1,0 +1,504 @@
+.container {
+    color: #000;
+  }
+  
+  .py-4 {
+    margin-top: 1%;
+    height: 303%;
+    width: 100%;
+    margin-left: -25px;
+    margin-right: -91px;
+  }
+  .py-6 {
+    display: none;
+  
+  }
+  
+  .text-sm{
+    font-size: large;
+    font-weight: bold;
+  }
+  
+  .transition-transform-colors-opacity {
+    transition-property: transform, color, background, background-color, border-color, text-decoration-color, fill, stroke, opacity;
+    transition-timing-function: ease;
+    transition-duration: 250ms;
+    color: white;
+    background: #ff385c;
+    margin-top: 1%;
+  }
+  
+  .product-title {
+    color: blue;
+    font-size: 24px;
+    margin-top: 10%;
+  }
+  
+  .image-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  
+  .text-lg{
+    font-weight: normal;
+  }
+  
+  .price-icon{
+    font-weight: normal;
+  }
+  
+  .address {
+    background-color: #ff385c;
+    color: white;
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+  }
+  
+  .value {
+    background-color: white;
+    color: #ff385c;
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    border: 2px solid dodgerblue;
+    border-radius: 10px; /* Góc tròn */
+  }
+  
+  .title{
+    font-weight: 1000;
+    font-size: 40px;
+    margin-left: 14px;
+  }
+  
+  .highlighted-box {
+    background-color: white;
+    border: 2px solid dodgerblue;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 8px;
+    width: 335px;
+    margin-left: 20px;
+  }
+  
+  .highlighted-value {
+    color: #ff385c;
+    margin-bottom: 5px;
+  }
+  
+  .custom-button {
+    background-color: white;
+    border: 2px solid dodgerblue;
+    border-radius: 9999px;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 96px;
+  }
+  
+  .heart-icon {
+    color: #ff385c;
+    margin-right: 5px;
+  }
+  .times-icon{
+    color: #ff385c;
+  
+  }
+  .button-text {
+    color: #ff385c;
+  }
+  
+  .text-lg {
+    font-weight: normal;
+    margin-top: 14px;
+  }
+  
+  .gap-6 {
+    gap: 1.5rem;
+    margin-top: 7px;
+    margin-left: 18px
+  }
+  
+  .book {
+    background-color: white;
+    border: 2px solid dodgerblue;
+    border-radius: 10px;
+    padding: 10px 20px;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 27px;
+    width: 374px;
+    margin-top: 10px;
+  }
+  
+  .form-control {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    width: 70%;
+    box-sizing: border-box;
+  }
+  
+  .form-control-tra-phong{
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    width: 70%;
+    box-sizing: border-box;
+    margin-left: 18%;
+  }
+  
+  .mb-3 {
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+  
+  body{
+    margin-top:20px;
+    background: #f5f5f5;
+  }
+  
+  .ui-w-100 {
+    width: 100px !important;
+    height: auto;
+  }
+  
+  .card {
+    background-clip: padding-box;
+    box-shadow: 0 1px 4px rgba(24,28,33,0.012);
+  }
+  
+  .user-view-table td:first-child {
+    width: 9rem;
+  }
+  .user-view-table td {
+    padding-right: 0;
+    padding-left: 0;
+    border: 0;
+  }
+  
+  .text-light {
+    color: #babbbc !important;
+  }
+  
+  .card .row-bordered>[class*=" col-"]::after {
+    border-color: rgba(24,28,33,0.075);
+  }    
+  
+  .text-xlarge {
+    font-size: 170% !important;
+  }
+  
+  .contact {
+    margin-left: -850px;
+    margin-top: -70px;
+  }
+  
+  .infor{
+    background-color: white;
+    border: 2px solid dodgerblue;
+    border-radius: 10px;
+    padding: 10px 20px;
+    // display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 10px;
+    width: 376px;
+    margin-top: 10px;
+  }
+  
+  .rightCol{
+    margin-left: 40px;
+  }
+  
+  .nav {
+    width: 106%;
+  }
+  
+  .pink-cell {
+    margin-left: 10px;
+  }
+  
+  .mail {
+    margin-left: 59px;
+    margin-top: -70px;
+  }
+  
+  .cmt {
+    background-color: white;
+    border: 2px solid dodgerblue;
+    border-radius: 10px;
+    padding: 10px 20px;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 444px;
+    width: 790px;
+    margin-top: -51.7%;
+    height: 630px;
+  }
+  
+  
+  .user-img{
+  
+    margin-top: 4px;
+  }
+  
+  .check-icon{
+  
+    font-size: 17px;
+    color: #c3bfbf;
+    top: 1px;
+    position: relative;
+    margin-left: 3px;
+  }
+  
+  .form-check-input{
+    margin-top: 6px;
+    margin-left: -24px !important;
+    cursor: pointer;
+  }
+  
+  
+  .form-check-input:focus{
+    box-shadow: none;
+  }
+  
+  
+  .icons i{
+  
+    margin-left: 8px;
+  }
+  .reply{
+  
+    margin-left: 12px;
+  }
+  
+  .comment-box {
+    padding: 5px;
+    width: 32%;
+  }
+  
+  .comment-area textarea{
+     resize: none; 
+          border: 1px solid #ad9f9f;
+  }
+  
+  .form-control:focus {
+      color: #495057;
+      background-color: #fff;
+      border-color: #ffffff;
+      outline: 0;
+      box-shadow: 0 0 0 1px #ff385c !important;
+  }
+  
+  .send {
+      color: #fff;
+      background-color: #ff385c;
+      border-color: #ff385c;
+  }
+  
+  .rating {
+    display: flex;
+    margin-top: -10px;
+    flex-direction: row-reverse;
+    margin-left: 106px;
+    float: left;
+  }
+  
+  .rating>input {
+      display: none
+  }
+  
+  .rating>label {
+          position: relative;
+      width: 19px;
+      font-size: 25px;
+      color: #ff385c;
+      cursor: pointer;
+  }
+  
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
+  
+  html,
+  body {
+      height: 100%
+  }
+  
+  
+  .rating>label::before {
+      content: "\2605";
+      position: absolute;
+      opacity: 0
+  }
+  
+  .rating>label:hover:before,
+  .rating>label:hover~label:before {
+      opacity: 1 !important
+  }
+  
+  .rating>input:checked~label:before {
+      opacity: 1
+  }
+  
+  .container {
+      max-width: 1272px;
+  }
+  
+  .scrollable-container {
+    max-height: 300px; /* Điều chỉnh chiều cao tối đa của khung chứa */
+    // overflow-y: auto; /* Tạo thanh cuộn cho phần nội dung khi vượt quá kích thước */
+    width: 100%; /* Đảm bảo khung chứa chiếm toàn bộ chiều rộng của phần tử cha */
+  }
+  
+  .my-view{
+    width: 320%;
+  }
+  
+  .tieude{
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .slick-next {
+    right: 1px;
+    color: #583c41;
+    background: #9a2d40;
+  }
+  
+  
+  .heading {
+    font-size: 25px;
+    margin-right: 25px;
+  }
+  
+  .fa {
+    font-size: 25px;
+  }
+  
+  .checked {
+    color: orange;
+  }
+  
+  /* Three column layout */
+  .side {
+    float: left;
+    width: 15%;
+    margin-top:10px;
+  }
+  
+  .middle {
+    margin-top:10px;
+    float: left;
+    width: 70%;
+  }
+  
+  /* Place text to the right */
+  // .right {
+  //   text-align: right;
+  // }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* The bar container */
+  .bar-container {
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: white;
+  }
+  
+  /* Individual bars */
+  .bar-5 {height: 18px; background-color: #04AA6D;}
+  .bar-4 {height: 18px; background-color: #2196F3;}
+  .bar-3 {height: 18px; background-color: #00bcd4;}
+  .bar-2 {height: 18px; background-color: #ff9800;}
+  .bar-1 {height: 18px; background-color: #f44336;}
+  
+  /* Responsive layout - make the columns stack on top of each other instead of next to each other */
+  @media (max-width: 400px) {
+    .side, .middle {
+      width: 100%;
+    }
+    .right {
+      display: none;
+    }
+  }
+  
+  .all-stars {
+    width: 76%;
+    margin-top: 38px;
+    margin-left: 64px;
+  }
+  
+  .stars {
+    background-color: white;
+    border: 2px solid dodgerblue;
+    border-radius: 10px;
+    padding: 10px 20px;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 35%;
+    width: 64.5%;
+    margin-top: -30.3%;
+    height: 268px;
+  }
+  
+  .stars2 {
+    width: 88%;
+    margin-left: 25%;
+  }
+  
+  .average{
+    margin-left: 10%;
+  }
+  
+  .overall{
+    margin-left: -163%;
+  }
+  
+  .line-star{
+    margin-top: -2%;
+  }
+  
+  .average-rating{
+    margin-left: 10%;
+    margin-top: 10%;
+  }
+  
+  .card {
+    max-height: 550px; /* Đặt chiều cao tối đa cho container */
+    overflow-y: auto; /* Tạo thanh cuộn dọc khi cần */
+  }
+  
+  .label-tra-phong{
+    margin-left: -6%;
+  }
+  
+  .table {
+    display: table;
+    margin-left: 12%;
+  }
+  
+  .table td {
+    text-align: left;
+  }
+  
+  .class1 {
+    position: relative;
+    top: -93px;
+    z-index: 2;
+    left: 22%;
+    font-size: 24px;
+  }
+  
+  .class2 {
+    position: relative;
+    z-index: 1; /* Đảm bảo thẻ này nằm dưới thẻ có class1 */
+  }
