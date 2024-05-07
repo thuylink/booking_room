@@ -30,10 +30,10 @@
 
                     </div>
                     <div class="card-body">
-                        <form method="PUT" action="{{ route('profile.update')}}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('profile.update')}}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="id_user" value="2">
-                            <h1>sửa profile đi</h1>
+                            <h1>sửa profile điii</h1>
                             <div class="form-group mb-3">
                                 <label for="">Tên </label>
                                 <input type="text" name="name" id="" class="form-control">
@@ -48,7 +48,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Số điện thoại</label>
-                                <input type="tel" name="phone" id="" class="form-control">
+                                <input type="text" name="phone" id="" class="form-control">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">dchi</label>

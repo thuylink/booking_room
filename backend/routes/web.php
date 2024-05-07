@@ -16,7 +16,7 @@ use App\Http\Controllers\HomeMainController;
 use App\Models\User;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\CustomerController;
-
+use App\Http\Controllers\BookingController;
 
 
 /*
@@ -56,7 +56,7 @@ require __DIR__.'/auth.php';
 // Route::get('/login', [RegisteredUserController::class,'login'])->name('login');
 Route::post('/login', [RegisteredUserController::class,'postLogin']);
 Route::post('/loginHost', [RegisteredUserController::class,'postLoginHost']);
-
+Route::get('/user', [RegisteredUserController::class, 'index'])->name('user.index');
 //đi đến trang đki
 // Route::get('/register', [RegisteredUserController::class,'register'])->name('register');
 //xử lí khi nhập thông tin đki
@@ -142,4 +142,12 @@ Route::get('/edit-user',[CustomerController::class,'edit'])->name('user.edit');
 
 Route::get('/add-profile',[CustomerController::class,'add'])->name('profile.add');
 Route::post('/add-profile', [CustomerController::class, 'store'])->name('profile.store');
-Route::put('/edit-user', [CustomerController::class, 'update'])->name('profile.update');
+Route::post('/edit-user', [CustomerController::class, 'update'])->name('profile.update');
+
+
+Route::get('/products/{id}/view',[ProductController::class,'incrementViewCount'])->name('product.view');
+Route::get('/products/{productId}/related', [ProductController::class,'getRelatedProducts'])->name('product->related');
+
+Route::get('/create-booking', [BookingController::class, 'showBookingForm'])->name('booking.create');
+Route::post('/store-booking', [BookingController::class, 'store'])->name('booking.store');
+Route::get('/booking', [BookingController::class, 'index'])->name('bookings.all');

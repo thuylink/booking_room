@@ -10,7 +10,7 @@ class Profile extends Model
     use HasFactory;
 
     protected $table = 'profile';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
         'name',
         'gender',
@@ -19,12 +19,12 @@ class Profile extends Model
         'address',
         'id_user',
         'image',
-        'education',
-        'job',
-        'language'
+        // 'education',
+        // 'job',
+        // 'language'
     ];
 
-    // public function user() {
-    //     return $this->belongsTo(User::class, 'id_user');
-    // }
+    public function user() {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 }

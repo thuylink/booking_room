@@ -11,12 +11,15 @@ import Button from '@/components/Button'
 import { useAuth } from '@/hooks/auth'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
+import { Navbar, NavbarContent, Link } from '@nextui-org/react'
 
 const Profile = () => {
     const { user } = useAuth({ middleware: 'auth' })
     console.log('user test', user)
     const id = window.location.pathname.split('/').pop()
     const router = useRouter()
+    const variants = ['bordered']
 
     const { createProfiles } = useProfile({
         middleware: 'auth',
@@ -72,11 +75,31 @@ const Profile = () => {
 
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
+            <div className="flex flex-col flex-wrap gap-4">
+                {variants.map(variant => (
+                    <Breadcrumbs key={variant} variant={variant}>
+                        import Link from 'next/link';
+                        <BreadcrumbItem>
+                            <Link href="/dashboard">
+                                <span>Trang chủ</span>
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+    <Link href="javascript:void(0)" onClick={() => window.history.back()}>
+        <span>Xem chi tiết</span>
+    </Link>
+</BreadcrumbItem>
+
+                        <BreadcrumbItem>Tạo mới hồ sơ</BreadcrumbItem>
+
+                    </Breadcrumbs>
+                ))}
+            </div>
             <div class="container right-panel-active">
                 <div class="container__form container--signup">
                     <form class="form">
                         <div className="head">
-                            <a className="head">Tạo mới profile</a>
+                            <a className="head">Tạo mới hồ sơ</a>
                         </div>
                         <Input
                             type="text"

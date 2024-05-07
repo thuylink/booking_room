@@ -2,7 +2,7 @@
 import React from 'react'
 import { useState } from 'react'
 import Link from 'next/link'
-import { useProduct } from '../../../hooks/product'
+import { incrementViewCount, useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
 import { useRating } from '../../../hooks/rating'
 import { useCart } from '../../../hooks/cart'
@@ -24,7 +24,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
+import { faEye} from '@fortawesome/free-solid-svg-icons';
 const Dashboard = () => {
     const { product, error } = useProduct()
     const { category } = useCategory()
@@ -45,6 +45,15 @@ const Dashboard = () => {
     const toggleFilterPopup = () => {
         setShowFilterPopup(!showFilterPopup);
     };
+
+    const handleViewProduct = async id => {
+        try {
+            await incrementViewCount(id)
+            console.log("Tăng lên view sản phẩm rồi mà", id)
+        } catch (error) {
+            console.log("Lỗi tăng view cho sp ", error)
+        }
+    }
 
     const handleFilterSubmit = () => {
         const minPrice = parseFloat(priceMin);
@@ -134,6 +143,8 @@ const Dashboard = () => {
         })
     }
 
+    
+
     const handleAddToCart = async id_product => {
         try {
             await addToCart(id_product)
@@ -147,7 +158,7 @@ const Dashboard = () => {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 5,
+        slidesToShow: 6,
         slidesToScroll: 1,
         responsive: [
             {
@@ -392,6 +403,15 @@ const Dashboard = () => {
                                                             color: '#ff385c',
                                                         }}
                                                     />
+
+                                                    {product.view_count/2}
+                                                    <FontAwesomeIcon
+                                                        icon={faEye}
+                                                        className="heart-icon"
+                                                        style={{
+                                                            color: '#ff385c',
+                                                        }}
+                                                    />
                                                 </div>
 
                                                 <div className="mt-6 flex gap-6">
@@ -436,6 +456,7 @@ const Dashboard = () => {
                                                                             key={
                                                                                 index
                                                                             }>
+                                                                            onClick{() => handleViewProduct(product.id)}
                                                                             <img
                                                                                 key={
                                                                                     index

@@ -132,8 +132,8 @@
   align-items: center;
   cursor: pointer;
   margin-left: 27px;
-  width: 374px;
-  margin-top: 10px;
+  width: 432px;
+  margin-top: 26px;
 }
 
 .form-control {
@@ -210,7 +210,7 @@ body{
   align-items: center;
   cursor: pointer;
   margin-left: 10px;
-  width: 376px;
+  width: 433px;
   margin-top: 10px;
 }
 
@@ -238,9 +238,9 @@ body{
   padding: 10px 20px;
   align-items: center;
   cursor: pointer;
-  margin-left: 444px;
-  width: 790px;
-  margin-top: -51.7%;
+  margin-left: 477px;
+  width: 756px;
+  margin-top: -52%;
   height: 630px;
 }
 
@@ -449,15 +449,15 @@ body {
   padding: 10px 20px;
   align-items: center;
   cursor: pointer;
-  margin-left: 35%;
-  width: 64.5%;
+  margin-left: 38%;
+  width: 62.1%;
   margin-top: -30.3%;
   height: 268px;
 }
 
 .stars2 {
   width: 88%;
-  margin-left: 25%;
+  margin-left: 16%;
 }
 
 .average{
@@ -569,12 +569,393 @@ button {
     box-sizing: border-box;
     border-radius: 60px;
     position: relative;
-    margin-left: 20%;
+    // margin-left: 20%;
     z-index: 1;
 }
 
-.slick-prev {
-  left: -149px;
-  background: #6b7280;
+.flex-wrap {
+  flex-wrap: wrap;
+  margin-left: 1.4%;
+  font-weight: bold;
+  margin-top: 0.5%;
+}
+
+// @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@800&display=swap');
+
+// /!\ IMPORTANT: this variable precises the number of slides contained in the slider.
+// if you add/remove images, make sure that this variable is up to date so the buttons,
+// the disposition of elements and the animations work correctly.
+$nb-slides: 5;
+
+// THE BASICS
+html, body {
+  color: white;
+  background-color: rgb(30, 30, 35);
+  text-align: center;
+  font-family: "Raleway", sans-serif;
+
+  h1 {
+    margin-top: 14px;
+    margin-bottom: 0;
+    // text-shadow: 5px 5px rgba($color: black, $alpha: .5);
+  }
+
+  h2 {
+    margin: 0;
+    opacity: .4;
+  }
+}
+
+.line {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.center {
+  @extend .flex;
+  align-items: center; // horizontal
+  justify-content: center; // vertical
+}
+
+
+.carousel-wrapper {
+  @extend .flex;
+  position: relative;
+  max-width: 600px;
+  margin: 50px;
+
+  input {
+    display: none;
+  }
+}
+
+
+// CAROUSEL / SLIDER
+.carousel {
+  @extend .line;
+  overflow: hidden;
+  border-radius: 15px;
+
+  ul {
+    @extend .center;
+    position: relative;
+    list-style: none;
+    overflow: hidden;
+
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100% * $nb-slides;
+
+    transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  li {
+    @extend .line;
+
+    img {
+      @extend .line;
+      border-radius: 15px;
+    }
+  }
+}
+
+
+// NAVIGATION DOTS
+.nav-dot {
+  $dot-size: 15px;
+  position: absolute;
+  cursor: pointer;
+
+  margin-left: -$dot-size / 2;
+  bottom: -$dot-size * 1.5;
+  width: $dot-size;
+  height: $dot-size;
+
+  opacity: .5;
+  background-color: white;
+  border-radius: 50%;
+  transition: .4s;
+
+  &:hover {
+    opacity: .8;
+    transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+// goes from 1 to 5.
+@for $n from 1 through $nb-slides {
+  // arranges the navigation dots horizontally
+  .nav-dot[for=slide#{$n}] {
+    left: 50% + ((($n - 1) - (($nb-slides - 1)/ 2)) * 5%);
+  }
+
+  #slide#{$n}:checked {
+    // moves the carousel to the right slide
+    & ~ .carousel ul { left: -100% * ($n - 1) }
+
+    // highlights the selected navigation dot
+    & ~ .nav-dot[for=slide#{$n}] {
+      opacity: 1;
+    }
+  }
+}
+
+
+// ARROWS
+%arrow {
+  $arrow-size: 50px;
+  display: none;  // hidden by default
+  position: absolute;
+
+  cursor: pointer;
+  font-weight: bolder;
+  text-shadow: 0 0 7.5px rgba($color: black, $alpha: .7);
+
+  top: 50%;
+  z-index: 1;
+  opacity: .7;
+  margin-top: -$arrow-size / 2;
+  height: $arrow-size;
+  font-size: $arrow-size;
+  transition: .2s;
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.left-arrow {
+  @extend %arrow;
+  left: 15px;
+}
+
+.right-arrow {
+  @extend %arrow;
+  right: 15px;
+}
+
+@function custom-modulo($n) {
+  // this function returns '$n % $nb-slides', except that if the result is 0,
+  // '$nb-slides' is returned.
+  // for exemple, for $nb-slides = 4, possible values are {1, 2, 3, 4}
+  // (and not {0, 1, 2, 3}).
+  @return 1 + ($nb-slides + (($n - 1) % $nb-slides)) % $nb-slides;
+}
+
+@for $n from 1 through $nb-slides {
+  // when the nth slide is selected,
+  // displays the left-arrow that goes to the (n-1)th slide
+  // and the right arrow that goes to the (n+1)th slide.
+  // don't worry, it loops thanks to the 'custom-modulo' function !
+
+  #slide#{$n}:checked {
+    & ~ .left-arrow[for=slide#{custom-modulo($n - 1)}],
+    & ~ .right-arrow[for=slide#{custom-modulo($n + 1)}] {
+      display: block;
+    }
+  }
+}
+
+
+
+.signature {
+  margin-top: 100px;
+  bottom: 0;
+  // font-family: "Quicksand";
+  color: rgba(150, 150, 170);
+  text-shadow: 0 2.5px rgba(0, 0, 0, 0.25);
+
+  .name {
+    color: white;
+  }
+
+  .dot {
+    margin: 0 5px;
+  }
+
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+}
+.related-products{
+  margin-left: 2%;
+}
+.product-card img {
+  width: 270px; /* Đặt chiều rộng cố định */
+  height: 200px; /* Đặt chiều cao cố định */
+}
+
+.custom-arrows .prev {
+  margin-left: -60%;
+  margin-top: -1500%;
+}
+
+.custom-arrows .next {
+  margin-left: 6094%;
+  margin-top: -1534%;
+}
+
+.slider-container {
+  position: relative;
+}
+
+.custom-arrows {
+  display: flex;
+  position: absolute;
+  top: 50%; /* Đặt vị trí top ở giữa của slider */
+  transform: translateY(-50%); /* Dịch chuyển lên trên 50% để căn giữa */
+  z-index: 1; /* Đảm bảo các nút điều hướng hiển thị trên slider */
+}
+
+.custom-arrows button {
+  background-color: transparent; /* Xóa nền của nút điều hướng */
+  border: none; /* Xóa viền */
+  font-size: 20px; /* Đổi kích thước phù hợp */
+  color: black; /* Màu của mũi tên */
+}
+
+/* 
+* Design by Robert Mayer:https://goo.gl/CJ7yC8
+*
+*I intentionally left out the line that was supposed to be below the subheader simply because I don't like how it looks.
+*
+* Chronicle Display Roman font was substituted for similar fonts from Google Fonts.
+*/
+
+body {
+  background-color: #fdf1ec;
+}
+
+.wrapper {
+  height: 199px;
+  width: 570px;
+  margin: 50px auto;
+  border-radius: 7px 7px 7px 7px;
+  box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+}
+
+.product-img {
+  float: left;
+  height: 420px;
+  width: 327px;
+}
+
+.product-img img {
+  border-radius: 7px 0 0 7px;
+}
+
+.product-info {
+  float: left;
+  height: 420px;
+  width: 327px;
+  border-radius: 0 7px 10px 7px;
+  background-color: #ffffff;
+}
+
+.product-text {
+  height: 300px;
+  width: 327px;
+}
+
+.product-text h1 {
+  margin: 0 0 0 38px;
+  padding-top: 52px;
+  font-size: 34px;
+  color: #474747;
+}
+
+
+
+.product-text h2 {
+  margin: 0 0 47px 38px;
+  // font-size: 13px;
+  // font-family: 'Raleway', sans-serif;
+  // font-weight: 400;
+  text-transform: uppercase;
+  color: #d2d2d2;
+  letter-spacing: 0.2em;
+}
+
+.product-text p {
+  height: 125px;
+  margin: 0 0 0 38px;
+  // font-family: 'Playfair Display', serif;
+  color: #8d8d8d;
+  line-height: 1.7em;
+  // font-size: 15px;
+  // font-weight: lighter;
+  overflow: hidden;
+}
+
+.product-price-btn {
+  height: 103px;
+  width: 327px;
+  margin-top: -214%;
+  margin-left: 91%;
+}
+
+.product-price-btn p {
+  display: inline-block;
+  position: absolute;
+  top: -13px;
+  height: 50px;
+  // font-family: 'Trocchi', serif;
+  margin: 0 0 0 38px;
+  // font-size: 28px;
+  // font-weight: lighter;
+  color: #474747;
+}
+
+// span {
+//   display: inline-block;
+//   height: 50px;
+//   // font-family: 'Suranna', serif;
+//   // font-size: 34px;
+// }
+
+.product-price-btn button {
+  // float: right;
+  display: inline-block;
+  height: 50px;
+  width: 176px;
+  margin: 0 40px 0 16px;
+  box-sizing: border-box;
+  border: transparent;
+  border-radius: 60px;
+  // font-family: 'Raleway', sans-serif;
+  // font-size: 14px;
+  // font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #ffffff;
+  background-color: #9cebd5;
+  cursor: pointer;
+  outline: none;
+}
+
+.product-price-btn {
+  height: 103px;
+  width: 243px;
+  margin-top: -214%;
+  margin-left: 91%;
+}
+
+.w-6 {
+  width: 62.5rem;
   display: none;
 }

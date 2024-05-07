@@ -11,28 +11,31 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import React, { useEffect } from 'react'
 import { color } from 'framer-motion'
+import { useProfile } from '../../hooks/profile'
 const Navigation = ({ user }) => {
+    const { profile, error, mutate } = useProfile()
+
     console.log('user', user)
     const router = useRouter()
-
     const { logout } = useAuth()
     // const { profile } = useAuth()
-    const [isNewProfile, setIsNewProfile] = useState(false)
-    const handleProfileClick = () => {
-        if (isNewProfile) {
-            update_profile()
-        } else {
-            profile()
-        }
-    }
 
     const [open, setOpen] = useState(false)
-    const profile = () => {
-        router.push('/profiles')
+
+    const onClick = async () => {
+        try {
+            const userProfile = await profile;
+            if (userProfile) {
+                router.push('/show-profile');
+            } else {
+                router.push('/profiles');
+            }
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+            // Handle error as needed
+        }
     }
-    const update_profile = () => {
-        router.push('/update-profile')
-    }
+   
     useEffect(() => {
         // if (user?.email_verified_at === null) {
         //     setShowVerificationPopup(true);
@@ -99,12 +102,13 @@ const Navigation = ({ user }) => {
                         >
                             {/* Authentication */}
                             
-                            <DropdownButton className="taikhoan" onClick={handleProfileClick}
+                            <DropdownButton className="taikhoan" onClick={onClick}
+                            style={{marginLeft: "-1%",}}
                             >
                                 Tài khoản
                             </DropdownButton>
                             <DropdownButton onClick={logout} className="dangxuat"
-                           
+                            style={{marginLeft: "0%",}}
                             >
                                 Đăng xuất
                             </DropdownButton>

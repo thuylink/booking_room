@@ -18,6 +18,17 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             }),
     )
 
+    const { data: users, error2, mutate2 } = useSWR('/user', () =>
+        axios
+            .get('/user')
+            .then(res => res.data)
+            .catch(error => {
+                if (error.response.status !== 409) throw error
+ 
+                router.push('/verify-email')
+            }),
+    )
+
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
     const register = async ({ setErrors, ...props }) => {
@@ -98,6 +109,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         login,
         loginHost,
         logout,
+        users, 
     }
 }
 

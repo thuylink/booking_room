@@ -137,45 +137,47 @@ class CustomerController extends Controller
 
 
 
-    // public function update_(Request $request)
-    // {
-    //     var_dump($request->all());
-
-    //     $customer = Profile::where('id_user', Auth::user()->id)->get()->first();
-
-    //     if ($request->isMethod('POST')) {
-    //         if ($request->has('file_upload')) {
-    //             if ($customer->image != 'no-image.jpg') {
-    //                 $oldFile = public_path('public/avt') . '/' . $customer->image;
-    //                 if (File::exists($oldFile)) {
-    //                     File::delete($oldFile);
-    //                 }
-    //             }
-    //             $file = $request->file('file_upload');
-    //             $file_name = time() . '_' . $file->getClientOriginalName();
-    //             $file->move(public_path('public/uploads/avt'), $file_name);
-    //             $request->merge(['image' => $file_name]);
-    //         } else {
-    //             $file_name = $customer->image;
-    //             $request->merge(['image' => $file_name]);
-    //         }
-    //         $profile = $customer->update([
-    //             'id_user' => Auth::user()->id,
-    //             'name' => $request->name,
-    //             'gender' => $request->gender,
-    //             'birthday' => $request->birthday,
-    //             'phone' => $request->phone,
-    //             'address' => $request->address,
-    //             'image' => $file_name,
-    //         ]);
-    //         if ($profile) {
-    //             return redirect()->route('user.user_account')->with('success', 'Cập nhật thành công');
-    //         }
-    //     }
-    //     return view('frontend.user.user_account_update', compact('customer'));
-    // }
-
     public function update(Request $request)
+{
+    // dd($request->all());
+    $customer = Profile::where('id_user', 2)->first();
+    if ($request->isMethod('POST')) {
+        if ($request->hasFile('image')) {
+            // Xóa hình ảnh cũ
+            $oldImage = 'uploads/avt/' .  $customer->image;
+            if (File::exists($oldImage)) {
+                File::delete($oldImage);
+            }
+            // Tải lên hình ảnh mới
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('uploads/avt', $filename);
+            $request->merge(['image' => $filename]);
+        } else {
+            $filename = $customer->image;
+        }
+        // Cập nhật thông tin profile
+        $profile = $customer->update([
+            'name' => $request->name,
+            'gender' => $request->gender,
+            'birthday' => $request->birthday,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'image' => $filename,
+        ]);
+        if ($profile) {
+            // Trả về phản hồi JSON thành công
+            return response()->json(['success' => true, 'message' => 'Cập nhật thông tin profile thành công']);
+        } else {
+            // Trả về phản hồi JSON thất bại
+            return response()->json(['success' => false, 'message' => 'Cập nhật thông tin profile thất bại']);
+        }
+    }
+}
+
+
+    public function update_(Request $request)
 {
     var_dump($request->all());
     // if (auth()->check()) {
@@ -210,8 +212,8 @@ class CustomerController extends Controller
 
         $profile->save();
 
-        return response()->json(['status' => 'profile-updated']);
-    // } else {
+        return response()->json($profile, 201);
+        // } else {
     //     return response()->json(['status' => 'error', 'message' => 'Please log in to update your profile.']);
     // }
 }

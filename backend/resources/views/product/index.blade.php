@@ -64,7 +64,10 @@
 
                                         <td>
                                             <a href="{{route('product.edit', ['id' => $product->id])}}" class="btn btn-primary">Edit</a>
-                                            <a href="{{route('product.show', ['id' =>$product->id])}}" class="btn btn-danger">Show</a>
+                                            {{-- <a href="{{ route('product.view', ['id' => $product->id]) }}" class="btn btn-primary">View</a>
+                                            <a href="{{route('product.show', ['id' =>$product->id])}}" class="btn btn-danger">Show</a> --}}
+                                            <a href="{{ route('product.show', ['id' => $product->id]) }}" class="btn btn-danger">Show</a>
+
                                         </td>
                                         <td>
                                             <form action="{{ route('product.delete', ['id'=>$product->id])}}" method="post">

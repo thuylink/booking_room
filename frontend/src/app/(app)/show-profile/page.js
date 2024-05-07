@@ -11,9 +11,11 @@ import { faBirthdayCake } from '@fortawesome/free-solid-svg-icons' // Import ico
 import { faMobilePhone } from '@fortawesome/free-solid-svg-icons' // Import icon user-group-simple
 import { faLocationPin } from '@fortawesome/free-solid-svg-icons' // Import icon user-group-simple
 import Link from 'next/link'
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 
 export const ShowProfile = () => {
     const { profile, error, mutate } = useProfile()
+    const variants = ['bordered']
 
     console.log('có profile r', profile)
     if (error) {
@@ -25,6 +27,26 @@ export const ShowProfile = () => {
 
     return (
         <div>
+            <div className="flex flex-col flex-wrap gap-4">
+                {variants.map(variant => (
+                    <Breadcrumbs key={variant} variant={variant}>
+                        import Link from 'next/link';
+                        <BreadcrumbItem>
+                            <Link href="/dashboard">
+                                <span>Trang chủ</span>
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link
+                                href="javascript:void(0)"
+                                onClick={() => window.history.back()}>
+                                <span>Xem chi tiết</span>
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>Chi tiết hồ sơ</BreadcrumbItem>
+                    </Breadcrumbs>
+                ))}
+            </div>
             {profile.map((item, index) => (
                 <div key={index}>
                     <form className="max-w-sm mx-auto">
@@ -32,7 +54,7 @@ export const ShowProfile = () => {
                             <div class="container__form container--signup">
                                 <form class="form">
                                     <div className="head">
-                                        <a className="head">Profile</a>
+                                        <a className="head">Chi tiết hồ sơ</a>
                                     </div>
                                     <span className="input">
                                         <FontAwesomeIcon
@@ -69,6 +91,11 @@ export const ShowProfile = () => {
                                         />
                                         <a>{item.address}</a>
                                     </span>
+                                    <Link href="/update-profile">
+                                        <Button className="btn">
+                                            Cập nhật
+                                        </Button>
+                                    </Link>
                                 </form>
                             </div>
 
@@ -78,26 +105,24 @@ export const ShowProfile = () => {
                                     document.getElementById('image').click()
                                 }>
                                 <div className="">
-                                <label htmlFor="image" className="image-wrapper">
-                                {item.image && (
-                                    <a >
-                                        <img
-                                            src={`http://127.0.0.1:8000/uploads/avt/${item.image}`}
-                                            alt="Image"
-                                            width="270px"
-                                            height="200px"
-                                            className="rounded-image"
-                                        />
-                                    </a>
-                                )}
-                            </label>
-                            
+                                    <label
+                                        htmlFor="image"
+                                        className="image-wrapper">
+                                        {item.image && (
+                                            <a>
+                                                <img
+                                                    src={`http://127.0.0.1:8000/uploads/avt/${item.image}`}
+                                                    alt="Image"
+                                                    width="270px"
+                                                    height="200px"
+                                                    className="rounded-image"
+                                                />
+                                            </a>
+                                        )}
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        <Link href="/update-profile">
-        <Button className="btn">Cập nhật</Button>
-    </Link>
                     </form>
                 </div>
             ))}

@@ -215,7 +215,9 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::find($id);
+        // $product = Product::find($id);
+        $product = Product::findOrFail($id);
+        $product->increment('view_count');
         return response()->json($product);
     }
 
@@ -241,5 +243,15 @@ class ProductController extends Controller
             return response()->json(['message' => 'Không tìm thấy danh mục hoặc sản phẩm'], 404);
         }
     }
+
+    public function getRelatedProducts($productId) {
+        $product = Product::find($productId);
+        $relatedProducts = Product::where('id_category', $product->id_category)
+                                    ->where('id', '!=' , $productId)
+                                    ->limit(5) ->get();
+        return response()->json($relatedProducts);
+
+    }
+
 
 }

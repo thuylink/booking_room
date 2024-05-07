@@ -184,25 +184,6 @@ section {
   object-fit: cover; /* Hiển thị hình ảnh bằng cách cắt hoặc co dãn để lấp đầy kích thước */
 }
 
-.slick-next {
-    right: -45px;
-}
-
-.slick-next:before {
-  content: '→';
-}
-
-.slick-prev:before, .slick-next:before {
-  font-family: 'slick';
-  font-size: 20px;
-  color: #d30e0e;
-  margin-left: -279%;
-  margin-right: -45px;
-
-}
-.slick-arrow {
-  color: #d30e0e;
-}
 .navbar {
   display: flex;
   flex-wrap: nowrap; /* Không cho phần tử xuống dòng */
@@ -299,13 +280,6 @@ section {
 .slider-button2{
   margin-left: 100%;
 }
-
-.slick-arrow slick-prev {
-  color: #d30e0e;
-  background-color: #d30e0e;
-}
-
-
 
 .filter-overlay {
   position: fixed;

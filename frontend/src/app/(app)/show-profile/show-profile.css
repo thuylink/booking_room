@@ -44,26 +44,25 @@ body {
 	margin-bottom: 1.25rem;
 }
 
-.link {
+/* .link {
 	color: var(--gray);
 	font-size: 0.9rem;
 	margin: 1.5rem 0;
 	text-decoration: none;
-}
+} */
 
 .container {
-	background-color: var(--white);
-	border-radius: var(--button-radius);
-	box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
-		0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
-	height: var(--max-height);
-	max-width: var(--max-width);
-	overflow: hidden;
-	position: relative;
+    background-color: var(--white);
+    border-radius: var(--button-radius);
+    box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25), 0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+    height: var(--max-height);
+    max-width: var(--max-width);
+    overflow: hidden;
+    position: relative;
     width: 206%;
     margin-left: -49%;
     height: 500px;
-    margin-top: 9%;
+    margin-top: -1%;
 }
 
 .container__form {
@@ -172,13 +171,13 @@ body {
     font-size: 0.8rem;
     font-weight: bold;
     letter-spacing: 0.1rem;
-    padding: 0.9rem 4rem;
+    width: 103%;
     text-transform: uppercase;
-    transition: transform 80ms ease-in;
     position: relative;
     transition: background-color 0.3s ease;
     z-index: 999;
     padding: 10px 20px;
+    margin-left: 4%;
 }
 
 .button {
@@ -186,9 +185,9 @@ body {
     margin-left: 92%;
 }
 .btn:hover {
-    background-color: #0056b3; /* Màu nền khi di chuột qua nút */
+    background-color: #008997;
+    color: white;
 }
-
 .form > .btn {
 	margin-top: 1.5rem;
 }
@@ -236,21 +235,10 @@ body {
 .head {
     color: white;
     font-size: larger;
-    margin-top: -22%;
+    margin-top: -6%;
     font-weight: bold;
 }
-.image-wrapper {
-    /* Ẩn chữ "Chọn tệp" */
-    text-indent: -9999px;
-    /* hoặc display: none; */
-}
 
-
-
-.hidden {
-    /* Ẩn input file */
-    display: none;
-}
 
 .sector{
 	margin-left: 10%;
@@ -274,4 +262,37 @@ body {
 	  position: relative;
 	  margin-left: 20%;
 	  z-index: 1;
+  }
+  .py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    display: none;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+    font-weight: bold;
+    margin-top: 0.5%;
+    margin-left: 3%;
+}
+.dropdown-button {
+	position: relative;
+	z-index: 10000;
+  }
+  .dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 10000;
+  }
+  
+  .ring-opacity-5 {
+	margin-top: 18%;
+	width: 70%;
+	color: #ff385c;
+	margin-left: 32%;
+  }
+  .shadow-lg {
+	--tw-shadow: 14 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }

@@ -19,18 +19,34 @@ export const searchByLocation = async location => {
     }
 }
 
-export const updateProductById = async ({ id, formData }) => {
+export const incrementViewCount = async id => {
     try {
-        await axios.put(`/update-product/${id}`, formData)
-        return true
+        await axios.get(`/products/${id}/view`)
     } catch (error) {
-        if (error.response && error.response.status !== 422) {
-            throw error
-        }
-        return false
+        throw new Error(error.response.data.message)
     }
 }
 
+export const updateProductById = async ({ setErrors, setStatus, id, formData }) => {
+    try {
+        const response = await axios.put(`/update-product/${id}`, formData)
+        console.log(response)
+        setStatus(response.data.status);
+    } catch (error) {
+        if (error.response.status !== 422) throw error;
+        setErrors(error.response.data.errors);
+    }
+}
+
+export const getRelatedProducts = async (productId) => {
+    try {
+        const response = await axios.get(`/products/${productId}/related`);
+        return response.data;
+    } catch (error){
+        console.error('Lỗi hiển thị product liên quan', error);
+        return [];
+    }
+}
 export const useProduct = () => {
     const { data: product, error, mutate } = useSWR('/product', () =>
         axios
@@ -77,5 +93,6 @@ export const useProduct = () => {
         updateProductById,
         deleteProductById,
         searchByLocation,
+        incrementViewCount,
     }
 }

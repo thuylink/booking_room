@@ -1,70 +1,127 @@
 'use client'
-import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation'
+import React, { useState, useRef, useEffect } from 'react'
+import { redirect, useRouter } from 'next/navigation'
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
-import './profile.css';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './profile.css'
+import { faUpload } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Button from '@/components/Button'
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
+import { Navbar, NavbarContent, Link } from '@nextui-org/react'
+import { useProfile } from '../../../hooks/profile'
+import { getProfile } from '../../../hooks/profile'
+import { updateProfiles } from '../../../hooks/profile'
+import { useAuth } from '@/hooks/auth'
 
 const Profile = () => {
     const router = useRouter()
     const id = window.location.pathname.split('/').pop()
-    console.log('id user ',id);
-    const [name, setName] = useState('');
-    const [gender, setGender] = useState('');
-    const [birthday, setBirthday] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
-    const [image, setImage] = useState(null);
+    const { profile } = useProfile() // Lấy thông tin hồ sơ từ hook
+    const { user } = useAuth({ middleware: 'auth' })
+
+    const [name, setName] = useState('')
+    const [gender, setGender] = useState('')
+    const [birthday, setBirthday] = useState('')
+    const [phone, setPhone] = useState('')
+    const [address, setAddress] = useState('')
+    const [image, setImage] = useState(null)
     const [errors, setErrors] = useState([])
+    const [status, setStatus] = useState('')
 
-    const submitForm = (event) => {
-        event.preventDefault();
+    const variants = ['bordered']
 
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('gender', gender);
-        formData.append('birthday', birthday);
-        formData.append('phone', phone);
-        formData.append('address', address);
-        formData.append('image', image);
+    const [tempName, setTempName] = useState('')
+    const [tempGender, setTempGender] = useState('')
+    const [tempBirthday, setTempBirthday] = useState('')
+    const [tempPhone, setTempPhone] = useState('')
+    const [tempAddress, setTempAddress] = useState('')
+    const [tempImage, setTempImage] = useState(null) // Giá trị tạm thời của ảnh mới
 
-        updateProfileById({
-            id:id,
-            formData,
-            setErrors,
-        }).then(() => {
-            router.push('/show-profile');
-        });
-    };
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await getProfile() // Sử dụng hàm getProfile để lấy thông tin hồ sơ từ API
+                if (Array.isArray(response) && response.length > 0) {
+                    const profileData = response[0] // Lấy phần tử đầu tiên trong mảng
+                    setTempName(profileData.name)
+                    setTempGender(profileData.gender)
+                    setTempBirthday(profileData.birthday)
+                    setTempPhone(profileData.phone)
+                    setTempAddress(profileData.address)
+                    setTempImage(profileData.image)
+                } else {
+                    console.log('Không có dữ liệu hồ sơ')
+                }
+            } catch (error) {
+                console.log('Lỗi khi fetch profile:', error)
+            }
+        }
+        fetchProfile()
+    }, [])
 
-    const handleSubmit = async () => {
+    useEffect(() => {
+        setName(tempName)
+        setGender(tempGender)
+        setBirthday(tempBirthday)
+        setPhone(tempPhone)
+        setAddress(tempAddress)
+        setImage(tempImage)
+    }, [tempName, tempGender, tempBirthday, tempPhone, tempAddress, tempImage])
+
+    const submitForm = async event => {
+        event.preventDefault()
+
+        const formData = new FormData()
+        formData.append('name', name)
+        formData.append('gender', gender)
+        formData.append('phone', phone)
+        formData.append('birthday', birthday)
+        formData.append('address', address)
+        if (image) {
+            formData.append('image', image) // Thêm ảnh mới vào formData nếu có
+        }
+
         try {
-            await createProfiles(
-                id,
-                user.id,
-                name,
-                gender,
-                birthday,
-                phone,
-                address,
-                image,
-            )
+            await updateProfiles({ setErrors, setStatus, formData })
             console.log('Cập nhật profile thành công')
+            router.push('/show-profile')
+            // router.push('update-profile')
         } catch (error) {
-            console.error('Lỗi khi cập nhật profile:', error)
+            console.log('Lỗi cập nhật profile: ', error)
         }
     }
 
+    console.log('hiển thị lại profile', profile)
+
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
-            <div class="container right-panel-active">
-                <div class="container__form container--signup">
-                    <form class="form">
+            <div className="flex flex-col flex-wrap gap-4">
+                {variants.map(variant => (
+                    <Breadcrumbs key={variant} variant={variant}>
+                        <BreadcrumbItem>
+                            <Link href="/dashboard">
+                                <span>Trang chủ</span>
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link
+                                href="#"
+                                onClick={() => window.history.back(2)}>
+                                <span>Xem chi tiết</span>
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>Cập nhật hồ sơ</BreadcrumbItem>
+                    </Breadcrumbs>
+                ))}
+            </div>
+            <div className="container right-panel-active">
+                <div className="container__form container--signup">
+                    <div className="form">
+                        {' '}
                         <div className="head">
-                            <a className="head">Sửa profile</a>
+                            {' '}
+                            <span className="head">Cập nhật hồ sơ</span>{' '}
                         </div>
                         <Input
                             type="text"
@@ -127,15 +184,25 @@ const Profile = () => {
                             messages={errors.address}
                             className="mt-2"
                         />
-                    </form>
+                    </div>
                 </div>
+
+                <input
+                    id="image"
+                    type="file"
+                    className="hidden"
+                    onChange={event => {
+                        const selectedImage = event.target.files[0]
+                        setImage(selectedImage)
+                    }}
+                />
 
                 <div
                     className="container__overlay"
                     onClick={() => document.getElementById('image').click()}>
                     <div className="">
                         <label htmlFor="image" className="image-wrapper">
-                            {image && (
+                            {image && image instanceof Blob && (
                                 <div className="w-32 h-32">
                                     <img
                                         src={URL.createObjectURL(image)}
@@ -144,26 +211,19 @@ const Profile = () => {
                                     />
                                 </div>
                             )}
-                            <input
-                                id="image"
-                                type="file"
-                                className="hidden"
-                                onChange={event =>
-                                    setImage(event.target.files[0])
-                                }
-                            />
                         </label>
                         <InputError messages={errors.image} className="mt-2" />
                     </div>
                 </div>
             </div>
             <div className="button">
-                <Button className="btn" onClick={handleSubmit}>
+                <Button type="submit" className="btn">
+                    {' '}
                     Cập nhật
                 </Button>
             </div>
         </form>
-    );
-};
+    )
+}
 
-export default Profile;
+export default Profile
