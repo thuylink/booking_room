@@ -35,7 +35,7 @@ const BookingPopup = () => {
         formData.append('id_product', 31)
         formData.append('start_date', startDate)
         formData.append('end_date', endDate)
-        formData.append('price', price)
+        // formData.append('price', price)
         formData.append('guestNumber', guestNumber)
         formData.append('guestName', guestName)
         formData.append('phone', phone)

@@ -1,0 +1,63 @@
+.table-container {
+    overflow-x: auto;
+  }
+  
+  .text-pink-500 {
+    color: #000000;
+    /* Các thuộc tính CSS khác cho màu hồng */
+  }
+  
+  
+  
+  .bg-pink-500 {
+    background-color: #ff385c;
+    /* Các thuộc tính CSS khác cho màu nền hồng */
+  }
+  
+  .text-white {
+    color: #ffffff;
+    /* Các thuộc tính CSS khác cho màu nét trắng */
+  }
+  
+  .text{
+    color: #ffffff;
+    background-color: #ff385c;
+    text-align: center;
+  }
+  
+  .stt {
+    width: 5%;
+  
+  }
+  
+  .image {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .text2{
+    text-align: center;
+  }
+  
+  .search {
+    text-align: center;
+    width: 500px;
+    height: 30px;
+  }
+  
+  .transition-background {
+    transition-property: background;
+    transition-timing-function: ease;
+    transition-duration: 250ms;
+    margin-top: -4px;
+  }
+  
+  .formsearch{
+    text-align: center;
+    margin-left: 40%;
+  }
+  
+  .pagination{
+    margin-left: 40%;
+  }

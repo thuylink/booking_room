@@ -32,6 +32,7 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import { useBooking } from '../../../../hooks/booking'
+import { differenceInDays } from 'date-fns';
 
 export const ProductDetailWithPannellum = () => {
     const { user } = useAuth({ middleware: 'guest' })
@@ -120,6 +121,11 @@ export const ProductDetailWithPannellum = () => {
 
     const handleEndDateChange = date => {
         setEndDate(date)
+        if(startDate && endDate) {
+            const numberOfNights = differenceInDays(endDate, startDate);
+            const totalPrice = (numberOfNights + 2) *product2.price;
+            setPrice(totalPrice);
+        }
     }
 
     const starCounts = {
@@ -881,28 +887,25 @@ const settings = {
                                                         autoFocus
                                                     />
                                                     <InputError
-                                                        messages={errors.gender}
+                                                        messages={errors.message}
                                                         className="mt-2"
                                                     />
                                                 </div>
                                                 <div className="input-wrapper">
-                                                    <Input
-                                                        type="text"
-                                                        id="nameCategory"
-                                                        value={price}
-                                                        className="input"
-                                                        onChange={event =>
-                                                            setPrice(event.target.value)
-                                                        }
-                                                        required
-                                                        placeholder="Tổng tiền"
-                                                        autoFocus
-                                                    />
-                                                    <InputError
-                                                        messages={errors.gender}
-                                                        className="mt-2"
-                                                    />
-                                                </div>
+    <input
+        type="text"
+        id="price"
+        value={endDate ? (numberOfNights + 1) * product2.price : 0}
+        className="input"
+        readOnly // Ngăn người dùng chỉnh sửa
+    />
+    <InputError
+        messages={errors.price}
+        className="mt-2"
+    />
+</div>
+
+
                                             </div>
 
                                             <div className="col">

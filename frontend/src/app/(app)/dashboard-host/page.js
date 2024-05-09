@@ -7,6 +7,8 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { faListDots } from '@fortawesome/free-solid-svg-icons'
 import { faTableList } from '@fortawesome/free-solid-svg-icons'
 import { faShop } from '@fortawesome/free-solid-svg-icons'
+import { faClipboardList} from '@fortawesome/free-solid-svg-icons'
+
 export const metadata = {
     title: 'Laravel - Dashboard',
 }
@@ -38,6 +40,20 @@ const Dashboard = () => {
                                         />
                                         <span className="ml-2">
                                             Thống kê
+                                        </span>
+                                    </span>
+                                </Link>
+                            </li>
+
+                            <li className="item">
+                                <Link href="/all-booking">
+                                    <span className="flex items-center">
+                                        <FontAwesomeIcon
+                                            icon={faClipboardList}
+                                            className="times-icon"
+                                        />
+                                        <span className="ml-2">
+                                            Đơn đặt phòng 
                                         </span>
                                     </span>
                                 </Link>

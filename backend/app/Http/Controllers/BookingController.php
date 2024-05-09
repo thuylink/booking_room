@@ -16,7 +16,7 @@ class BookingController extends Controller
         $request->validate([
             'start_date' => 'required|string',
             'end_date' => 'required|string',
-            'price' => 'required|numeric',
+            // 'price' => 'required|numeric',
             'guestNumber' => 'required|integer|min:1',
             'guestName' => 'required|string|max:255',
             'phone' => 'required|string|max:20',

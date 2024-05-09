@@ -23,9 +23,11 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faEye} from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useAuth } from '@/hooks/auth'
+import { faHeartBroken } from '@fortawesome/free-solid-svg-icons';
+import { deleteCartById } from '../../../hooks/cart'
 
 const Dashboard = () => {
     const { user } = useAuth({ middleware: 'auth' })
@@ -39,52 +41,113 @@ const Dashboard = () => {
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [showFilterPopup, setShowFilterPopup] = useState(false)
 
-    const [priceMin, setPriceMin] = useState(''); // Giá trị giá tiền tối thiểu
-    const [priceMax, setPriceMax] = useState('');
+    const [priceMin, setPriceMin] = useState('') // Giá trị giá tiền tối thiểu
+    const [priceMax, setPriceMax] = useState('')
     const [capacityMin, setCapacityMin] = useState('')
-    const [capacityMax, setCapacityMax] = useState('');
+    const [capacityMax, setCapacityMax] = useState('')
     const [privacy_type, setPrivacyType] = useState('')
-    const [filteredData, setFilteredData] = useState([]);
+    const [filteredData, setFilteredData] = useState([])
+
+    const [overlayOpen, setOverlayOpen] = useState(false);
+
+    const { cart, mutate } = useCart()
+    const [favoriteStatus, setFavoriteStatus] = useState({});
+
+
+    if (product && product.length > 0) {
+        product.forEach(productItem => {
+            if (productItem && productItem.length > 0) {
+                productItem.forEach(item => {
+                    console.log('item_product:', item.location)
+                })
+            }
+            // console.log('length', category.length)
+        })
+    }
+    console.log('product trong cart', product)
+
+    if (cart && cart.length > 0) {
+        const show = cart.map(test => {
+            // Tìm phần tử trong mảng product
+            if (product && product.length > 0) {
+            const foundProduct = 
+            product.find(item => item.id === test.id_product);
+        
+            // Nếu tìm thấy phần tử trong product
+            if (foundProduct) {
+                // Lấy tên của phần tử tìm thấy và thêm vào đối tượng product
+                test.location = foundProduct.location; 
+                test.price = foundProduct.price; 
+                test.image = foundProduct.image; 
+
+            }
+        }
+            return test;
+        });
+        
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            await deleteCartById(id); // Xóa sản phẩm khỏi danh sách all-cart
+            const updatedFavorites = { ...favoriteStatus };
+            delete updatedFavorites[id]; // Xóa sản phẩm khỏi danh sách yêu thích
+            setFavoriteStatus(updatedFavorites); // Cập nhật lại danh sách yêu thích
+            mutate(); // Cập nhật lại giao diện
+        } catch (error) {
+            console.error('Lỗi:', error)
+        }
+    };
+
+    const openOverlay = () => {
+        setOverlayOpen(true);
+      };
+    
+      const closeOverlay = () => {
+        setOverlayOpen(false);
+      };
 
     const toggleFilterPopup = () => {
-        setShowFilterPopup(!showFilterPopup);
-    };
+        setShowFilterPopup(!showFilterPopup)
+    }
 
     const handleViewProduct = async id => {
         try {
             await incrementViewCount(id)
-            console.log("Tăng lên view sản phẩm rồi mà", id)
+            console.log('Tăng lên view sản phẩm rồi mà', id)
         } catch (error) {
-            console.log("Lỗi tăng view cho sp ", error)
+            console.log('Lỗi tăng view cho sp ', error)
         }
     }
 
     const handleFilterSubmit = () => {
-        const minPrice = parseFloat(priceMin);
-        const maxPrice = parseFloat(priceMax);
-        const minCapacity = parseInt(capacityMin);
-        const maxCapacity = parseInt(capacityMax);
-    
+        const minPrice = parseFloat(priceMin)
+        const maxPrice = parseFloat(priceMax)
+        const minCapacity = parseInt(capacityMin)
+        const maxCapacity = parseInt(capacityMax)
+
         const filteredProducts = product.filter(item => {
-            const priceCondition = item.price >= minPrice && item.price <= maxPrice;
-            const capacityCondition = item.capacity >= minCapacity && item.capacity <= maxCapacity;
-            let privacyTypeCondition = true;
-    
+            const priceCondition =
+                item.price >= minPrice && item.price <= maxPrice
+            const capacityCondition =
+                item.capacity >= minCapacity && item.capacity <= maxCapacity
+            let privacyTypeCondition = true
+
             // Kiểm tra điều kiện của privacy_type
-            if (privacy_type === "Một căn phòng") {
-                privacyTypeCondition = item.privacy_type === "Một căn phòng";
-            } else if (privacy_type === "Phòng chung") {
-                privacyTypeCondition = item.privacy_type === "Phòng chung";
-            } else if (privacy_type === "Toàn bộ căn nhà") {
-                privacyTypeCondition = item.privacy_type === "Toàn bộ căn nhà";
+            if (privacy_type === 'Một căn phòng') {
+                privacyTypeCondition = item.privacy_type === 'Một căn phòng'
+            } else if (privacy_type === 'Phòng chung') {
+                privacyTypeCondition = item.privacy_type === 'Phòng chung'
+            } else if (privacy_type === 'Toàn bộ căn nhà') {
+                privacyTypeCondition = item.privacy_type === 'Toàn bộ căn nhà'
             }
-    
-            return priceCondition && capacityCondition && privacyTypeCondition;
-        });
-    
-        setFilteredData(filteredProducts);
-    };
-    
+
+            return priceCondition && capacityCondition && privacyTypeCondition
+        })
+
+        setFilteredData(filteredProducts)
+    }
+
     if (rating && rating.length > 0) {
         rating.forEach(ratingItem => {
             if (ratingItem && ratingItem.length > 0) {
@@ -147,8 +210,6 @@ const Dashboard = () => {
         })
     }
 
-    
-
     const handleAddToCart = async id_product => {
         try {
             await addToCart(id_product)
@@ -197,27 +258,43 @@ const Dashboard = () => {
     )
 
     const filteredProductsAll =
-    filteredProducts && filteredProducts.length > 0
-        ? filteredProducts.filter(product => {
-            // Kiểm tra điều kiện của privacy_type
-            let privacyTypeCondition = true;
-            if (privacy_type === "Một căn phòng") {
-                privacyTypeCondition = product.privacy_type === "Một căn phòng";
-            } else if (privacy_type === "Phòng chung") {
-                privacyTypeCondition = product.privacy_type === "Phòng chung";
-            } else if (privacy_type === "Toàn bộ căn nhà") {
-                privacyTypeCondition = product.privacy_type === "Toàn bộ căn nhà";
-            }
+        filteredProducts && filteredProducts.length > 0
+            ? filteredProducts.filter(product => {
+                  // Kiểm tra điều kiện của privacy_type
+                  let privacyTypeCondition = true
+                  if (privacy_type === 'Một căn phòng') {
+                      privacyTypeCondition =
+                          product.privacy_type === 'Một căn phòng'
+                  } else if (privacy_type === 'Phòng chung') {
+                      privacyTypeCondition =
+                          product.privacy_type === 'Phòng chung'
+                  } else if (privacy_type === 'Toàn bộ căn nhà') {
+                      privacyTypeCondition =
+                          product.privacy_type === 'Toàn bộ căn nhà'
+                  }
 
-            // Kiểm tra điều kiện của category, price và capacity
-            const categoryCondition = !selectedCategory || product.name_category === selectedCategory;
-            const priceCondition = (!priceMin && !priceMax) || (product.price >= parseFloat(priceMin) && product.price <= parseFloat(priceMax));
-            const capacityCondition = (!capacityMin && !capacityMax) || (product.capacity >= parseInt(capacityMin) && product.capacity <= parseInt(capacityMax));
+                  // Kiểm tra điều kiện của category, price và capacity
+                  const categoryCondition =
+                      !selectedCategory ||
+                      product.name_category === selectedCategory
+                  const priceCondition =
+                      (!priceMin && !priceMax) ||
+                      (product.price >= parseFloat(priceMin) &&
+                          product.price <= parseFloat(priceMax))
+                  const capacityCondition =
+                      (!capacityMin && !capacityMax) ||
+                      (product.capacity >= parseInt(capacityMin) &&
+                          product.capacity <= parseInt(capacityMax))
 
-            // Trả về true nếu cả bốn điều kiện đều đúng
-            return privacyTypeCondition && categoryCondition && priceCondition && capacityCondition;
-        })
-        : [];
+                  // Trả về true nếu cả bốn điều kiện đều đúng
+                  return (
+                      privacyTypeCondition &&
+                      categoryCondition &&
+                      priceCondition &&
+                      capacityCondition
+                  )
+              })
+            : []
 
     return (
         <div className="al">
@@ -246,7 +323,6 @@ const Dashboard = () => {
                                                         )
                                                     }>
                                                     {item.name_category}
-
                                                 </button>
                                             </div>
                                         ))
@@ -290,79 +366,165 @@ const Dashboard = () => {
                 </NavbarContent>
 
                 {showFilterPopup && (
-
                     <div className="filter-overlay">
-                    
-    <div className="filter-popup">
-        <form>
-        <Button className='close-button' onClick={toggleFilterPopup}>
-                <FontAwesomeIcon icon={faTimes} />
-            </Button>
-        <div className="question" style={{ display: 'flex' }}>
-        
-        <input 
-            type="text" 
-            value={priceMin}
-            onChange={e => setPriceMin(e.target.value)}
-            placeholder="Giá tối thiểu"
-            style={{ marginRight: '10px' }}
-        />
-        <input 
-            type="text"
-            value={priceMax}
-            onChange={e => setPriceMax(e.target.value)}
-            placeholder="Giá tối đa"
-        />
-    </div>
-    
-            <div className="question" style={{ display: 'flex' }}>
-                <input 
-                    type="text" 
-                    value={capacityMin}
-                    onChange={e => setCapacityMin(e.target.value)}
-                    placeholder="Sức chứa tối thiểu"
-                    style={{ marginRight: '10px'}}
+                        <div className="filter-popup">
+                            <form>
+                                <Button
+                                    className="close-button"
+                                    onClick={toggleFilterPopup}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </Button>
+                                <div
+                                    className="question"
+                                    style={{ display: 'flex' }}>
+                                    <input
+                                        type="text"
+                                        value={priceMin}
+                                        onChange={e =>
+                                            setPriceMin(e.target.value)
+                                        }
+                                        placeholder="Giá tối thiểu"
+                                        style={{ marginRight: '10px' }}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={priceMax}
+                                        onChange={e =>
+                                            setPriceMax(e.target.value)
+                                        }
+                                        placeholder="Giá tối đa"
+                                    />
+                                </div>
 
-                />
-                <input 
-                    type="text"  
-                    value={capacityMax}
-                    onChange={e => setCapacityMax(e.target.value)}
-                    placeholder="Sức chứa tối đa"
-                />
-            </div>
+                                <div
+                                    className="question"
+                                    style={{ display: 'flex' }}>
+                                    <input
+                                        type="text"
+                                        value={capacityMin}
+                                        onChange={e =>
+                                            setCapacityMin(e.target.value)
+                                        }
+                                        placeholder="Sức chứa tối thiểu"
+                                        style={{ marginRight: '10px' }}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={capacityMax}
+                                        onChange={e =>
+                                            setCapacityMax(e.target.value)
+                                        }
+                                        placeholder="Sức chứa tối đa"
+                                    />
+                                </div>
 
-            <div className="question" style={{ display: 'flex' }}>
-                <select
-                    value={privacy_type}
-                    onChange={e => setPrivacyType(e.target.value)}
-                    className="sel"
-                    placeholder="Phạm vi sử dụng"
-                    style={{ marginRight: '10px' }}
-                >
-                    <option value="phong">Một căn phòng</option>
-                    <option value="phong_chung">Phòng chung</option>
-                    <option value="toan_bo_nha">Toàn bộ căn nhà</option>
-                </select>
-            </div>
-
-        </form>
-    </div>
-</div>
-
+                                <div
+                                    className="question"
+                                    style={{ display: 'flex' }}>
+                                    <select
+                                        value={privacy_type}
+                                        onChange={e =>
+                                            setPrivacyType(e.target.value)
+                                        }
+                                        className="sel"
+                                        placeholder="Phạm vi sử dụng"
+                                        style={{ marginRight: '10px' }}>
+                                        <option value="phong">
+                                            Một căn phòng
+                                        </option>
+                                        <option value="phong_chung">
+                                            Phòng chung
+                                        </option>
+                                        <option value="toan_bo_nha">
+                                            Toàn bộ căn nhà
+                                        </option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 )}
-
-
 
                 <NavbarContent justify="end">
                     <NavbarItem>
-                        <Link href={`/all-cart`} passHref>
-                            <Button className="yeu bg-pink-500">
+                            <Button className="yeu bg-pink-500" onClick={openOverlay}>
                                 <span className="yeu1 text-white cursor-pointer active:opacity-50">
                                     Danh sách yêu thích
                                 </span>
                             </Button>
-                        </Link>
+                            {overlayOpen && (
+                                <div className="overlay">
+                                  <div className="overlay-content">
+                                    <button onClick={closeOverlay} className='closecart'>
+                                      <FontAwesomeIcon icon={faTimes} />
+                                    </button>
+                                    <div className="grid grid-cols-3 gap-2 overflow-auto">
+                                      {/* Sử dụng grid với 3 cột và thêm overflow-auto để thêm thanh cuộn dọc */}
+                                      {cart?.map(product => (
+                                        <section key={product.id} className="pyy-36">
+                                          <div className="container flex items-center justify-center">
+                                            <Card className="py-4 lg:w-3/4 xl:w-1/2">
+                                              <CardBody className="overflow-visible py-2">
+                                                <div className="flex flex-col-reverse gap-4">
+                                                  <div className="right">
+                                                    <h2 className="text-lg font-bold uppercase">
+                                                      {product.location}
+                                                    </h2>
+                                                    <div className="gia mb-6 mt-2 flex gap-3">
+                                                      {product.price} VNĐ/đêm
+                                                    </div>
+                                                    <div className="kt mb-6 mt-2 flex gap-3">
+                                                      {product.name_category}
+                                                    </div>
+                                                    <div className="mt-6 flex gap-6">
+                                                      <span
+                                                        className="unlike"
+                                                        onClick={() => handleDelete(product.id)}
+                                                      >
+                                                        <FontAwesomeIcon
+                                                          icon={faHeartBroken}
+                                                          className="heart-icon"
+                                                        />
+                                                      </span>
+                                                    </div>
+                                                  </div>
+                                                  {product.image &&
+                                                    Array.isArray(JSON.parse(product.image)) && (
+                                                      <>
+                                                        {JSON.parse(product.image)
+                                                          .slice(0, 1)
+                                                          .map((image, index) => {
+                                                            const cleanedImagePath = image.replace(
+                                                              /[\[\]"]/g,
+                                                              ''
+                                                            );
+                                                            const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`;
+                                                            return (
+                                                              <a href={`/show-product/${product.id}`} key={index}>
+                                                                <img
+                                                                  key={index}
+                                                                  src={imagePath}
+                                                                  alt="Image"
+                                                                  width="270px"
+                                                                  height="200px"
+                                                                  className="rounded-image"
+                                                                />
+                                                              </a>
+                                                            );
+                                                          })}
+                                                      </>
+                                                    )}
+                                                </div>
+                                              </CardBody>
+                                            </Card>
+                                          </div>
+                                        </section>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                              
                     </NavbarItem>
                 </NavbarContent>
             </Navbar>
@@ -387,7 +549,9 @@ const Dashboard = () => {
                                                 </div>
                                                 <div className=" kt mb-6 mt-2 flex gap-3">
                                                     {product.name_category}
-                                                    {console.log(product.privacy_type)}
+                                                    {console.log(
+                                                        product.privacy_type,
+                                                    )}
                                                 </div>
 
                                                 <div className=" mb-6 mt-2 flex gap-3">
@@ -408,7 +572,7 @@ const Dashboard = () => {
                                                         }}
                                                     />
 
-                                                    {product.view_count/2}
+                                                    {product.view_count / 2}
                                                     <FontAwesomeIcon
                                                         icon={faEye}
                                                         className="heart-icon"
@@ -460,7 +624,12 @@ const Dashboard = () => {
                                                                             key={
                                                                                 index
                                                                             }>
-                                                                            onClick{() => handleViewProduct(product.id)}
+                                                                            onClick
+                                                                            {() =>
+                                                                                handleViewProduct(
+                                                                                    product.id,
+                                                                                )
+                                                                            }
                                                                             <img
                                                                                 key={
                                                                                     index

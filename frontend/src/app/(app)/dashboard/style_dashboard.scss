@@ -236,8 +236,8 @@ section {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 89%;
-  margin-top: -204%;
+  margin-left: 87%;
+  margin-top: -175%;
 }
 
 .category-slider-wrapper{
@@ -476,4 +476,38 @@ button {
     position: relative;
     // margin-left: 20%;
     z-index: 1;
+}
+
+.overlay {
+  position: fixed;
+  top: 92px;
+  left: 117px;
+  width: 84%;
+  height: 603%;
+  background-color: white;
+  z-index: 999;
+  border-radius: 13px;
+  overflow-y: auto; /* Thêm thanh cuộn dọc khi nội dung vượt quá kích thước của overlay */
+  max-height: 80vh;
+}
+
+/* CSS cho nội dung của pop-up */
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  position: absolute; /* Đặt nội dung pop-up vào vị trí tuyệt đối trong overlay */
+  top: 50%; /* Đặt vị trí đầu tiên ở giữa theo chiều dọc */
+  left: 50%; /* Đặt vị trí đầu tiên ở giữa theo chiều ngang */
+  transform: translate(-50%, -50%); /* Dịch chuyển nội dung pop-up để nó được căn chỉnh chính giữa */
+  
+}
+
+.closecart {
+  margin-left: 98%;
+  color: #ff253a;
+}
+.pyy-36 {
+  margin-left: 9%;
+  margin: 10%;
 }
