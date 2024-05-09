@@ -26,7 +26,7 @@ class RatingController extends Controller
             return response()
             ->json(['message' => 'Người dùng đã đánh giá sản phẩm trước đó.'], 400);
         }
-        dd('hii',$request->all());
+        // dd('hii',$request->all());
 
 
 

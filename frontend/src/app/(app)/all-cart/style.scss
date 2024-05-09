@@ -1,0 +1,476 @@
+.container {
+    color: #000;
+  }
+  
+  .py-4 {
+    margin-top: -10%;
+    height: 300%;
+    width: 100%; 
+  }
+  
+  .text-sm{
+    font-size: large;
+    font-weight: bold;
+  }
+  .font-bold {
+    font-weight: 700;
+    font-size: medium;
+}
+
+.text-lg{
+  margin-top: 1%;
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: #ff395d;
+}
+
+.gia {
+  margin-top: -1%;
+  font-size: medium;
+}
+.kt {
+  margin-top: -12%;
+  font-size: medium;
+  display: flex;
+  justify-content: flex-end; /* Căn trái */
+}
+
+  
+.transition-transform-background {
+  transition-property: transform, background;
+  transition-timing-function: ease;
+  transition-duration: 232ms;
+  width: 500px;
+  height: 341px;
+}
+  
+  .book {
+    background-color: white ;
+    color: #ff385c;
+  }
+  
+  .product-title {
+    color: blue;
+    font-size: 24px;
+    margin-top: 10%;
+  }
+  .backdrop-blur-lg {
+    --tw-backdrop-blur: blur(16px);
+    background: #ff385c;
+    height: 79px;
+}
+
+  .transition-transform-background {
+    transition-property: transform, background;
+    transition-timing-function: ease;
+    transition-duration: 232ms;
+    width: 500px;
+}
+
+.container{
+    width: 300px;
+}
+
+.product {
+    background-color: #ff385c;
+    height: 100px;
+}
+
+.gap-4 {
+  gap: 0rem;
+  width: 274px;
+}
+
+.text-left {
+    text-align: left;
+    width: 415px;
+}
+
+.py-36 {
+  padding-top: 3rem;
+  padding-bottom: 0rem;
+  margin-left: 20%;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  display: none;
+}
+
+.flex-1 {
+  width: 182px;
+  height: 200px;
+}
+
+.text-left {
+  text-align: left;
+  // width: 393px;
+}
+
+.right{
+  width: 100%
+}
+
+.text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+  display: none;
+}
+
+img, video {
+  max-width: 111%;
+  width: 110%;
+  height: auto;
+  margin-left: -5%;
+  margin-top: -18%;
+  height: 252px;
+}
+
+.nav{
+  background-color: #fbfcfd;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.mt-6 {
+  margin-top: 0.5rem;
+  margin-left: -4%;
+}
+
+.yeu {
+  margin-left: 17%;
+  background: #ffffff;
+}
+.timkiem {
+  margin-left: 2%;
+}
+
+section {
+  margin-bottom: 0.1rem; /* Khoảng cách giữa các sản phẩm */
+}
+
+.grid {
+  gap: 1rem; /* Khoảng cách giữa các sản phẩm */
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 0.01fr);
+  background: #f3f4f6;
+}
+
+
+.all {
+  width: 100px;
+}
+
+.rounded-image {
+  border-radius: 5%; /* Bo tròn góc của ảnh */
+}
+
+.square-image {
+  width: 200px; /* Kích thước chiều rộng của hình vuông */
+  height: 200px; /* Kích thước chiều cao của hình vuông */
+  object-fit: cover; /* Hiển thị hình ảnh bằng cách cắt hoặc co dãn để lấp đầy kích thước */
+}
+
+.slick-next {
+    right: -45px;
+}
+
+.slick-next:before {
+  content: '→';
+}
+
+.slick-prev:before, .slick-next:before {
+  font-family: 'slick';
+  font-size: 20px;
+  // line-height: 1;
+  // background-color: #b7b4b4;
+  color: #d30e0e;
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
+  // background: pink;
+  margin-left: -279%;
+  margin-right: -45px;
+
+}
+.slick-arrow {
+  color: #d30e0e;
+}
+.navbar {
+  display: flex;
+  flex-wrap: nowrap; /* Không cho phần tử xuống dòng */
+  overflow-x: auto; /* Cho phép cuộn ngang nếu nội dung vượt quá */
+}
+
+.navbar-item {
+  flex: 0 0 auto; /* Không co dãn phần tử, giữ nguyên kích thước */
+  margin-right: 10px; /* Để cách giữa các phần tử */
+}
+
+.custom-button {
+  border-radius: 50%; /* Đặt border-radius thành 50% để tạo nút tròn */
+  align-items: center;
+  cursor: pointer;
+  margin-left: 270px;
+  margin-top: -115%;
+}
+
+
+.button-text {
+  color: #ff385c;
+}
+
+.heart-icon {
+  color: #ff385c;
+  margin-right: 5px;
+}
+
+.unlike {
+    border-radius: 9999px;
+    cursor: pointer;
+    margin-left: 92%;
+    margin-top: -10%;
+}
+
+.category-slider-wrapper{
+  width: 80%;
+  margin-left: 13%;
+  font-weight: bold;
+
+}
+
+.category-slider-wrapper {
+  // display: flex;
+  justify-content: space-between; /* Phân bố các phần tử theo khoảng cách đều nhau */
+}
+
+.category-slider-wrapper .nav-item {
+  flex: 1;
+  margin: 8px 1cm;
+  margin-left: 0%;
+}
+.transition-transform-colors-opacity {
+  transition-property: transform, color, background, background-color, border-color, text-decoration-color, fill, stroke, opacity;
+  transition-timing-function: ease;
+  transition-duration: 250ms;
+  background-color: white;
+  margin-left: 30%;
+}
+.mb-6 {
+  margin-bottom: 0.5rem;
+}
+
+.data-\[justify\=center\]\:justify-center[data-justify=center] {
+  justify-content: center;
+  width: 323%;
+  margin-left: -271%;
+}
+
+.category-slider-wrapper .slide-item {
+
+  margin-right: 2cm; /* Khoảng cách giữa các phần tử div */
+}
+
+.nav-item {
+  background-color: #ff385c;
+  border-radius: 36px;
+  height: 42px;
+  color: white;
+  font-size: 15px;
+}
+.category-slider-wrapper .nav-item {
+  display: inline-block;
+  width: 85%;
+}
+.slider-button1{
+  margin-left: -15px;
+}
+.slider-button2{
+  margin-left: 100%;
+}
+
+.slick-arrow slick-prev {
+  color: #d30e0e;
+  background-color: #d30e0e;
+}
+
+
+
+.filter-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Màu nền của overlay */
+  z-index: 999; /* Đảm bảo overlay nằm trên tất cả các phần khác */
+}
+
+.filter-popup {
+  position: fixed;
+  top: 307%;
+  left: 50%;
+  width: 35%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.yeuthich{
+  margin-left: 10%;
+}
+
+* {
+  font-family: Helvetica, sans-serif;
+  font-weight: light;
+  -webkit-font-smoothing: antialiased;
+}
+form {
+  position: relative;
+  display: inline-block;
+  // max-width: 700px;
+  // min-width: 500px;
+  box-sizing: border-box;
+  // padding: 30px 25px;
+  // background-color: white;
+  border-radius: 40px;
+  // margin: 40px 0;
+  // left: 50%;
+}
+
+h1 {
+  // color: red;
+  font-weight: 100;
+  letter-spacing: 0.01em;
+  margin-left: 15px;
+  margin-bottom: 35px;
+  text-transform: uppercase;
+}
+
+button {
+  // margin-top: 35px;
+  background-color: white;
+  // border: 1px solid red;
+  // line-height: 0;
+  // font-size: 17px;
+  display: inline-block;
+  box-sizing: border-box;
+  // padding: 20px 15px;
+  border-radius: 60px;
+  // color: red;
+  // font-weight: 100;
+  // letter-spacing: 0.01em;
+  position: relative;
+  z-index: 1;
+
+  
+}
+
+.question {
+  position: relative;
+  padding: 10px 0;
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &:last-of-type {
+    padding-bottom: 0;
+  }
+
+  label {
+    transform-origin: left center;
+    color: #ff385c;
+    font-weight: 100;
+    letter-spacing: 0.01em;
+    font-size: 17px;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    display: block;
+    position: absolute;
+    margin-top: -40px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  input[type="text"] {
+    appearance: none;
+    background-color: none;
+    border: 1px solid #ff385c;
+    line-height: 0;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    border-radius: 60px;
+    color: #ff385c;
+    font-weight: 100;
+    letter-spacing: 0.01em;
+    position: relative;
+    z-index: 1;
+
+    &:focus {
+      outline: none;
+      background: #ff385c;
+      color: white;
+      margin-top: 30px;
+    }
+
+    &:valid {
+      margin-top: 30px;
+    }
+
+    
+    &:valid ~ label {
+      text-transform: uppercase;
+      font-style: italic;
+    }
+  }
+}
+
+.close-button {
+  margin-top: -13%;
+  height: 24px;
+  margin-left: 85%;
+}
+
+.sel {
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 0.5rem 2.5rem 0.5rem 1rem; /* padding-top, padding-right, padding-bottom, padding-left */
+  color: #6b7280; /* Màu của nội dung */
+  border-color: #fc4365; /* Màu của viền */
+  width: 100%;
+  margin-left: 0; /* Loại bỏ margin-left */
+  border-radius: 20px;
+}
+
+.ring-opacity-5 {
+  margin-top: 18%;
+  width: 70%;
+  color: #ff385c;
+  margin-left: 32%;
+}
+.shadow-lg {
+    --tw-shadow: 14 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+button {
+    background-color: white;
+    display: inline-block;
+    box-sizing: border-box;
+    border-radius: 60px;
+    position: relative;
+    // margin-left: 20%;
+    z-index: 1;
+}

@@ -6,7 +6,7 @@ import { useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
 import { useCart } from '../../../hooks/cart'
 import { Card, CardBody } from '@nextui-org/card'
-import '../../(app)/dashboard/style_dashboard.scss'
+import './style.scss'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -104,7 +104,6 @@ const Dashboard = () => {
                                                 <FontAwesomeIcon
                                                     icon={faHeartBroken}
                                                     className="heart-icon"
-                                                    style={{ marginTop: "40px" }}
                                                 />
 
                                             </span>
