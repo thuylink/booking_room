@@ -111,48 +111,97 @@ class CategoryController extends Controller
         return redirect()->back()->with('status', 'Đã cập nhật danh mục thành công');
     }
 
-    public function update(Request $request, $id)
+//     public function update(Request $request, $id)
+// {
+//     $category = Category::find($id);
+//     $category->update($request->all());
+
+//     // Xử lý hình ảnh
+//     if ($request->hasFile('image')) {
+//         $oldImage = 'uploads/category/' . $category->image;
+//         if (File::exists($oldImage)) {
+//             File::delete($oldImage);
+//         }
+
+//         $file = $request->file('image');
+//         $extension = $file->getClientOriginalExtension();
+//         $filename = time() . '.' . $extension;
+//         $file->move('uploads/category', $filename);
+//         $category->image = $filename;
+//     }
+
+//     // Xử lý hình ảnh 360
+//     if ($request->hasFile('image360')) {
+//         // Xóa bản ghi cũ
+//         $oldImage360 = 'uploads/category360/' . $category->image360;
+//         if (File::exists($oldImage360)) {
+//             File::delete($oldImage360);
+//         }
+
+//         // Xử lý và lưu hình ảnh 360 mới
+//         $image360s = $request->file('image360');
+//         $image360Base64s = [];
+//         foreach ($image360s as $image360) {
+//             $image360Contents = file_get_contents($image360->getPathname());
+//             $image360Base64 = base64_encode($image360Contents); // Chuyển đổi sang base64
+//             $image360Base64s[] = $image360Base64;
+//         }
+//         $category->image360 = json_encode($image360Base64s);
+//     }
+
+//     $category->save();
+
+//     return response()->json(['status' => 'Cập nhật danh mục thành công'], 200);
+// }
+
+public function update(Request $request, $id)
 {
-    $category = Category::find($id);
-    $category->update($request->all());
+    $category = Category::findOrFail($id);
 
-    // Xử lý hình ảnh
+    $validatedData = $request->validate([
+        'name_category' => 'required|string',
+        'status' => 'required|integer',
+        'image' => 'nullable|array',
+        'image.*' => 'nullable|image',
+        'image360' => 'nullable|array',
+        'image360.*' => 'nullable|image',
+    ]);
+
+    // Cập nhật các trường name_category và status
+    $category->name_category = $validatedData['name_category'];
+    $category->status = $validatedData['status'];
+
+    // Xử lý các ảnh
     if ($request->hasFile('image')) {
-        $oldImage = 'uploads/category/' . $category->image;
-        if (File::exists($oldImage)) {
-            File::delete($oldImage);
+        $imageNames = [];
+        foreach ($request->file('image') as $image) {
+            $extension = $image->getClientOriginalExtension();
+            $imageName = time() . '_' . uniqid() . '.' . $extension;
+            $image->move('uploads/category/', $imageName);
+            $imageNames[] = $imageName;
         }
-
-        $file = $request->file('image');
-        $extension = $file->getClientOriginalExtension();
-        $filename = time() . '.' . $extension;
-        $file->move('uploads/category', $filename);
-        $category->image = $filename;
+        // Cập nhật trường image với mảng các tên file ảnh
+        $category->image = json_encode($imageNames);
     }
 
-    // Xử lý hình ảnh 360
     if ($request->hasFile('image360')) {
-        // Xóa bản ghi cũ
-        $oldImage360 = 'uploads/category360/' . $category->image360;
-        if (File::exists($oldImage360)) {
-            File::delete($oldImage360);
-        }
-
-        // Xử lý và lưu hình ảnh 360 mới
-        $image360s = $request->file('image360');
         $image360Base64s = [];
-        foreach ($image360s as $image360) {
+        foreach ($request->file('image360') as $image360) {
             $image360Contents = file_get_contents($image360->getPathname());
             $image360Base64 = base64_encode($image360Contents); // Chuyển đổi sang base64
             $image360Base64s[] = $image360Base64;
         }
+        // Cập nhật trường image360 với mảng các base64 của ảnh
         $category->image360 = json_encode($image360Base64s);
     }
 
+    // Lưu các thay đổi vào cơ sở dữ liệu
     $category->save();
 
+    // Trả về response thành công
     return response()->json(['status' => 'Cập nhật danh mục thành công'], 200);
 }
+
 
 
     //delete

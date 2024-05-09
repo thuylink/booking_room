@@ -29,7 +29,7 @@ export const incrementViewCount = async id => {
 
 export const updateProductById = async ({ setErrors, setStatus, id, formData }) => {
     try {
-        const response = await axios.put(`/update-product/${id}`, formData)
+        const response = await axios.post(`/update-product/${id}`, formData)
         console.log(response)
         setStatus(response.data.status);
     } catch (error) {

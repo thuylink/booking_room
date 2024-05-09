@@ -84,6 +84,8 @@ const Profile = () => {
 
         try {
             await updateProfiles({ setErrors, setStatus, formData })
+            console.log('form update cate', formData)
+
             console.log('Cập nhật profile thành công')
             router.push('/show-profile')
             // router.push('update-profile')

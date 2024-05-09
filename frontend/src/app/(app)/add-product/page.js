@@ -128,7 +128,7 @@ const CreateProductPage = () => {
                 <div class="container__form container--signup">
                     <form class="form">
                         <div className="head">
-                            <a className="head">Tạo mới danh mục </a>
+                            <a className="head">Tạo mới nhà ở </a>
                         </div>
                         <select
                             id="id_category"
@@ -350,7 +350,7 @@ const CreateProductPage = () => {
             </div>
             <div className="button">
                 <Link href="/dashboard-host">Quay lại</Link>
-                <Button className="btn">Tạo mới danh mục</Button>
+                <Button className="btn">Tạo </Button>
             </div>
         </form>
     )

@@ -136,43 +136,57 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $product->id_category = $request->input('id_category');
-        if ($request->has('privacy_type')) {
-            $product->privacy_type = $request->input('privacy_type');
-        }
-        $product->location = $request->input('location');
-        $product->capacity = $request->input('capacity');
-        $product->amenities = $request->input('amenities');
+        $product = Product::findOrFail($id);
 
+        $validatedData = $request->validate([
+            'id_category' => 'required|integer',
+            'privacy_type' => 'required|string',
+            'image' => 'nullable|array',
+            'image.*' => 'nullable|image',
+            'image360' => 'nullable|array',
+            'image360.*' => 'nullable|image',
+            'location' => 'required|string',
+            'capacity' => 'required|string',
+            'amenities' => 'required|string',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|string',
+
+        ]);
+
+        $product->id_category = $validatedData['id_category'];
+        $product->privacy_type = $validatedData['privacy_type'];
+
+        $product->location = $validatedData['location'];
+        $product->capacity = $validatedData['capacity'];
+        $product->amenities = $validatedData['amenities'];
+        $product->title = $validatedData['title'];
+        $product->description = $validatedData['description'];
+        $product->price = $validatedData['price'];
 
         if ($request->hasFile('image')) {
-            $oldImage = 'uploads/product/' . $product->image;
-            if (File::exists($oldImage)) {
-                File::delete($oldImage);
+            $imageNames = [];
+            foreach ($request->file('image') as $image) {
+                $extension = $image->getClientOriginalExtension();
+                $imageName = time() . '_' . uniqid() . '.' . $extension;
+                $image->move('uploads/product/', $imageName);
+                $imageNames[] = $imageName;
             }
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/product', $filename);
-            $product->image = $filename;
+            // Cập nhật trường image với mảng các tên file ảnh
+            $product->image = json_encode($imageNames);
         }
 
         if ($request->hasFile('image360')) {
-            $oldImage360 = 'uploads/product360/' . $product->image360;
-            if (File::exists($oldImage360)) {
-                File::delete($oldImage360);
+            $image360Base64s = [];
+            foreach ($request->file('image360') as $image360) {
+                $image360Contents = file_get_contents($image360->getPathname());
+                $image360Base64 = base64_encode($image360Contents); // Chuyển đổi sang base64
+                $image360Base64s[] = $image360Base64;
             }
-            $file360 = $request->file('image360');
-            $extension360 = $file->getClientOriginalExtension();
-            $filename360 = time() . '.' . $extension360;
-            $file->move('uploads/product360', $filename360);
-            $product->image360 = $filename360;
+            // Cập nhật trường image360 với mảng các base64 của ảnh
+            $product->image360 = json_encode($image360Base64s);
         }
-        $product->title = $request->input('title');
-        $product->description = $request->input('description');
-        $product->price = $request->input('price');
-        $product->update();
+        $product->save();
         return response()->json(['status' => 'Cập nhật nhà thành công'], 201);
     }
 

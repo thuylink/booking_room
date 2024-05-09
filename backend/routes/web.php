@@ -87,7 +87,7 @@ Route::get('/category',[CategoryController::class,'index'])->name('category.all'
 Route::get('/add-category',[CategoryController::class,'add'])->name('category.add');
 Route::post('/add-category', [CategoryController::class, 'store'])->name('category.store');
 Route::get('/edit-category/{id}',[CategoryController::class,'edit'])->name('category.edit');
-Route::put('/update-category/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::post('/update-category/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::delete('/delete-category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 Route::get('/show-category/{id}',[CategoryController::class,'show'])->name('category.show');
 Route::get('/search', [CategoryController::class, 'search'])->name('category.search');
@@ -97,7 +97,9 @@ Route::get('/product',[ProductController::class,'index'])->name('product.all');
 Route::get('/add-product',[ProductController::class,'add'])->name('product.add');
 Route::post('/add-product', [ProductController::class, 'store'])->name('product.store');
 Route::get('/edit-product/{id}',[ProductController::class,'edit'])->name('product.edit');
-Route::put('/update-product/{id}', [ProductController::class, 'update'])->name('product.update');
+// Route::put('/update-product/{id}', [ProductController::class, 'update'])->name('product.update');
+Route::post('/update-product/{id}', [ProductController::class, 'update'])->name('product.update');
+
 Route::get('/show-product/{id}',[ProductController::class,'show'])->name('product.show');
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 

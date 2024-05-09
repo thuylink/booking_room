@@ -19,15 +19,16 @@ export const searchByName = async name_category => {
     }
 }
 
-export const updateCategoryById = async ({ id, formData }) => {
+export const updateCategoryById = async ({ setErrors, setStatus, id, formData }) => {
     try {
-        await axios.put(`/update-category/${id}`, formData)
-        return true
+        const response = await axios.post(`/update-category/${id}`, formData)
+        // return true
+        console.log(response);
+      setStatus(response.data.status);
     } catch (error) {
-        if (error.response && error.response.status !== 422) {
-            throw error
-        }
-        return false
+        if (error.response.status !== 422) throw error;
+      setErrors(error.response.data.errors);
+        // return false
     }
 }
 

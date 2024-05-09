@@ -25,7 +25,11 @@ import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faEye} from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '@/hooks/auth'
+
 const Dashboard = () => {
+    const { user } = useAuth({ middleware: 'auth' })
+
     const { product, error } = useProduct()
     const { category } = useCategory()
     const { rating } = useRating()

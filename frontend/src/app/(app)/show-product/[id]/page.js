@@ -29,6 +29,9 @@ import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { getRelatedProducts } from '../../../../hooks/product'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import Input from '@/components/Input'
+import InputError from '@/components/InputError'
+import { useBooking } from '../../../../hooks/booking'
 
 export const ProductDetailWithPannellum = () => {
     const { user } = useAuth({ middleware: 'guest' })
@@ -36,7 +39,10 @@ export const ProductDetailWithPannellum = () => {
     const id = window.location.pathname.split('/').pop()
     const { getProductById, error } = useProduct()
     const {users} = useAuth()
-
+    const { addBooking } = useBooking({
+        middleware: 'auth',
+        redirectIfAuthenticated: '/profiles',
+    })
     console.log("all users", users)
     const { product } = useProduct()
     const [product2, setProduct2] = useState(null)
@@ -54,14 +60,34 @@ export const ProductDetailWithPannellum = () => {
     const variants = ['bordered']
     const [relatedProducts, setRelatedProducts] = useState([])
 
-    localStorage.setItem('startDate', JSON.stringify(startDate));
-    localStorage.setItem('endDate', JSON.stringify(endDate));
+    // const [startDate, setStartDate] = useState('')
+    // const [endDate, setEndDate] = useState('')
+    const [guestNumber, setGuestNumber] = useState('')
+    const [guestName, setGuestName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [email, setEmail] = useState([])
+    const [message, setMessage] = useState([])
+    const [price, setPrice] = useState('')
+    const [errors, setErrors] = useState([])
 
-    const handleViewDetail = id_category => {
-        const productsInSameCategory = relatedProducts.filter(
-            product => product.id_category == id_category,
-        )
-        setRelatedProducts(productsInSameCategory)
+    const submitForm = event => {
+        event.preventDefault()
+
+        const formData = new FormData()
+        formData.append('id_user', user.id)
+        formData.append('id_product', id)
+        formData.append('start_date', startDate)
+        formData.append('end_date', endDate)
+        formData.append('price', price)
+        formData.append('guestNumber', guestNumber)
+        formData.append('guestName', guestName)
+        formData.append('phone', phone)
+        formData.append('email', email)
+        formData.append('message', message)
+        addBooking({
+            formData,
+            setErrors,
+        })
     }
 
     useEffect(() => {
@@ -724,6 +750,7 @@ const settings = {
                                 <div>
                                     <div className="container">
                                         <form
+                                            onSubmit={submitForm}    
                                             className="book"
                                             method="post"
                                             id="myform">
@@ -780,19 +807,102 @@ const settings = {
                                                         />
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div className="row mb-3">
-                                                <Link
-                                                    href={`/booking-form`}
-                                                    className="underline-none text-sm hover:text-gray-900">
-                                                    <Button className="ml-4 bg-pink-500">
-                                                        <span className="text-lg1 text-white cursor-pointer active:opacity-50">
-                                                            Đặt phòng
-                                                        </span>
-                                                    </Button>
-                                                </Link>
-                                                <div className="col-sm-6"></div>
+                                                <div className="date">
+                                                    <div className="date-input">
+                                                        <Input
+                                                            type="text"
+                                                            id="check-in"
+                                                            value={guestNumber}
+                                                            className="input"
+                                                            placeholder="Số khách"
+                                                            onChange={event =>
+                                                                setGuestNumber(event.target.value)
+                                                            }
+                                                            required
+                                                            autoFocus
+                                                        />
+                                                    </div>
+                                                    <div className="date-input">
+                                                        <Input
+                                                            type="text"
+                                                            id="check-out"
+                                                            className="input"
+                                                            value={guestName}
+                                                            placeholder="Tên người đại diện"
+                                                            onChange={event =>
+                                                                setGuestName(event.target.value)
+                                                            }
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="date">
+                                                    <div className="date-input">
+                                                        <Input
+                                                            type="text"
+                                                            id="check-in"
+                                                            value={phone}
+                                                            className="input"
+                                                            placeholder="Điện thoại"
+                                                            onChange={event =>
+                                                                setPhone(event.target.value)
+                                                            }
+                                                            required
+                                                            autoFocus
+                                                        />
+                                                    </div>
+                                                    <div className="date-input">
+                                                        <Input
+                                                            type="text"
+                                                            value={email}
+                                                            id="check-out"
+                                                            className="input"
+                                                            placeholder="Email"
+                                                            onChange={event =>
+                                                                setEmail(event.target.value)
+                                                            }
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="input-wrapper">
+                                                    <Input
+                                                        type="text"
+                                                        id="nameCategory"
+                                                        value={message}
+                                                        className="input"
+                                                        onChange={event =>
+                                                            setMessage(event.target.value)
+                                                        }
+                                                        required
+                                                        placeholder="Lời nhắn cho chủ nhà"
+                                                        autoFocus
+                                                    />
+                                                    <InputError
+                                                        messages={errors.gender}
+                                                        className="mt-2"
+                                                    />
+                                                </div>
+                                                <div className="input-wrapper">
+                                                    <Input
+                                                        type="text"
+                                                        id="nameCategory"
+                                                        value={price}
+                                                        className="input"
+                                                        onChange={event =>
+                                                            setPrice(event.target.value)
+                                                        }
+                                                        required
+                                                        placeholder="Tổng tiền"
+                                                        autoFocus
+                                                    />
+                                                    <InputError
+                                                        messages={errors.gender}
+                                                        className="mt-2"
+                                                    />
+                                                </div>
                                             </div>
 
                                             <div className="col">
@@ -832,6 +942,13 @@ const settings = {
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                            <div className="button">
+                                                <Button type="submit" className="btn">
+                                                    {' '}
+                                                    {/* Thêm type="submit" */}
+                                                    Thanh toán
+                                                </Button>
                                             </div>
                                         </form>
                                     </div>

@@ -55,10 +55,10 @@ body {
     box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25), 0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
     overflow: hidden;
     position: relative;
-    width: 266%;
-    margin-left: -79%;
-    height: 524px;
-    margin-top: 2%;
+    width: 281%;
+    margin-left: -90%;
+    height: 526px;
+    margin-top: 1%;
 }
 
 .container__form {
@@ -66,11 +66,6 @@ body {
 	position: absolute;
 	top: 0;
 	transition: all 0.6s ease-in-out;
-}
-
-.container__form.container--signup {
-    max-height: 112%;
-    overflow-y: auto;
 }
 
 .container--signin {
@@ -97,7 +92,20 @@ body {
 	z-index: 5;
 }
 
-
+.container__overlay {
+	height: 100%;
+	left: 50%;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	transition: transform 0.6s ease-in-out;
+	width: 50%;
+	z-index: 100;
+}
+.container__overlay {
+    max-height: 95%; /* hoặc bất kỳ giá trị nào phù hợp */
+    overflow-y: auto;
+}
 
 
 .container.right-panel-active .container__overlay {
@@ -162,10 +170,9 @@ body {
     color: #f8585c;
     cursor: pointer;
     font-size: 0.8rem;
-    margin-left: 5%;
-    width: 111%;
-    margin-top: 78%;
+    margin-left: -20%;
     font-weight: bold;
+    width: -3%;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
     position: relative;
@@ -178,9 +185,9 @@ body {
     margin-left: 16%;
 }
 .button {
-    margin-top: -34%;
-    margin-left: 26%;
-    width: 17%;
+    margin-top: -65%;
+    margin-left: 108%;
+    width: 36%;
 }
 .btn:hover {
     background-color: #008997;
@@ -206,7 +213,7 @@ body {
 	justify-content: center;
 	flex-direction: column;
 	padding: 0 3rem;
-	height: 200%;
+	height: 100%;
 	text-align: center;
 }
 
@@ -234,7 +241,7 @@ body {
 .head {
     color: white;
     font-size: larger;
-    margin-top: -60%;
+    margin-top: -27%;
     font-weight: bold;
 }
 .ring-opacity-5 {
@@ -264,9 +271,6 @@ body {
     display: none;
 }
 
-.form {
-    padding: 20px; /* Thêm khoảng cách nội dung với biên của container */
-}
 
 .flex-wrap {
     flex-wrap: wrap;
@@ -275,28 +279,21 @@ body {
     margin-top: 0.5%;
 }
 
-/* .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
-    border-color: var(--ck-color-base-border);
-    width: 71%;
-    margin-left: 93px;
-} */
-
-.edit{
-    width: 100%;
+.amenities-container {
+    display: flex;
+    margin-left: -24%;
+    text-align: left;
 }
 
-.container__overlay {
-    height: 84%;
-    left: 46%;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    transition: transform 0.6s ease-in-out;
-    width: 50%;
-    z-index: 100;
-    overflow-y: auto;
+.amenities-column-left, .amenities-column-right {
+    flex: 1;
+    width: 187px;
 }
-.w-1\/2 {
-    width: 131%;
-    margin-left: -38%;
+
+.amenities-column-left {
+    margin-right: -80px; /* Khoảng cách giữa hai cột */
+}
+.form {
+    max-height: 99%; /* Đặt chiều cao tối đa cho form */
+    overflow-y: auto; /* Kích hoạt thanh cuộn dọc khi nội dung vượt quá chiều cao */
 }
