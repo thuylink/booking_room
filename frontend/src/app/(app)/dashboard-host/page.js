@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import Button from '@/components/Button'
 import './style.css'
@@ -7,19 +8,133 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { faListDots } from '@fortawesome/free-solid-svg-icons'
 import { faTableList } from '@fortawesome/free-solid-svg-icons'
 import { faShop } from '@fortawesome/free-solid-svg-icons'
-import { faClipboardList} from '@fortawesome/free-solid-svg-icons'
+import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
+import CreateCategoryPage from '../add-category/page'
+import CreateProductPage from '../add-product/page'
+import AllBooking from '../all-booking/page'
+import AllCategory from '../all-category/page'
+import AllProduct from '../all-product/page'
+import BarChart from '../chart/page'
+import { useCategory } from '../../../hooks/category' 
+import { useBooking } from '../../../hooks/booking' 
 
-export const metadata = {
-    title: 'Laravel - Dashboard',
-}
+import { useProduct } from '../../../hooks/product' // Import hook useProduct
+import { useAuth } from '@/hooks/auth'
+import React, { useState, useEffect } from 'react'
+
+// export const metadata = {
+//     title: 'Laravel - Dashboard',
+// }
 
 const Dashboard = () => {
+    const { user } = useAuth({ middleware: 'auth' })
+    const { product } = useProduct() // Sử dụng hook useProduct để lấy danh sách sản phẩm
+    const { category } = useCategory()
+    const { booking } = useBooking()
+
+    console.log('ca', category)
+    console.log('pr', product)
+    
+    const [productCount, setProductCount] = useState(0)
+    const [categoryCount, setCategoryCount] = useState(0)
+    const [bookingCount, setBookingCount] = useState(0)
+
+
+    useEffect(() => {
+        if (product) {
+            setProductCount(product.length) // Cập nhật số lượng sản phẩm
+        }
+        
+    }, [product])
+
+    useEffect(() => {
+        if (booking) {
+            setBookingCount(booking.length) // Cập nhật số lượng sản phẩm
+        }
+        
+    }, [booking])
+
+    useEffect(() => {
+        if (category) {
+            // Tính tổng số lượng phần tử trong mảng con của mỗi phần tử trong mảng category
+            const totalCount = category.reduce((acc, curr) => acc + curr.length, 0);
+            setCategoryCount(totalCount); // Cập nhật số lượng sản phẩm
+        }
+    }, [category]);
+
+    const [showCreateCategory, setShowCreateCategory] = useState(false) // State để xác định liệu có hiển thị template tạo mới danh mục hay không
+    const [showAllCategory, setShowAllCategory] = useState(false)
+    const [showCreateProduct, setShowCreateProduct] = useState(false)
+    const [showAllProduct, setShowAllProduct] = useState(false)
+    const [showBooking, setShowBooking] = useState(false)
+    const [showChart, setShowChart] = useState(false)
+
+    const handleChartClick = () => {
+        setShowCreateCategory(false);
+        setShowAllCategory(false);
+        setShowCreateProduct(false);
+        setShowAllProduct(false);
+        setShowBooking(false);
+        setShowChart(true)
+
+    }
+
+    const handleCategoryClick = () => {
+        setShowCreateCategory(true);
+        setShowAllCategory(false);
+        setShowCreateProduct(false);
+        setShowAllProduct(false);
+        setShowBooking(false);
+        setShowChart(false)
+
+    }
+
+    const handleAllCategoryClick = () => {
+        setShowCreateCategory(false);
+        setShowAllCategory(true);
+        setShowCreateProduct(false);
+        setShowAllProduct(false);
+        setShowBooking(false);
+        setShowChart(false)
+
+    }
+
+    const handleProductClick = () => {
+        setShowCreateCategory(false);
+        setShowAllCategory(false);
+        setShowCreateProduct(true);
+        setShowAllProduct(false);
+        setShowChart(false)
+
+        setShowBooking(false);
+    }
+
+    const handleAllProductClick = () => {
+        setShowCreateCategory(false);
+        setShowAllCategory(false);
+        setShowChart(false)
+
+        setShowCreateProduct(false);
+        setShowAllProduct(true);
+        setShowBooking(false);
+    }
+
+    const handleBookingClick = () => {
+        setShowCreateCategory(false);
+        setShowAllCategory(false);
+        setShowCreateProduct(false);
+        setShowAllProduct(false);
+        setShowBooking(true);
+        setShowChart(false)
+
+    }
     return (
         <>
             <link
                 href="https://fonts.googleapis.com/css?family=DM+Sans:400,500,700&display=swap"
                 rel="stylesheet"
             />
+
             <div className="task-manager">
                 <div className="left-bar">
                     <div className="upper-part">
@@ -30,122 +145,118 @@ const Dashboard = () => {
                     </div>
                     <div className="left-content">
                         <ul className="action-list">
+                            <li className="item">
 
-                        <li className="item">
-                                <Link href="/add-category">
-                                    <span className="flex items-center">
-                                        <FontAwesomeIcon
-                                            icon={faShop}
-                                            className="times-icon"
-                                        />
-                                        <span className="ml-2">
-                                            Thống kê
-                                        </span>
-                                    </span>
-                                </Link>
+                            <span
+                                    onClick={handleChartClick}
+                                    className="flex items-center cursor-pointer">
+                                    <FontAwesomeIcon
+                                        icon={faShop}
+                                        className="times-icon"
+                                    />
+                                    <span className="ml-2">Thống kê</span>
+                                </span>
                             </li>
 
                             <li className="item">
-                                <Link href="/all-booking">
-                                    <span className="flex items-center">
-                                        <FontAwesomeIcon
-                                            icon={faClipboardList}
-                                            className="times-icon"
-                                        />
-                                        <span className="ml-2">
-                                            Đơn đặt phòng 
-                                        </span>
-                                    </span>
-                                </Link>
+                                <span
+                                    onClick={handleBookingClick}
+                                    className="flex items-center cursor-pointer">
+                                    <FontAwesomeIcon
+                                        icon={faClipboardList}
+                                        className="times-icon"
+                                    />
+                                    <span className="ml-2">Đơn đặt phòng</span>
+                                </span>
                             </li>
 
                             <li className="item">
-                                <Link href="/add-product">
-                                    <span className="flex items-center">
-                                        <FontAwesomeIcon
-                                            icon={faHouseCircleCheck}
-                                            className="times-icon"
-                                        />
-                                        <span className="ml-2">
-                                            Tạo mới nhà ở
-                                        </span>
-                                    </span>
-                                </Link>
+                                <span
+                                    onClick={handleProductClick}
+                                    className="flex items-center cursor-pointer">
+                                    <FontAwesomeIcon
+                                        icon={faHouseCircleCheck}
+                                        className="times-icon"
+                                    />
+                                    <span className="ml-2">Tạo mới nhà ở</span>
+                                </span>
                             </li>
 
                             <li className="item">
-                                <Link href="/all-product">
-                                    <span className="flex items-center">
-                                        <FontAwesomeIcon
-                                            icon={faHouse}
-                                            className="times-icon"
-                                        />
-                                        <span className="ml-2">
-                                            Danh sách nhà đã tạo
-                                        </span>
+                                <span
+                                    onClick={handleAllProductClick}
+                                    className="flex items-center cursor-pointer">
+                                    <FontAwesomeIcon
+                                        icon={faHouse}
+                                        className="times-icon"
+                                    />
+                                    <span className="ml-2">
+                                        Danh sách nhà đã tạo
                                     </span>
-                                </Link>
+                                </span>
                             </li>
 
                             <li className="item">
-                                <Link href="/add-category">
-                                    <span className="flex items-center">
-                                        <FontAwesomeIcon
-                                            icon={faListDots}
-                                            className="times-icon"
-                                        />
-                                        <span className="ml-2">
-                                            Tạo mới danh mục
-                                        </span>
+                                <span
+                                    onClick={handleCategoryClick}
+                                    className="flex items-center cursor-pointer">
+                                    <FontAwesomeIcon
+                                        icon={faListDots}
+                                        className="times-icon"
+                                    />
+                                    <span className="ml-2">
+                                        Tạo mới danh mục
                                     </span>
-                                </Link>
+                                </span>
                             </li>
 
                             <li className="item">
-                                <Link href="/all-category">
-                                    <span className="flex items-center">
-                                        <FontAwesomeIcon
-                                            icon={faTableList}
-                                            className="times-icon"
-                                        />
-                                        <span className="ml-2">
-                                            Danh sách danh mục
-                                        </span>
+                                <span
+                                    onClick={handleAllCategoryClick}
+                                    className="flex items-center cursor-pointer">
+                                    <FontAwesomeIcon
+                                        icon={faTableList}
+                                        className="times-icon"
+                                    />
+                                    <span className="ml-2">
+                                        Danh sách danh mục
                                     </span>
-                                </Link>
+                                </span>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div className="page-content">
-                    <div class="header">thống kê ở đây</div>
-                    
+                    {showCreateCategory && <CreateCategoryPage />}{' '}
+                    {showCreateProduct && <CreateProductPage />}
+                    {showBooking && <AllBooking />}
+                    {showAllCategory && <AllCategory />}
+                    {showAllProduct && <AllProduct />}
+                    {showChart && <BarChart />}
                 </div>
                 <div class="right-bar">
-                   
                     <div class="right-content">
-                        
-                    
                         <div class="task-box blue">
                             <div class="description-task">
-                                <div class="task-name">Tổng số nhà ở đã tạo</div>
+                                <div class="task-name">
+                                    Tổng số nhà ở đã tạo: {productCount}
+                                </div>
                             </div>
                             <div class="more-button"></div>
-                            
                         </div>
                         <div class="task-box red">
                             <div class="description-task">
-                                <div class="task-name">Tổng số danh mục đã tạo</div>
+                                <div class="task-name">
+                                    Tổng số danh mục đã tạo: {categoryCount}
+                                </div>
                             </div>
                             <div class="more-button"></div>
-                            
                         </div>
                         <div class="task-box green">
                             <div class="description-task">
-                                <div class="task-name">10 nhà được</div>
+                                <div class="task-name">Tổng số đơn đặt phòng: {bookingCount}  </div>
                             </div>
                             <div class="more-button"></div>
-                            
                         </div>
                     </div>
                 </div>
@@ -155,196 +266,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
-// <div class="content-categories">
-//                         <div class="label-wrapper">
-//                             <input
-//                                 class="nav-item"
-//                                 name="nav"
-//                                 type="radio"
-//                                 id="opt-1"
-//                             />
-//                             <label class="category" for="opt-1">
-//                                 All
-//                             </label>
-//                         </div>
-//                         <div class="label-wrapper">
-//                             <input
-//                                 class="nav-item"
-//                                 name="nav"
-//                                 type="radio"
-//                                 id="opt-2"
-//                                 checked
-//                             />
-//                             <label class="category" for="opt-2">
-//                                 Important
-//                             </label>
-//                         </div>
-//                         <div class="label-wrapper">
-//                             <input
-//                                 class="nav-item"
-//                                 name="nav"
-//                                 type="radio"
-//                                 id="opt-3"
-//                             />
-//                             <label class="category" for="opt-3">
-//                                 Notes
-//                             </label>
-//                         </div>
-//                         <div class="label-wrapper">
-//                             <input
-//                                 class="nav-item"
-//                                 name="nav"
-//                                 type="radio"
-//                                 id="opt-4"
-//                             />
-//                             <label class="category" for="opt-4">
-//                                 Links
-//                             </label>
-//                         </div>
-//                     </div>
-//                     <div class="tasks-wrapper">
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-1"
-//                                 checked
-//                             />
-//                             <label for="item-1">
-//                                 <span class="label-text">
-//                                     Dashboard Design Implementation
-//                                 </span>
-//                             </label>
-//                             <span class="tag approved">Approved</span>
-//                         </div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-2"
-//                                 checked
-//                             />
-//                             <label for="item-2">
-//                                 <span class="label-text">
-//                                     Create a userflow
-//                                 </span>
-//                             </label>
-//                             <span class="tag progress">In Progress</span>
-//                         </div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-3"
-//                             />
-//                             <label for="item-3">
-//                                 <span class="label-text">
-//                                     Application Implementation
-//                                 </span>
-//                             </label>
-//                             <span class="tag review">In Review</span>
-//                         </div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-4"
-//                             />
-//                             <label for="item-4">
-//                                 <span class="label-text">
-//                                     Create a Dashboard Design
-//                                 </span>
-//                             </label>
-//                             <span class="tag progress">In Progress</span>
-//                         </div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-5"
-//                             />
-//                             <label for="item-5">
-//                                 <span class="label-text">
-//                                     Create a Web Application Design
-//                                 </span>
-//                             </label>
-//                             <span class="tag approved">Approved</span>
-//                         </div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-6"
-//                             />
-//                             <label for="item-6">
-//                                 <span class="label-text">
-//                                     Interactive Design
-//                                 </span>
-//                             </label>
-//                             <span class="tag review">In Review</span>
-//                         </div>
-//                         <div class="header upcoming">Upcoming Tasks</div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-7"
-//                             />
-//                             <label for="item-7">
-//                                 <span class="label-text">
-//                                     Dashboard Design Implementation
-//                                 </span>
-//                             </label>
-//                             <span class="tag waiting">Waiting</span>
-//                         </div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-8"
-//                             />
-//                             <label for="item-8">
-//                                 <span class="label-text">
-//                                     Create a userflow
-//                                 </span>
-//                             </label>
-//                             <span class="tag waiting">Waiting</span>
-//                         </div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-9"
-//                             />
-//                             <label for="item-9">
-//                                 <span class="label-text">
-//                                     Application Implementation
-//                                 </span>
-//                             </label>
-//                             <span class="tag waiting">Waiting</span>
-//                         </div>
-//                         <div class="task">
-//                             <input
-//                                 class="task-item"
-//                                 name="task"
-//                                 type="checkbox"
-//                                 id="item-10"
-//                             />
-//                             <label for="item-10">
-//                                 <span class="label-text">
-//                                     Create a Dashboard Design
-//                                 </span>
-//                             </label>
-//                             <span class="tag waiting">Waiting</span>
-//                         </div>
-//                     </div>

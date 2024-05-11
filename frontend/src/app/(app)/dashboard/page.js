@@ -103,9 +103,6 @@ const Dashboard = () => {
         setOverlayOpen(true);
       };
     
-      const closeOverlay = () => {
-        setOverlayOpen(false);
-      };
 
     const toggleFilterPopup = () => {
         setShowFilterPopup(!showFilterPopup)
@@ -120,33 +117,6 @@ const Dashboard = () => {
         }
     }
 
-    const handleFilterSubmit = () => {
-        const minPrice = parseFloat(priceMin)
-        const maxPrice = parseFloat(priceMax)
-        const minCapacity = parseInt(capacityMin)
-        const maxCapacity = parseInt(capacityMax)
-
-        const filteredProducts = product.filter(item => {
-            const priceCondition =
-                item.price >= minPrice && item.price <= maxPrice
-            const capacityCondition =
-                item.capacity >= minCapacity && item.capacity <= maxCapacity
-            let privacyTypeCondition = true
-
-            // Kiểm tra điều kiện của privacy_type
-            if (privacy_type === 'Một căn phòng') {
-                privacyTypeCondition = item.privacy_type === 'Một căn phòng'
-            } else if (privacy_type === 'Phòng chung') {
-                privacyTypeCondition = item.privacy_type === 'Phòng chung'
-            } else if (privacy_type === 'Toàn bộ căn nhà') {
-                privacyTypeCondition = item.privacy_type === 'Toàn bộ căn nhà'
-            }
-
-            return priceCondition && capacityCondition && privacyTypeCondition
-        })
-
-        setFilteredData(filteredProducts)
-    }
 
     if (rating && rating.length > 0) {
         rating.forEach(ratingItem => {
@@ -210,21 +180,80 @@ const Dashboard = () => {
         })
     }
 
-    const handleAddToCart = async id_product => {
-        try {
-            await addToCart(id_product)
-            console.log('Đã thêm sản phẩm vào giỏ hàng')
-        } catch (error) {
-            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error)
-        }
+    const handleAddToCart = async (id_product) => {
+    try {
+        await addToCart(id_product);
+        console.log('Đã thêm sản phẩm vào giỏ hàng');
+        // Cập nhật danh sách sản phẩm yêu thích
+        const updatedFavorites = { ...favoriteStatus, [id_product]: true };
+        setFavoriteStatus(updatedFavorites);
+        // Mở overlay
+        setOverlayOpen(true);
+    } catch (error) {
+        console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
     }
+};
+
+    
+
+    const ProductCard = ({ product }) => {
+        const cleanedImagePath = product.image ? JSON.parse(product.image)[0].replace(/[\[\]"]/g, '') : '';
+        const imagePath = cleanedImagePath ? `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}` : '';
+
+        return (
+            <section key={product.id} className="pyy-36">
+                <div className="container flex items-center justify-center">
+                    <Card className="py-4 lg:w-3/4 xl:w-1/2">
+                        <CardBody className="overflow-visible py-2">
+                            <div className="flex flex-col-reverse gap-4">
+                                <div className="right">
+                                    <h2 className="text-lg font-bold uppercase">
+                                        {product.location}
+                                    </h2>
+                                    <div className="gia mb-6 mt-2 flex gap-3">
+                                        {product.price} VNĐ/đêm
+                                    </div>
+                                    <div className="kt mb-6 mt-2 flex gap-3">
+                                        {product.name_category}
+                                    </div>
+                                    <div className="mt-6 flex gap-6">
+                                        <span
+                                            className="unlike"
+                                            onClick={() => handleDelete(product.id)}
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faHeartBroken}
+                                                className="heart-icon"
+                                            />
+                                        </span>
+                                    </div>
+                                </div>
+                                {imagePath && (
+                                    <a href={`/show-product/${product.id}`}>
+                                        <img
+                                            src={imagePath}
+                                            alt="Image"
+                                            width="270px"
+                                            height="200px"
+                                            className="rounded-image"
+                                        />
+                                    </a>
+                                )}
+                            </div>
+                        </CardBody>
+                    </Card>
+                </div>
+            </section>
+        );
+    };
+
 
     const settings = {
         dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 6,
-        slidesToScroll: 1,
+        slidesToScroll: 4,
         responsive: [
             {
                 breakpoint: 1024,
@@ -449,81 +478,23 @@ const Dashboard = () => {
                     <NavbarItem>
                             <Button className="yeu bg-pink-500" onClick={openOverlay}>
                                 <span className="yeu1 text-white cursor-pointer active:opacity-50">
-                                    Danh sách yêu thích
+                                    Đã yêu thích
                                 </span>
                             </Button>
                             {overlayOpen && (
-                                <div className="overlay">
-                                  <div className="overlay-content">
-                                    <button onClick={closeOverlay} className='closecart'>
-                                      <FontAwesomeIcon icon={faTimes} />
-                                    </button>
-                                    <div className="grid grid-cols-3 gap-2 overflow-auto">
-                                      {/* Sử dụng grid với 3 cột và thêm overflow-auto để thêm thanh cuộn dọc */}
-                                      {cart?.map(product => (
-                                        <section key={product.id} className="pyy-36">
-                                          <div className="container flex items-center justify-center">
-                                            <Card className="py-4 lg:w-3/4 xl:w-1/2">
-                                              <CardBody className="overflow-visible py-2">
-                                                <div className="flex flex-col-reverse gap-4">
-                                                  <div className="right">
-                                                    <h2 className="text-lg font-bold uppercase">
-                                                      {product.location}
-                                                    </h2>
-                                                    <div className="gia mb-6 mt-2 flex gap-3">
-                                                      {product.price} VNĐ/đêm
-                                                    </div>
-                                                    <div className="kt mb-6 mt-2 flex gap-3">
-                                                      {product.name_category}
-                                                    </div>
-                                                    <div className="mt-6 flex gap-6">
-                                                      <span
-                                                        className="unlike"
-                                                        onClick={() => handleDelete(product.id)}
-                                                      >
-                                                        <FontAwesomeIcon
-                                                          icon={faHeartBroken}
-                                                          className="heart-icon"
-                                                        />
-                                                      </span>
-                                                    </div>
-                                                  </div>
-                                                  {product.image &&
-                                                    Array.isArray(JSON.parse(product.image)) && (
-                                                      <>
-                                                        {JSON.parse(product.image)
-                                                          .slice(0, 1)
-                                                          .map((image, index) => {
-                                                            const cleanedImagePath = image.replace(
-                                                              /[\[\]"]/g,
-                                                              ''
-                                                            );
-                                                            const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`;
-                                                            return (
-                                                              <a href={`/show-product/${product.id}`} key={index}>
-                                                                <img
-                                                                  key={index}
-                                                                  src={imagePath}
-                                                                  alt="Image"
-                                                                  width="270px"
-                                                                  height="200px"
-                                                                  className="rounded-image"
-                                                                />
-                                                              </a>
-                                                            );
-                                                          })}
-                                                      </>
-                                                    )}
-                                                </div>
-                                              </CardBody>
-                                            </Card>
-                                          </div>
-                                        </section>
-                                      ))}
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
+            <div className="overlay">
+                <div className="overlay-content">
+                <button onClick={() => setOverlayOpen(false)} className="closecart">
+                <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <div className="grid grid-cols-3 gap-2 overflow-auto">
+            {cart?.map((product) => (
+                <ProductCard key={product.id} product={product} />
+            ))}
+        </div>
+                </div>
+            </div>
+        )}
                               
                     </NavbarItem>
                 </NavbarContent>
@@ -533,7 +504,7 @@ const Dashboard = () => {
 
             <div className="other-elements">
                 <div className="grid grid-cols-4 gap-21">
-                    {filteredProductsAll?.map(product => (
+                    {filteredProductsAll?.sort((a, b) => b.id - a.id).map(product => (
                         <section key={product.id} className="py-36">
                             <div className="container flex items-center justify-center">
                                 <Card className="py-4 lg:w-3/4 xl:w-1/2">
@@ -586,14 +557,10 @@ const Dashboard = () => {
                                                     <span
                                                         className="custom-button"
                                                         onClick={() => {
-                                                            handleAddToCart(
-                                                                product.id,
-                                                            )
-                                                        }}>
-                                                        <FontAwesomeIcon
-                                                            icon={faHeart}
-                                                            className="heart-icon"
-                                                        />
+                                                            handleAddToCart(product.id);
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faHeart} className="heart-icon" />
                                                     </span>
                                                 </div>
                                             </div>

@@ -84,7 +84,7 @@ body {
     font-family: system-ui;
 }  
   .item {
-    @extend %flex;
+    /* @extend %flex; */
     color: var(--main-color);
     margin-bottom: 14px;
     font-weight: 500;
@@ -157,7 +157,7 @@ body {
       height: 24px;
       background-color: #623ce8;
       color: #fff;
-      @extend %flex;
+      /* @extend %flex; */
       justify-content: center;
     }
   }
@@ -167,6 +167,10 @@ body {
     overflow-y: auto;
     flex: 1;
   }
+  .w-6 {
+    width: 1.5rem;
+    display: none;
+}
   
   .task-box {
     position: relative;
@@ -388,4 +392,18 @@ body {
   margin-top: -2%;
   width: 102.8%;
   margin-left: -1.4%;
+}
+
+.avtimage {
+  margin-top: -87%;
+  margin-left: -35%;
+  height: 55px;
+  width: 46px;
+  border-radius: 25px;
+}
+
+
+.fill-current {
+  fill: currentColor;
+  margin-top: -98%;
 }

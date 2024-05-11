@@ -49,53 +49,49 @@ body {
 	text-decoration: none;
 } */
 
-.container {
-	background-color: var(--white);
-	border-radius: var(--button-radius);
-	box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
-		0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
-	height: var(--max-height);
-	max-width: var(--max-width);
-	overflow: hidden;
-	position: relative;
-    width: 206%;
-    margin-left: -49%;
-    height: 500px;
-    margin-top: 1%;
+.containercategory {
+    background-color: var(--white);
+    border-radius: var(--button-radius);
+    box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25), 0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+    position: relative;
+    width: 386%;
+    margin-left: -142%;
+    height: 524px;
+    margin-top: -12%;
 }
-
-.container__form {
+.containercategory__form {
 	height: 100%;
 	position: absolute;
 	top: 0;
 	transition: all 0.6s ease-in-out;
 }
 
-.container--signin {
+.containercategory--signin {
 	left: 0;
 	width: 50%;
 	z-index: 2;
 }
 
-.container.right-panel-active .container--signin {
+.containercategory.right-panel-active .containercategory--signin {
 	transform: translateX(100%);
 }
 
-.container--signup {
+.containercategory--signup {
 	left: 0;
 	opacity: 0;
 	width: 50%;
 	z-index: 1;
 }
 
-.container.right-panel-active .container--signup {
+.containercategory.right-panel-active .containercategory--signup {
 	animation: show 0.6s;
 	opacity: 1;
 	transform: translateX(100%);
 	z-index: 5;
 }
 
-.container__overlay {
+.containercategory__overlay {
 	height: 100%;
 	left: 50%;
 	overflow: hidden;
@@ -105,13 +101,13 @@ body {
 	width: 50%;
 	z-index: 100;
 }
-.container__overlay {
+.containercategory__overlay {
     max-height: 400px; /* hoặc bất kỳ giá trị nào phù hợp */
     overflow-y: auto;
 }
 
 
-.container.right-panel-active .container__overlay {
+.containercategory.right-panel-active .containercategory__overlay {
 	transform: translateX(-100%);
 }
 
@@ -131,7 +127,7 @@ body {
     position:relative;
 }
 
-.container.right-panel-active .overlay {
+.containercategory.right-panel-active .overlay {
 	transform: translateX(50%);
 }
 
@@ -153,7 +149,7 @@ body {
 	transform: translateX(-20%);
 }
 
-.container.right-panel-active .overlay--left {
+.containercategory.right-panel-active .overlay--left {
 	transform: translateX(0);
 }
 
@@ -162,20 +158,21 @@ body {
 	transform: translateX(0);
 }
 
-.container.right-panel-active .overlay--right {
+.containercategory.right-panel-active .overlay--right {
 	transform: translateX(20%);
 }
 
-.btn {
-    background-color: white;
+.btncategory {
+    background-color: rgb(9, 146, 200);
     border-radius: 20px;
     border: 1px solid #f8585c;
     color: #f8585c;
     cursor: pointer;
     font-size: 0.8rem;
-    margin-left: -20%;
+    margin-left: 136%;
     font-weight: bold;
-    width: -3%;
+    width: 153px;
+    margin-top: 159%;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
     position: relative;
@@ -183,29 +180,32 @@ body {
     z-index: 999;
     padding: 10px 20px;
 }
+.text-white {
+    color: #f8585c;
+}
 .mt-4 {
     margin-top: 1rem;
     margin-left: 16%;
 }
 .button {
-    margin-top: -55%;
-    margin-left: 94%;
-    width: 47%;
+    margin-top: -154%;
+    margin-left: 84%;
+    width: 76%;
 }
-.btn:hover {
+.btncategory:hover {
     background-color: #008997;
     color: white;
 }
 
-.form > .btn {
+.form > .btncategor {
 	margin-top: 1.5rem;
 }
 
-.btn:active {
+.btncategor:active {
 	transform: scale(0.95);
 }
 
-.btn:focus {
+.btncategor:focus {
 	outline: none;
 }
 
@@ -241,10 +241,10 @@ body {
 		z-index: 5;
 	}
 }
-.head {
+.headcategory {
     color: white;
     font-size: larger;
-    margin-top: -22%;
+    margin-top: -30%;
     font-weight: bold;
 }
 .ring-opacity-5 {

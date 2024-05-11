@@ -47,43 +47,7 @@ const AllCategory = () => {
     console.log("category là:", category)
     return (
         <div className="table-container">
-        <Navbar>
-                <NavbarBrand>
-                    <p className="font-bold text-inherit">AirBnb</p>
-                </NavbarBrand>
-                <NavbarContent
-                    className="hidden sm:flex gap-4"
-                    justify="center">
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-                            Features
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem isActive>
-                        <Link href="#" aria-current="page">
-                            Customers
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-                            Integrations
-                        </Link>
-                    </NavbarItem>
-                </NavbarContent>
-                <NavbarContent justify="end">
-                    <NavbarItem>
-                        <div>
-                            <Link
-                                href={`/add-category`}
-                                className="text-lg text-white cursor-pointer active:opacity-50">
-                                <Button className="ml-4 bg-pink-500">
-                                    Thêm mới category
-                                </Button>
-                            </Link>
-                        </div>
-                    </NavbarItem>
-                </NavbarContent>
-            </Navbar>
+        
             <Table aria-label="Example static collection table">
                 <TableHeader>
                     <TableColumn>STT</TableColumn>

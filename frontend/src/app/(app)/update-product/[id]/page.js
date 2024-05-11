@@ -11,6 +11,8 @@ import { useProduct } from '../../../../hooks/product'
 import Image from 'next/image'
 import '../update_product.css'
 import { useCategory } from '../../../../hooks/category'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 const UpdateProductPage = () => {
     const router = useRouter()
@@ -44,6 +46,12 @@ const UpdateProductPage = () => {
     const [tempDescription, setTempDescription] = useState('')
     const [tempPrice, setTempPrice] = useState('')
 
+
+    const [isDeletingImage, setIsDeletingImage] = useState(false);
+    const [isUploadingOrDeletingImage, setIsUploadingOrDeletingImage] = useState(false);
+
+
+    
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -159,6 +167,22 @@ const UpdateProductPage = () => {
         // }
     }
 
+    const removeImage = (index, arrayName) => {
+        setIsUploadingOrDeletingImage(true); // Bắt đầu quá trình xóa ảnh
+    
+        if (arrayName === 'images') {
+            const updatedImages = [...images];
+            updatedImages.splice(index, 1);
+            setImages(updatedImages);
+        } else if (arrayName === 'image360s') {
+            const updatedImage360s = [...image360s];
+            updatedImage360s.splice(index, 1);
+            setImage360s(updatedImage360s);
+        }
+    
+        setIsUploadingOrDeletingImage(false); // Hoàn thành quá trình xóa ảnh
+    };
+
     const previewImages = () => {
         if (images.length > 0) {
             return images.map((image, index) => (
@@ -249,6 +273,7 @@ const UpdateProductPage = () => {
                             type="text"
                             id="location"
                             value={location}
+                            placeholder="Địa chỉ"
                             className="input"
                             onChange={event => setLocation(event.target.value)}
                             required
@@ -265,6 +290,7 @@ const UpdateProductPage = () => {
                             id="capacity"
                             value={capacity}
                             className="input"
+                            placeholder='Sức chứa'
                             onChange={event => setCapacity(event.target.value)}
                             required
                             autoFocus
@@ -330,6 +356,7 @@ const UpdateProductPage = () => {
                             id="title"
                             value={title}
                             className="input"
+                            placeholder='Tiêu đề'
                             onChange={event => setTitle(event.target.value)}
                             required
                         />
@@ -341,6 +368,7 @@ const UpdateProductPage = () => {
                             id="description"
                             value={description}
                             className="input"
+                            placeholder='Mô tả'
                             onChange={event =>
                                 setDescription(event.target.value)
                             }
@@ -356,6 +384,7 @@ const UpdateProductPage = () => {
                             id="price"
                             type="text"
                             value={price}
+                            placeholder='Chi phí'
                             className="input"
                             onChange={event => setPrice(event.target.value)}
                             required
@@ -366,68 +395,110 @@ const UpdateProductPage = () => {
                 </div>
 
                 <div className="container__overlay">
-                    <div className="mt-4">
-                        <Label htmlFor="image">Hình ảnh:</Label>
-                        {images.length > 0 &&
-                            images.map((image, index) => (
-                                <div key={index} className="w-64 h-64">
-                                    <Image
-                                        src={URL.createObjectURL(image)}
-                                        // alt={`Preview ${index}`}
-                                        layout="responsive"
-                                        width={400}
-                                        height={400}
-                                    />
-                                </div>
-                            ))}
-
-                        <Input
-                            id="image"
-                            type="file"
-                            className="block w-full"
-                            onChange={event =>
-                                setImages([...images, event.target.files[0]])
-                            }
+    <div className="mt-4">
+        <Label htmlFor="image">Hình ảnh:</Label>
+        {images.length > 0 &&
+            images.map((image, index) => (
+                <div
+                    key={index}
+                    className="w-64 h-64"
+                    onDrop={e => {
+                        e.preventDefault(); // Ngăn chặn hành vi mặc định của trình duyệt
+                        if (!isDeletingImage) { // Kiểm tra xem liệu có đang trong quá trình xóa ảnh không
+                            removeImage(index, 'images');
+                        }
+                    }}
+                >
+                    <div className="relative">
+                        <Image
+                            src={URL.createObjectURL(image)}
+                            layout="responsive"
+                            width={400}
+                            height={400}
                         />
-
-                        <InputError messages={errors.image} className="mt-2" />
-                    </div>
-
-                    <div className="mt-4">
-                        <Label htmlFor="image">Hình ảnh 360:</Label>
-                        {image360s.length > 0 &&
-                            image360s.map((image360, index) => (
-                                <div key={index} className="w-64 h-64">
-                                    <Image
-                                        src={URL.createObjectURL(image360)}
-                                        // alt={`Preview ${index}`}
-                                        layout="responsive"
-                                        width={200}
-                                        height={200}
-                                    />
-                                </div>
-                            ))}
-
-                        <Input
-                            id="image360"
-                            type="file"
-                            className="block w-full"
-                            onChange={event =>
-                                setImage360s([
-                                    ...image360s,
-                                    event.target.files[0],
-                                ])
-                            }
-                        />
-
-                        <InputError messages={errors.image} className="mt-2" />
+                        <button
+                            className="absolute top-2 right-2"
+                            onClick={() =>
+                                removeImage(index, 'images')
+                            }>
+                            <FontAwesomeIcon icon={faTimes} />
+                        </button>
                     </div>
                 </div>
+            ))}
+
+        <Input
+            id="image"
+            type="file"
+            className="block w-full"
+            multiple
+            onChange={event => {
+                const selectedImages = Array.from(
+                    event.target.files
+                );
+                setImages([...images, ...selectedImages])
+            }}
+        />
+
+        <InputError messages={errors.image} className="mt-2" />
+    </div>
+
+    <div className="mt-4">
+        <Label htmlFor="image360">Hình ảnh 360:</Label>
+        {image360s.length > 0 &&
+            image360s.map((image360, index) => (
+                <div
+                    key={index}
+                    className="w-64 h-64"
+                    onDrop={e => {
+                        e.preventDefault(); // Ngăn chặn hành vi mặc định của trình duyệt
+                        if (!isDeletingImage) { // Kiểm tra xem liệu có đang trong quá trình xóa ảnh không
+                            removeImage(index, 'image360s');
+                        }
+                    }}
+                >
+                    <div className="relative">
+                        <Image
+                            src={URL.createObjectURL(image360)}
+                            layout="responsive"
+                            width={200}
+                            height={200}
+                        />
+                        <button
+                            className="absolute top-2 right-2"
+                            onClick={() =>
+                                removeImage(index, 'image360s')
+                            }>
+                            <FontAwesomeIcon icon={faTimes} />
+                        </button>
+                    </div>
+                </div>
+            ))}
+
+        <Input
+            id="image360"
+            type="file"
+            className="block w-full"
+            multiple
+            onChange={event => {
+                const selectedImages360 = Array.from(
+                    event.target.files
+                );
+                setImage360s([
+                    ...image360s,
+                    ...selectedImages360
+                ])
+            }}
+        />
+
+        <InputError messages={errors.image} className="mt-2" />
+    </div>
+</div>
+<div className="button">
+<Button className="btn">Lưu thay đổi</Button>
+</div>
             </div>
-            <div className="button">
-                <Link href="/dashboard-host">Quay lại</Link>
-                <Button className="btn">Lưu thay đổi</Button>
-            </div>
+           
         </form>
     )
 }

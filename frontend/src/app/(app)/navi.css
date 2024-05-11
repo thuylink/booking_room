@@ -1,0 +1,10 @@
+.avtimage {
+    margin-top: -40%;
+    margin-left: -32%;
+    height: 55px;
+    width: 46px;
+}
+.fill-current {
+    fill: currentColor;
+    margin-top: -111%;
+}

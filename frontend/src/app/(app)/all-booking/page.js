@@ -25,7 +25,7 @@ import { Pagination } from '@nextui-org/react'
 import { useCategory } from '../../../hooks/category'
 import { useBooking } from '@/hooks/booking'
 
-const AllProduct = () => {
+const AllBooking = () => {
     const { product, error, mutate } = useProduct()
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredProduct, setFilteredProduct] = useState([])
@@ -140,4 +140,4 @@ const AllProduct = () => {
     )
 }
 
-export default AllProduct
+export default AllBooking

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import{ useRef } from 'react';
+import { useRef } from 'react'
 import { useProduct } from '../../../../hooks/product'
 import { useCart } from '../../../../hooks/cart'
 import { useCategory } from '@/hooks/category'
@@ -27,31 +27,31 @@ import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { getRelatedProducts } from '../../../../hooks/product'
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import { useBooking } from '../../../../hooks/booking'
-import { differenceInDays } from 'date-fns';
+import { differenceInDays } from 'date-fns'
 
 export const ProductDetailWithPannellum = () => {
     const { user } = useAuth({ middleware: 'guest' })
     console.log('userrrr', user)
     const id = window.location.pathname.split('/').pop()
     const { getProductById, error } = useProduct()
-    const {users} = useAuth()
+    const { users } = useAuth()
     const { addBooking } = useBooking({
         middleware: 'auth',
         redirectIfAuthenticated: '/profiles',
     })
-    console.log("all users", users)
+    console.log('all users', users)
     const { product } = useProduct()
     const [product2, setProduct2] = useState(null)
     const [showImage360, setShowImage360] = useState(false)
     const [showImageGallery, setShowImageGallery] = useState(false)
     const { addToCart } = useCart()
     const { category } = useCategory()
-    
+
     const [ratings, setRatings] = useState(0)
     const [comment, setComment] = useState('')
     const { addRating } = useRating()
@@ -61,8 +61,6 @@ export const ProductDetailWithPannellum = () => {
     const variants = ['bordered']
     const [relatedProducts, setRelatedProducts] = useState([])
 
-    // const [startDate, setStartDate] = useState('')
-    // const [endDate, setEndDate] = useState('')
     const [guestNumber, setGuestNumber] = useState('')
     const [guestName, setGuestName] = useState('')
     const [phone, setPhone] = useState('')
@@ -121,10 +119,10 @@ export const ProductDetailWithPannellum = () => {
 
     const handleEndDateChange = date => {
         setEndDate(date)
-        if(startDate && endDate) {
-            const numberOfNights = differenceInDays(endDate, startDate);
-            const totalPrice = (numberOfNights + 2) *product2.price;
-            setPrice(totalPrice);
+        if (startDate && endDate) {
+            const numberOfNights = differenceInDays(endDate, startDate)
+            const totalPrice = (numberOfNights + 2) * product2.price
+            setPrice(totalPrice)
         }
     }
 
@@ -192,7 +190,6 @@ export const ProductDetailWithPannellum = () => {
 
             return numberOfNights
         } else {
-            // Ngày không hợp lệ, trả về 0 hoặc giá trị mặc định khác
             return 0
         }
     }
@@ -246,24 +243,23 @@ export const ProductDetailWithPannellum = () => {
             console.error('Lỗi khi gửi đánh giá:', error)
         }
     }
-    const sliderRef = useRef(null);
+    const sliderRef = useRef(null)
 
-  const goToPrev = () => {
-    sliderRef.current.slickPrev();
-  };
+    const goToPrev = () => {
+        sliderRef.current.slickPrev()
+    }
 
-  const goToNext = () => {
-    sliderRef.current.slickNext();
-  };
-  
-const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-  };
+    const goToNext = () => {
+        sliderRef.current.slickNext()
+    }
 
-      
+    const settings = {
+        infinite: true,
+        speed: 500,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+    }
+
     useEffect(() => {
         if (id) {
             // Kiểm tra xem id có giá trị mới hay không
@@ -290,9 +286,9 @@ const settings = {
     if (!product2) {
         return <div>Loading...</div>
     }
-    
-    console.log ('arr category',category)
-    console.log('arr user', user )
+
+    console.log('arr category', category)
+    console.log('arr user', user)
 
     if (category && category.length > 0) {
         const found = category[0].find(item => item.id === product2.id_category)
@@ -300,17 +296,16 @@ const settings = {
     }
 
     if (rating && rating.length > 0) {
-        rating.forEach((item) => {
-            const found = users.find(item2 => item2.id === item.id_user);
+        rating.forEach(item => {
+            const found = users.find(item2 => item2.id === item.id_user)
             if (found) {
-                item['name'] = found.name; // thêm thuộc tính vào object
+                item['name'] = found.name // thêm thuộc tính vào object
             }
         })
 
-            // rating.name = found.name;
+        // rating.name = found.name;
     }
     console.log('rating', rating)
-    
 
     const productFields = Object.keys(product2)
 
@@ -756,7 +751,7 @@ const settings = {
                                 <div>
                                     <div className="container">
                                         <form
-                                            onSubmit={submitForm}    
+                                            onSubmit={submitForm}
                                             className="book"
                                             method="post"
                                             id="myform">
@@ -823,7 +818,10 @@ const settings = {
                                                             className="input"
                                                             placeholder="Số khách"
                                                             onChange={event =>
-                                                                setGuestNumber(event.target.value)
+                                                                setGuestNumber(
+                                                                    event.target
+                                                                        .value,
+                                                                )
                                                             }
                                                             required
                                                             autoFocus
@@ -837,7 +835,10 @@ const settings = {
                                                             value={guestName}
                                                             placeholder="Tên người đại diện"
                                                             onChange={event =>
-                                                                setGuestName(event.target.value)
+                                                                setGuestName(
+                                                                    event.target
+                                                                        .value,
+                                                                )
                                                             }
                                                             required
                                                         />
@@ -853,7 +854,10 @@ const settings = {
                                                             className="input"
                                                             placeholder="Điện thoại"
                                                             onChange={event =>
-                                                                setPhone(event.target.value)
+                                                                setPhone(
+                                                                    event.target
+                                                                        .value,
+                                                                )
                                                             }
                                                             required
                                                             autoFocus
@@ -867,7 +871,10 @@ const settings = {
                                                             className="input"
                                                             placeholder="Email"
                                                             onChange={event =>
-                                                                setEmail(event.target.value)
+                                                                setEmail(
+                                                                    event.target
+                                                                        .value,
+                                                                )
                                                             }
                                                             required
                                                         />
@@ -880,32 +887,41 @@ const settings = {
                                                         value={message}
                                                         className="input"
                                                         onChange={event =>
-                                                            setMessage(event.target.value)
+                                                            setMessage(
+                                                                event.target
+                                                                    .value,
+                                                            )
                                                         }
                                                         required
                                                         placeholder="Lời nhắn cho chủ nhà"
                                                         autoFocus
                                                     />
                                                     <InputError
-                                                        messages={errors.message}
+                                                        messages={
+                                                            errors.message
+                                                        }
                                                         className="mt-2"
                                                     />
                                                 </div>
                                                 <div className="input-wrapper">
-    <input
-        type="text"
-        id="price"
-        value={endDate ? (numberOfNights + 1) * product2.price : 0}
-        className="input"
-        readOnly // Ngăn người dùng chỉnh sửa
-    />
-    <InputError
-        messages={errors.price}
-        className="mt-2"
-    />
-</div>
-
-
+                                                    <input
+                                                        type="text"
+                                                        id="price"
+                                                        value={
+                                                            endDate
+                                                                ? (numberOfNights +
+                                                                      1) *
+                                                                  product2.price
+                                                                : 0
+                                                        }
+                                                        className="input"
+                                                        readOnly // Ngăn người dùng chỉnh sửa
+                                                    />
+                                                    <InputError
+                                                        messages={errors.price}
+                                                        className="mt-2"
+                                                    />
+                                                </div>
                                             </div>
 
                                             <div className="col">
@@ -947,9 +963,10 @@ const settings = {
                                                 </table>
                                             </div>
                                             <div className="button">
-                                                <Button type="submit" className="btn">
+                                                <Button
+                                                    type="submit"
+                                                    className="btn">
                                                     {' '}
-                                                    {/* Thêm type="submit" */}
                                                     Thanh toán
                                                 </Button>
                                             </div>
@@ -1070,7 +1087,7 @@ const settings = {
                                                                                                         <span>
                                                                                                             <small class="font-weight-bold text-primary">
                                                                                                                 {
-                                                                                                                    rating.name 
+                                                                                                                    rating.name
                                                                                                                 }
                                                                                                             </small>
                                                                                                             <small className="d-flex align-items-center">
@@ -1377,72 +1394,115 @@ const settings = {
                             </div>
                         </div>
 
-  <div className="related-products">
-  <div className="slider-container">
-      <div className="slider-wrapper">
-          <Slider {...settings} ref={sliderRef}>
-              {Array.isArray(relatedProducts) &&
-                  relatedProducts.map((product) => (
-                      <div key={product.id} className="product-card">
-                          <div className="wrapper">
-                              <div className="product-img">
-                                  {product.image &&
-                                      Array.isArray(JSON.parse(product.image)) && (
-                                          <>
-                                              {JSON.parse(product.image)
-                                                  .slice(0, 1)
-                                                  .map((image, index) => {
-                                                      const cleanedImagePath = image.replace(/[\[\]"]/g, '');
-                                                      const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`;
+                        <div className="related-products">
+                            <div className="slider-container">
+                                <div className="slider-wrapper">
+                                    <Slider {...settings} ref={sliderRef}>
+                                        {Array.isArray(relatedProducts) &&
+                                            relatedProducts.map(product => (
+                                                <div
+                                                    key={product.id}
+                                                    className="product-card">
+                                                    <div className="wrapper">
+                                                        <div className="product-img">
+                                                            {product.image &&
+                                                                Array.isArray(
+                                                                    JSON.parse(
+                                                                        product.image,
+                                                                    ),
+                                                                ) && (
+                                                                    <>
+                                                                        {JSON.parse(
+                                                                            product.image,
+                                                                        )
+                                                                            .slice(
+                                                                                0,
+                                                                                1,
+                                                                            )
+                                                                            .map(
+                                                                                (
+                                                                                    image,
+                                                                                    index,
+                                                                                ) => {
+                                                                                    const cleanedImagePath = image.replace(
+                                                                                        /[\[\]"]/g,
+                                                                                        '',
+                                                                                    )
+                                                                                    const imagePath = `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
 
-                                                      return (
-                                                          <a href={`/show-product/${product.id}`} key={index}>
-                                                              <img
-                                                                  src={imagePath}
-                                                                  alt="Image"
-                                                                  className="rounded-image"
-                                                                  height="420"
-                                                                  width="327"
-                                                              />
-                                                          </a>
-                                                      );
-                                                  })}
-                                          </>
-                                      )}
-                              </div>
-                              <div className="product-info">
-                                  <div className="product-text">
-                                  </div>
-                                  <div className="product-price-btn">
-                                  <div style={{ color: '#0070f0' }}>
-                                   {product.price } VNĐ
-                                  </div>
-                                    <br />
-                                    {product.location}
-                                     <br />
+                                                                                    return (
+                                                                                        <a
+                                                                                            href={`/show-product/${product.id}`}
+                                                                                            key={
+                                                                                                index
+                                                                                            }>
+                                                                                            <img
+                                                                                                src={
+                                                                                                    imagePath
+                                                                                                }
+                                                                                                alt="Image"
+                                                                                                className="rounded-image"
+                                                                                                height="420"
+                                                                                                width="327"
+                                                                                            />
+                                                                                        </a>
+                                                                                    )
+                                                                                },
+                                                                            )}
+                                                                    </>
+                                                                )}
+                                                        </div>
+                                                        <div className="product-info">
+                                                            <div className="product-text"></div>
+                                                            <div className="product-price-btn">
+                                                                <div
+                                                                    style={{
+                                                                        color:
+                                                                            '#0070f0',
+                                                                    }}>
+                                                                    {
+                                                                        product.price
+                                                                    }{' '}
+                                                                    VNĐ
+                                                                </div>
+                                                                <br />
+                                                                {
+                                                                    product.location
+                                                                }
+                                                                <br />
 
-                                     <div style={{ color: '#ff385c' }}>
-                                     {product.description.replace(/<\/?p>/g, '').split('.').shift()}                                  </div>
-
-                                     </div>
-                              </div>
-                          </div>
-                      </div>
-                  ))}
-          </Slider>
-      </div>
-      <div className="custom-arrows">
-          <a className="prev" onClick={goToPrev}>
-              <FontAwesomeIcon icon={faAngleLeft} />
-          </a>
-          <a className="next" onClick={goToNext}>
-              <FontAwesomeIcon icon={faAngleRight} />
-          </a>
-      </div>
-  </div>
-</div>
-
-                        
+                                                                <div
+                                                                    style={{
+                                                                        color:
+                                                                            '#ff385c',
+                                                                    }}>
+                                                                    {product.description
+                                                                        .replace(
+                                                                            /<\/?p>/g,
+                                                                            '',
+                                                                        )
+                                                                        .split(
+                                                                            '.',
+                                                                        )
+                                                                        .shift()}{' '}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                    </Slider>
+                                </div>
+                                <div className="custom-arrows">
+                                    <a className="prev" onClick={goToPrev}>
+                                        <FontAwesomeIcon icon={faAngleLeft} />
+                                    </a>
+                                    <a className="next" onClick={goToNext}>
+                                        <FontAwesomeIcon icon={faAngleRight} />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </CardBody>
                 </Card>
             </div>
@@ -1452,540 +1512,3 @@ const settings = {
 
 export default ProductDetailWithPannellum
 
-//  <div id="book-section">
-//                             <div>
-//                                 <div>
-//                                     <div className="container">
-//                                         <form
-//                                             className="book"
-//                                             method="post"
-//                                             id="myform">
-//                                             <div className="row mb-3">
-//                                                 <div className="row mb-3">
-//                                                     <div className="col-sm-3">
-//                                                         <label
-//                                                             className="form-label"
-//                                                             htmlFor="event_date">
-//                                                             Nhận phòng{' '}
-//                                                         </label>
-//                                                         <DatePicker
-//                                                             className="form-control"
-//                                                             type="date"
-//                                                             noValidate="novalidate"
-//                                                             name="event_date"
-//                                                             id="event_date"
-//                                                             selected={startDate}
-//                                                             onChange={
-//                                                                 handleStartDateChange
-//                                                             }
-//                                                             dateFormat="dd/MM/yyyy"
-//                                                             minDate={new Date()}
-//                                                         />
-//                                                     </div>
-//                                                 </div>
-
-//                                                 <div className="row mb-3">
-//                                                     <div className="col-sm-3">
-//                                                         <label
-//                                                             className="label-tra-phong"
-//                                                             htmlFor="event_date">
-//                                                             Trả phòng{' '}
-//                                                         </label>
-//                                                         <DatePicker
-//                                                             className="form-control-tra-phong"
-//                                                             type="date"
-//                                                             noValidate="novalidate"
-//                                                             name="event_date"
-//                                                             id="event_date"
-//                                                             selected={endDate}
-//                                                             dateFormat="dd/MM/yyyy"
-//                                                             minDate={
-//                                                                 startDate
-//                                                                     ? addDays(
-//                                                                           startDate,
-//                                                                           1,
-//                                                                       )
-//                                                                     : new Date()
-//                                                             }
-//                                                             onChange={
-//                                                                 handleEndDateChange
-//                                                             }
-//                                                         />
-//                                                     </div>
-//                                                 </div>
-//                                             </div>
-
-//                                             <div className="row mb-3">
-//                                                 <Link
-//                                                     href={`/booking-form`}
-//                                                     className="underline-none text-sm hover:text-gray-900">
-//                                                     <Button className="ml-4 bg-pink-500">
-//                                                         <span className="text-lg1 text-white cursor-pointer active:opacity-50">
-//                                                             Đặt phòng
-//                                                         </span>
-//                                                     </Button>
-//                                                 </Link>
-//                                                 <div className="col-sm-6"></div>
-//                                             </div>
-
-//                                             <div className="col">
-//                                                 <table className="table">
-//                                                     <tbody>
-//                                                         <tr>
-//                                                             <th scope="row">
-//                                                                 Chi phí:
-//                                                             </th>
-//                                                             <td className="tt">
-//                                                                 {product2.price}{' '}
-//                                                                 / Ngày đêm
-//                                                             </td>
-//                                                         </tr>
-//                                                         <tr>
-//                                                             <th scope="row">
-//                                                                 Thời gian:
-//                                                             </th>
-//                                                             <td className="tt">
-//                                                                 {endDate
-//                                                                     ? numberOfNights +
-//                                                                       1
-//                                                                     : 0}
-//                                                             </td>
-//                                                         </tr>
-//                                                         <tr>
-//                                                             <th scope="row">
-//                                                                 Tổng tiền:
-//                                                             </th>
-//                                                             <td className="tt">
-//                                                                 {endDate
-//                                                                     ? (numberOfNights +
-//                                                                           1) *
-//                                                                       product2.price
-//                                                                     : 0}
-//                                                             </td>
-//                                                         </tr>
-//                                                     </tbody>
-//                                                 </table>
-//                                             </div>
-//                                         </form>
-//                                     </div>
-//                                 </div>
-//                             </div>
-
-//                             <div class="container bootdey flex-grow-1 container-p-y">
-//                                 <div class="bg-white p-4 ">
-//                                     <div class="infor">
-//                                         <div class="media align-items-center py-3 mb-3">
-//                                             <img
-//                                                 src="https://bootdey.com/img/Content/avatar/avatar1.png"
-//                                                 alt=""
-//                                                 class="d-block ui-w-100 rounded-circle"
-//                                             />
-//                                             <div class="media-body contact2">
-//                                                 <div className="mail">
-//                                                     <h4 class="font-weight-bold mb-0">
-//                                                         John Doe{' '}
-//                                                         <span class="text-muted font-weight-normal">
-//                                                             @johndoe
-//                                                         </span>
-//                                                     </h4>
-//                                                     <div class="text-muted mb-2">
-//                                                         ID: 3425433
-//                                                     </div>
-//                                                     <a
-//                                                         href="javascript:void(0)"
-//                                                         class="btn btn-default btn-sm icon-btn">
-//                                                         <i class="fa fa-mail"></i>
-//                                                     </a>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-
-//                                         <div class="card mb-4">
-//                                             <div class="card-body">
-//                                                 <table class="table1 user-view-table m-0">
-//                                                     <tbody>
-//                                                         <tr>
-//                                                             <td>Tên:</td>
-//                                                             <td>
-//                                                                 <span class="fa fa-check text-primary"></span>
-//                                                                 &nbsp; Yes
-//                                                             </td>
-//                                                         </tr>
-//                                                         <tr>
-//                                                             <td>Tham gia:</td>
-//                                                             <td>01/23/2017</td>
-//                                                         </tr>
-//                                                         <tr>
-//                                                             <td>Ngày sinh:</td>
-//                                                             <td>
-//                                                                 01/23/2018 (14
-//                                                                 days ago)
-//                                                             </td>
-//                                                         </tr>
-//                                                         <tr>
-//                                                             <td>Giới tính:</td>
-//                                                             <td>
-//                                                                 01/23/2018 (14
-//                                                                 days ago)
-//                                                             </td>
-//                                                         </tr>
-//                                                         <tr>
-//                                                             <td>Điện thoại:</td>
-//                                                             <td>1234567890</td>
-//                                                         </tr>
-//                                                         <tr>
-//                                                             <td>Địa chỉ:</td>
-//                                                             <td>
-//                                                                 <span class="badge badge-outline-success">
-//                                                                     huhuhuhu
-//                                                                 </span>
-//                                                             </td>
-//                                                         </tr>
-//                                                     </tbody>
-//                                                 </table>
-//                                             </div>
-//                                             <div class="border-light m-0"></div>
-//                                             <div class="table-responsive"></div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         </div>
-
-//                         <div id="rate-section">
-//                             <div className="container">
-//                                 <div className="scrollable-container">
-//                                     <div className="cmt">
-//                                         <div class="container mt-5">
-//                                             <h1 className="tieude">
-//                                                 Phản hồi từ khách hàng
-//                                             </h1>
-//                                             <div class="row  d-flex justify-content-center">
-//                                                 <div class="col-md-8">
-//                                                     <div class="card p-3">
-//                                                         <div class="d-flex justify-content-between align-items-center">
-//                                                             <div class="user d-flex flex-row align-items-center">
-//                                                                 <div className="grid grid-cols-1 gap-1">
-//                                                                     {' '}
-//                                                                     {comments?.map(
-//                                                                         rating => (
-//                                                                             <div
-//                                                                                 key={
-//                                                                                     rating.id
-//                                                                                 }
-//                                                                                 className="rating-item">
-//                                                                                 <div className="container">
-//                                                                                     <div className="row justify-content-center">
-//                                                                                         <div className="col-md-8">
-//                                                                                             <div className="card p-3 mb-4">
-//                                                                                                 <div className="d-flex justify-content-between align-items-center">
-//                                                                                                     <div className="user d-flex flex-row align-items-center">
-//                                                                                                         <span>
-//                                                                                                             <small class="font-weight-bold text-primary">
-//                                                                                                                 {
-//                                                                                                                     user.name
-//                                                                                                                 }
-//                                                                                                             </small>
-//                                                                                                             <small className="d-flex align-items-center">
-//                                                                                                                 <div>
-//                                                                                                                     {Array.from(
-//                                                                                                                         {
-//                                                                                                                             length:
-//                                                                                                                                 rating.star,
-//                                                                                                                         },
-//                                                                                                                         (
-//                                                                                                                             _,
-//                                                                                                                             i,
-//                                                                                                                         ) => (
-//                                                                                                                             <FontAwesomeIcon
-//                                                                                                                                 icon={
-//                                                                                                                                     faStar
-//                                                                                                                                 }
-//                                                                                                                                 key={
-//                                                                                                                                     i
-//                                                                                                                                 }
-//                                                                                                                                 className="text-pink-500"
-//                                                                                                                             />
-//                                                                                                                         ),
-//                                                                                                                     )}
-//                                                                                                                 </div>
-//                                                                                                             </small>
-//                                                                                                             <small className="font-weight-bold">
-//                                                                                                                 {
-//                                                                                                                     rating.cmt
-//                                                                                                                 }
-//                                                                                                             </small>
-//                                                                                                         </span>
-//                                                                                                     </div>
-//                                                                                                 </div>
-//                                                                                             </div>
-//                                                                                         </div>
-//                                                                                     </div>
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                         ),
-//                                                                     )}
-//                                                                 </div>
-//                                                             </div>
-//                                                         </div>
-//                                                         <div class="action d-flex justify-content-between mt-2 align-items-center">
-//                                                             <div class="icons align-items-center">
-//                                                                 <i class="fa fa-star text-warning"></i>
-//                                                                 <i class="fa fa-check-circle-o check-icon"></i>
-//                                                             </div>
-//                                                         </div>
-//                                                     </div>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         </div>
-
-//                         <div id="comment-section">
-//                             <div class="container bootdey flex-grow-1 container-p-y">
-//                                 <div class="bg-white p-4 ">
-//                                     <div class="infor">
-//                                         <div class="media align-items-center py-3 mb-3">
-//                                             <div className="container">
-//                                                 <div className="inputcmt">
-//                                                     <div className="row">
-//                                                         <div className="col-10">
-//                                                             <div className="comment-box">
-//                                                                 <div className="rating">
-//                                                                     {[
-//                                                                         ...Array(
-//                                                                             5,
-//                                                                         ),
-//                                                                     ].map(
-//                                                                         (
-//                                                                             _,
-//                                                                             index,
-//                                                                         ) => (
-//                                                                             <React.Fragment
-//                                                                                 key={
-//                                                                                     index
-//                                                                                 }>
-//                                                                                 <input
-//                                                                                     type="radio"
-//                                                                                     name="rating"
-//                                                                                     value={
-//                                                                                         5 -
-//                                                                                         index
-//                                                                                     }
-//                                                                                     id={
-//                                                                                         5 -
-//                                                                                         index
-//                                                                                     }
-//                                                                                     onChange={
-//                                                                                         handleRatingsChange
-//                                                                                     }
-//                                                                                 />
-//                                                                                 <label
-//                                                                                     htmlFor={
-//                                                                                         5 -
-//                                                                                         index
-//                                                                                     }>
-//                                                                                     ☆
-//                                                                                 </label>
-//                                                                             </React.Fragment>
-//                                                                         ),
-//                                                                     )}
-//                                                                 </div>
-//                                                                 <div className="comment-area">
-//                                                                     <textarea
-//                                                                         className="my-view"
-//                                                                         placeholder="Viết phản hồi sau khi trải nghiệm nơi ở của bạn ... "
-//                                                                         rows="4"
-//                                                                         value={
-//                                                                             comment
-//                                                                         }
-//                                                                         onChange={
-//                                                                             handleCommentChange
-//                                                                         }></textarea>
-//                                                                 </div>
-//                                                                 <div className="comment-btns mt-2">
-//                                                                     <div className="mt-6 flex gap-6">
-//                                                                         <Button
-//                                                                             className="custom-button"
-//                                                                             onClick={
-//                                                                                 handleSubmit
-//                                                                             }>
-//                                                                             <span className="button-text">
-//                                                                                 Đánh
-//                                                                                 giá
-//                                                                             </span>
-//                                                                         </Button>
-//                                                                     </div>
-//                                                                 </div>
-//                                                             </div>
-//                                                         </div>
-//                                                     </div>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         </div>
-
-//                         <div id="heading-section" className="class1">
-//                             <div className="number-star">
-//                                 <span className="class1">
-//                                     <FontAwesomeIcon
-//                                         icon={faStar}
-//                                         className="text-pink-500"
-//                                     />
-//                                     {averageRating.toFixed(1)}
-//                                 </span>
-//                                 <br />
-//                                 <span className="class1">
-//                                     <FontAwesomeIcon
-//                                         icon={faComment}
-//                                         className="text-pink-500"
-//                                     />
-//                                     {totalReviews}{' '}
-//                                 </span>
-//                             </div>
-//                         </div>
-
-//                         <div id="stars-section" className="class2">
-//                             <div className="container bootdey flex-grow-1 container-p-y">
-//                                 <div className="bg-white p-4 ">
-//                                     <div className="stars">
-//                                         <div className="media align-items-center py-3 mb-3">
-//                                             <div className="container">
-//                                                 <div className="stars2">
-//                                                     <div className="line-star">
-//                                                         <div className="col-10">
-//                                                             <div className="all-stars">
-//                                                                 <div className="rightside">
-//                                                                     <div className="col-md-7">
-//                                                                         <div className="row-stars">
-//                                                                             <div class="side">
-//                                                                                 <div>
-//                                                                                     5
-//                                                                                     star
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                             <div class="middle">
-//                                                                                 <BarContainer
-//                                                                                     percentage5Stars={
-//                                                                                         percentage5Stars
-//                                                                                     }>
-//                                                                                     <div className="bar-5"></div>
-//                                                                                 </BarContainer>
-//                                                                             </div>
-//                                                                             <div class="side right">
-//                                                                                 <div>
-//                                                                                     {
-//                                                                                         starCounts[5]
-//                                                                                     }
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                         </div>
-//                                                                         <div className="row-stars">
-//                                                                             <div class="side">
-//                                                                                 <div>
-//                                                                                     4
-//                                                                                     star
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                             <div class="middle">
-//                                                                                 <BarContainer
-//                                                                                     percentage4Stars={
-//                                                                                         percentage4Stars
-//                                                                                     }>
-//                                                                                     <div className="bar-4"></div>
-//                                                                                 </BarContainer>
-//                                                                             </div>
-//                                                                             <div class="side right">
-//                                                                                 <div>
-//                                                                                     {
-//                                                                                         starCounts[4]
-//                                                                                     }
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                         </div>
-//                                                                         <div className="row-stars">
-//                                                                             <div class="side">
-//                                                                                 <div>
-//                                                                                     3
-//                                                                                     star
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                             <div class="middle">
-//                                                                                 <BarContainer
-//                                                                                     percentage3Stars={
-//                                                                                         percentage3Stars
-//                                                                                     }>
-//                                                                                     <div className="bar-3"></div>
-//                                                                                 </BarContainer>
-//                                                                             </div>
-//                                                                             <div class="side right">
-//                                                                                 <div>
-//                                                                                     {
-//                                                                                         starCounts[3]
-//                                                                                     }
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                         </div>
-//                                                                         <div className="row-stars">
-//                                                                             <div class="side">
-//                                                                                 <div>
-//                                                                                     2
-//                                                                                     star
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                             <div class="middle">
-//                                                                                 <BarContainer
-//                                                                                     percentage2Stars={
-//                                                                                         percentage2Stars
-//                                                                                     }>
-//                                                                                     <div className="bar-2"></div>
-//                                                                                 </BarContainer>
-//                                                                             </div>
-//                                                                             <div class="side right">
-//                                                                                 <div>
-//                                                                                     {
-//                                                                                         starCounts[2]
-//                                                                                     }
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                         </div>
-//                                                                         <div className="row-stars">
-//                                                                             <div class="side">
-//                                                                                 <div>
-//                                                                                     1
-//                                                                                     star
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                             <div class="middle">
-//                                                                                 <BarContainer
-//                                                                                     percentage1Star={
-//                                                                                         percentage1Star
-//                                                                                     }>
-//                                                                                     <div className="bar-1"></div>
-//                                                                                 </BarContainer>
-//                                                                             </div>
-//                                                                             <div class="side right">
-//                                                                                 <div>
-//                                                                                     {
-//                                                                                         starCounts[1]
-//                                                                                     }
-//                                                                                 </div>
-//                                                                             </div>
-//                                                                         </div>
-//                                                                     </div>
-//                                                                 </div>
-//                                                             </div>
-//                                                         </div>
-//                                                     </div>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         </div>

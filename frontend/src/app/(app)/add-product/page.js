@@ -13,8 +13,9 @@ import './add_product.css'
 import { useRouter } from 'next/navigation'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import { CameraIcon } from '../../../components/CameraIcon'
-// import {Button} from "@nextui-org/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+
 
 const CreateProductPage = () => {
     const router = useRouter()
@@ -39,6 +40,9 @@ const CreateProductPage = () => {
 
     const [price, setPrice] = useState('')
     const [errors, setErrors] = useState([])
+
+    const [isDeletingImage, setIsDeletingImage] = useState(false);
+
 
     if (error) {
         return <div>{error}</div>
@@ -98,37 +102,54 @@ const CreateProductPage = () => {
     }
 
     const submitForm = event => {
-        event.preventDefault()
-
-        const formData = new FormData()
-        formData.append('id_category', id_category)
-        formData.append('privacy_type', selectedPrivacy)
-        formData.append('location', location)
-        formData.append('capacity', capacity)
-        formData.append('amenities', amenities)
-        formData.append('amenities', selectedAmenities)
-        images.forEach(image => formData.append('image[]', image))
-        image360s.forEach(image360 => formData.append('image360[]', image360))
-        formData.append('title', title)
-        formData.append('description', description)
-        formData.append('price', price)
-
-        createProduct({
-            formData,
-            setErrors,
-        }).then(() => {
-            router.push('/all-product')
-        })
+        event.preventDefault();
+        
+            const formData = new FormData();
+            formData.append('id_category', id_category);
+            formData.append('privacy_type', selectedPrivacy);
+            formData.append('location', location);
+            formData.append('capacity', capacity);
+            formData.append('amenities', amenities);
+            formData.append('amenities', selectedAmenities);
+            images.forEach(image => formData.append('image[]', image));
+            image360s.forEach(image360 => formData.append('image360[]', image360));
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('price', price);
+    
+            createProduct({
+                formData,
+                setErrors,
+            }).then(() => {
+                router.push('/all-product');
+            });
     }
-    console.log('category là:', category)
+
+    const removeImage = (index, arrayName) => {
+    
+        if (arrayName === 'images') {
+            const updatedImages = [...images];
+            updatedImages.splice(index, 1);
+            setImages(updatedImages);
+        } else if (arrayName === 'image360s') {
+            const updatedImage360s = [...image360s];
+            updatedImage360s.splice(index, 1);
+            setImage360s(updatedImage360s);
+        }
+    
+    };
+    
+    
+    
+
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
             <div className="flex flex-col flex-wrap gap-4"></div>
-            <div class="container right-panel-active">
-                <div class="container__form container--signup">
+            <div class="containerproduct right-panel-active">
+                <div class="containerproduct__form containerproduct--signup">
                     <form class="form">
-                        <div className="head">
-                            <a className="head">Tạo mới nhà ở </a>
+                        <div className="headproduct">
+                            <a className="headproduct">Tạo mới nhà ở </a>
                         </div>
                         <select
                             id="id_category"
@@ -289,69 +310,111 @@ const CreateProductPage = () => {
                     </form>
                 </div>
 
-                <div className="container__overlay">
-                    <div className="mt-4">
-                        <Label htmlFor="image">Hình ảnh:</Label>
-                        {images.length > 0 &&
-                            images.map((image, index) => (
-                                <div key={index} className="w-64 h-64">
-                                    <Image
-                                        src={URL.createObjectURL(image)}
-                                        // alt={`Preview ${index}`}
-                                        layout="responsive"
-                                        width={400}
-                                        height={400}
-                                    />
-                                </div>
-                            ))}
-
-                        <Input
-                            id="image"
-                            type="file"
-                            className="input"
-                            onChange={event =>
-                                setImages([...images, event.target.files[0]])
-                            }
+                <div className="containerproduct__overlay">
+    <div className="mt-4">
+        <Label htmlFor="image">Hình ảnh:</Label>
+        {images.length > 0 &&
+            images.map((image, index) => (
+                <div
+                    key={index}
+                    className="w-64 h-64"
+                    onDrop={e => {
+                        e.preventDefault(); // Ngăn chặn hành vi mặc định của trình duyệt
+                        if (!isDeletingImage) { // Kiểm tra xem liệu có đang trong quá trình xóa ảnh không
+                            removeImage(index, 'images');
+                        }
+                    }}
+                >
+                    <div className="relative">
+                        <Image
+                            src={URL.createObjectURL(image)}
+                            layout="responsive"
+                            width={400}
+                            height={400}
                         />
-
-                        <InputError messages={errors.image} className="mt-2" />
-                    </div>
-
-                    <div className="mt-4">
-                        <Label htmlFor="image">Hình ảnh 360:</Label>
-                        {image360s.length > 0 &&
-                            image360s.map((image360, index) => (
-                                <div key={index} className="w-64 h-64">
-                                    <Image
-                                        src={URL.createObjectURL(image360)}
-                                        // alt={`Preview ${index}`}
-                                        layout="responsive"
-                                        width={200}
-                                        height={200}
-                                    />
-                                </div>
-                            ))}
-
-                        <Input
-                            id="image360"
-                            type="file"
-                            className="input"
-                            onChange={event =>
-                                setImage360s([
-                                    ...image360s,
-                                    event.target.files[0],
-                                ])
-                            }
-                        />
-
-                        <InputError messages={errors.image} className="mt-2" />
+                        <button
+                            className=" but absolute top-2 right-2"
+                            onClick={() =>
+                                removeImage(index, 'images')
+                            }>
+                            <FontAwesomeIcon icon={faTimes} />
+                        </button>
                     </div>
                 </div>
+            ))}
+
+        <Input
+            id="image"
+            type="file"
+            className="block w-full"
+            multiple
+            onChange={event => {
+                const selectedImages = Array.from(
+                    event.target.files
+                );
+                setImages([...images, ...selectedImages])
+            }}
+        />
+
+        <InputError messages={errors.image} className="mt-2" />
+    </div>
+
+    <div className="mt-4">
+        <Label htmlFor="image360">Hình ảnh 360:</Label>
+        {image360s.length > 0 &&
+            image360s.map((image360, index) => (
+                <div
+                    key={index}
+                    className="w-64 h-64"
+                    onDrop={e => {
+                        e.preventDefault(); // Ngăn chặn hành vi mặc định của trình duyệt
+                        if (!isDeletingImage) { // Kiểm tra xem liệu có đang trong quá trình xóa ảnh không
+                            removeImage(index, 'image360s');
+                        }
+                    }}
+                >
+                    <div className="relative">
+                        <Image
+                            src={URL.createObjectURL(image360)}
+                            layout="responsive"
+                            width={200}
+                            height={200}
+                        />
+                        <button
+                            className="absolute top-2 right-2"
+                            onClick={() =>
+                                removeImage(index, 'image360s')
+                            }>
+                            <FontAwesomeIcon icon={faTimes} />
+                        </button>
+                    </div>
+                </div>
+            ))}
+
+        <Input
+            id="image360"
+            type="file"
+            className="block w-full"
+            multiple
+            onChange={event => {
+                const selectedImages360 = Array.from(
+                    event.target.files
+                );
+                setImage360s([
+                    ...image360s,
+                    ...selectedImages360
+                ])
+            }}
+        />
+
+        <InputError messages={errors.image} className="mt-2" />
+    </div>
+</div>
+<div className="button">
+                <Button className="btnproduct">Tạo mới nhà </Button>
             </div>
-            <div className="button">
-                <Link href="/dashboard-host">Quay lại</Link>
-                <Button className="btn">Tạo </Button>
             </div>
+            
         </form>
     )
 }

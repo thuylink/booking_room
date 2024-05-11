@@ -25,6 +25,8 @@ import {
 } from '@nextui-org/react'
 import { Pagination } from '@nextui-org/react'
 import { useCategory } from '../../../hooks/category'
+import ProductDetailWithPannellum from '../fe-a-home/[id]/page'
+import UpdateProductPage from '../update-product/[id]/page'
 
 const AllProduct = () => {
     const { product, error, mutate } = useProduct()
@@ -34,6 +36,24 @@ const AllProduct = () => {
 
     console.log('lấy được category chưa: ', category)
     console.log('có product chưa: ', product)
+
+    const [selectedProductId, setSelectedProductId] = useState(null);
+
+    const [showUpdateProduct, setShowUpdateProduct] = useState(false)
+    const [showDetailProduct, setShowDetailProduct] = useState(false)
+
+    const handleUpdateProductClick = (id) => {
+        setSelectedProductId(id);
+        setShowUpdateProduct(true);
+        setShowDetailProduct(false);
+    }
+    
+    const handleDetailProductClick = (id) => {
+        setSelectedProductId(id);
+        setShowUpdateProduct(false);
+        setShowDetailProduct(true);
+    }
+    
 
     if (category && category.length > 0) {
         category.forEach(categoryItem => {
@@ -103,6 +123,11 @@ const AllProduct = () => {
     return (
         <>
             <div className="table-container">
+            <div>
+            {showUpdateProduct && <UpdateProductPage productId={selectedProductId} />}
+            {showDetailProduct && <ProductDetailWithPannellum productId={selectedProductId} />}
+            
+                </div>
                 <Navbar>
                     <NavbarBrand>
                         <p className="font-bold text-inherit">AirBnb</p>
@@ -116,7 +141,7 @@ const AllProduct = () => {
                                     type="text"
                                     value={searchTerm}
                                     onChange={handleSearchChange}
-                                    placeholder="Tìm kiếm theo địa chỉ nhà"
+                                    placeholder="Tìm kiếm theo địa chỉ"
                                     className="formsearch"
                                 />
                                 <Button
@@ -127,25 +152,14 @@ const AllProduct = () => {
                             </form>
                         </NavbarItem>
                     </NavbarContent>
-                    <NavbarContent justify="end">
-                        <NavbarItem>
-                            <div>
-                                <Link
-                                    href={`/add-product`}
-                                    className="text-lg text-white cursor-pointer active:opacity-50">
-                                    <Button className="ml-4 bg-pink-500">
-                                        Thêm mới nhà
-                                    </Button>
-                                </Link>
-                            </div>
-                        </NavbarItem>
-                    </NavbarContent>
+                    
                 </Navbar>
+
+                
 
                 <Table aria-label="Example static collection table">
                     <TableHeader>
                         <TableColumn className="text stt">STT</TableColumn>
-                        <TableColumn className="text">Tiêu đề</TableColumn>
                         <TableColumn className="text">
                             Kiểu kiến trúc
                         </TableColumn>
@@ -155,14 +169,11 @@ const AllProduct = () => {
                         <TableColumn className="text">Thao tác</TableColumn>
                     </TableHeader>
                     <TableBody>
-                        {(searchTerm === '' ? product : filteredProduct).map(
+                        {(searchTerm === '' ? product.sort((a, b) => b.id - a.id) : filteredProduct).map(
                             (product, index) => (
                                 <TableRow key={product.id}>
                                     <TableCell className="text2">
                                         {index + 1}
-                                    </TableCell>
-                                    <TableCell className="text2">
-                                        {product.title}
                                     </TableCell>
                                     <TableCell className="text2">
                                         {product.name_category}
@@ -204,26 +215,20 @@ const AllProduct = () => {
                                     </TableCell>
                                     <TableCell className="text2">
                                         <div>
-                                            <Link
-                                                href={`/fe-a-home/${product.id}`}
-                                                className="underline text-sm hover:text-gray-900">
-                                                <Button className="ml-4 bg-pink-500">
+                                            
+                                                <Button className="ml-4 bg-pink-500" onClick={handleDetailProductClick}>
                                                     <span className="text-lg text-white cursor-pointer active:opacity-50">
                                                         <EyeIcon />
                                                     </span>
                                                 </Button>
-                                            </Link>
                                         </div>
                                         <div>
-                                            <Link
-                                                href={`/update-product/${product.id}`}
-                                                className="underline text-sm hover:text-gray-900">
-                                                <Button className="ml-4 bg-pink-500">
+                                            
+                                                <Button className="ml-4 bg-pink-500" onClick={handleUpdateProductClick}>
                                                     <span className="text-lg text-white cursor-pointer active:opacity-50">
                                                         <EditIcon />
                                                     </span>
                                                 </Button>
-                                            </Link>
                                         </div>
                                         <div>
                                             <Button

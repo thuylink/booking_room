@@ -12,6 +12,7 @@ import { useState } from 'react'
 import React, { useEffect } from 'react'
 import { color } from 'framer-motion'
 import { useProfile } from '../../hooks/profile'
+import '../(app)/navi.css'
 const Navigation = ({ user }) => {
     const { profile, error, mutate } = useProfile()
 
@@ -82,7 +83,26 @@ const Navigation = ({ user }) => {
                                         color: 'grey',
                                         
                                     }}>
-                                    <div>{user?.name}</div>
+                                    <div>
+                                    {user?.name}
+                                    <div className="avtimage">
+            {profile && profile.map((profileItem, index) => (
+                <div key={index} className="avtimage">
+                    {profileItem.image && (
+                        <a href="#" key={profileItem.id}>
+                            <img
+                                src={`http://127.0.0.1:8000/uploads/avt/${profileItem.image}`}
+                                alt="Image"
+                                width="70px"
+                                height="70px"
+                                className="avtimage"
+                            />
+                        </a>
+                    )}
+                </div>
+            ))}
+        </div>
+                                    </div>
 
                                     <div className="ml-1">
                                         <svg

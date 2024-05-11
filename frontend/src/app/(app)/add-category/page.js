@@ -10,6 +10,8 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import './add.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 const CreateCategoryPage = () => {
     const router = useRouter()
@@ -45,14 +47,26 @@ const CreateCategoryPage = () => {
         )
     }
 
+    const removeImage = (index, arrayName) => {
+        if (arrayName === 'images') {
+            const updatedImages = [...images]
+            updatedImages.splice(index, 1)
+            setImages(updatedImages)
+        } else if (arrayName === 'image360s') {
+            const updatedImage360s = [...image360s]
+            updatedImage360s.splice(index, 1)
+            setImage360s(updatedImage360s)
+        }
+    }
+
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
             <div className="flex flex-col flex-wrap gap-4"></div>
-            <div class="container right-panel-active">
-                <div class="container__form container--signup">
+            <div class="containercategory right-panel-active">
+                <div class="containercategory__form containercategory--signup">
                     <form class="form">
-                        <div className="head">
-                            <a className="head">Tạo mới danh mục </a>
+                        <div className="headcategory">
+                            <a className="headcategory">Tạo mới danh mục </a>
                         </div>
                         <Input
                             type="text"
@@ -85,19 +99,27 @@ const CreateCategoryPage = () => {
                     </form>
                 </div>
 
-                <div className="container__overlay">
+                <div className="containercategory__overlay">
                     <div className="mt-4">
                         <Label htmlFor="image">Hình ảnh:</Label>
                         {images.length > 0 &&
                             images.map((image, index) => (
                                 <div key={index} className="w-64 h-64">
-                                    <Image
-                                        src={URL.createObjectURL(image)}
-                                        // alt={`Preview ${index}`}
-                                        layout="responsive"
-                                        width={400}
-                                        height={400}
-                                    />
+                                    <div className="relative">
+                                        <Image
+                                            src={URL.createObjectURL(image)}
+                                            layout="responsive"
+                                            width={400}
+                                            height={400}
+                                        />
+                                        <button
+                                            className="absolute top-2 right-2"
+                                            onClick={() =>
+                                                removeImage(index, 'images')
+                                            }>
+                                            <FontAwesomeIcon icon={faTimes} />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
 
@@ -105,26 +127,38 @@ const CreateCategoryPage = () => {
                             id="image"
                             type="file"
                             className="block w-full"
-                            onChange={event =>
-                                setImages([...images, event.target.files[0]])
-                            }
+                            multiple
+                            onChange={event => {
+                                const selectedImages = Array.from(
+                                    event.target.files,
+                                )
+                                setImages([...images, ...selectedImages])
+                            }}
                         />
 
                         <InputError messages={errors.image} className="mt-2" />
                     </div>
 
                     <div className="mt-4">
-                        <Label htmlFor="image">Hình ảnh 360:</Label>
+                        <Label htmlFor="image360">Hình ảnh 360:</Label>
                         {image360s.length > 0 &&
                             image360s.map((image360, index) => (
                                 <div key={index} className="w-64 h-64">
-                                    <Image
-                                        src={URL.createObjectURL(image360)}
-                                        // alt={`Preview ${index}`}
-                                        layout="responsive"
-                                        width={200}
-                                        height={200}
-                                    />
+                                    <div className="relative">
+                                        <Image
+                                            src={URL.createObjectURL(image360)}
+                                            layout="responsive"
+                                            width={200}
+                                            height={200}
+                                        />
+                                        <button
+                                            className="absolute top-2 right-2"
+                                            onClick={() =>
+                                                removeImage(index, 'image360s')
+                                            }>
+                                            <FontAwesomeIcon icon={faTimes} />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
 
@@ -132,22 +166,27 @@ const CreateCategoryPage = () => {
                             id="image360"
                             type="file"
                             className="block w-full"
-                            onChange={event =>
+                            multiple
+                            onChange={event => {
+                                const selectedImages360 = Array.from(
+                                    event.target.files,
+                                )
                                 setImage360s([
                                     ...image360s,
-                                    event.target.files[0],
+                                    ...selectedImages360,
                                 ])
-                            }
+                            }}
                         />
 
                         <InputError messages={errors.image} className="mt-2" />
                     </div>
                 </div>
-            </div>
-            <div className="button">
+                <div className="button">
                 <Link href="/dashboard-host">Quay lại</Link>
-                <Button className="btn">Tạo mới danh mục</Button>
+                <Button className="btncategory">Tạo mới danh mục</Button>
             </div>
+            </div>
+           
         </form>
     )
 }

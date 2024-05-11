@@ -51,7 +51,15 @@ export const useProduct = () => {
     const { data: product, error, mutate } = useSWR('/product', () =>
         axios
             .get('/product')
-            .then(res => res.data)
+            // .then(res => res.data)
+            .then(res => {
+                // Thêm trường createdAt cho mỗi sản phẩm
+                const productsWithCreatedAt = res.data.map(product => ({
+                    ...product,
+                    createdAt: new Date(product.createdAt),
+                }));
+                return productsWithCreatedAt;
+            })
             .catch(error => {
                 if (error.response.status !== 409) throw error
             }),
