@@ -117,9 +117,9 @@ Route::get('/', [SiteController::class, 'product']);
 
 Route::get('/dashboard', [SiteController::class, 'indexCate']);
 
-Route::post('/gio-hang/them', [CartController::class,'addToCart'])->name('cart.add');
+Route::post('/add-cart', [CartController::class,'addToCart'])->name('cart.add');
 
-Route::get('/gio-hang/{id}', [SiteController::class, 'viewCart'])->name('gio-hang');
+Route::get('/gio-hang', [SiteController::class, 'viewCart'])->name('gio-hang');
 Route::delete('/delete-cart/{id}', [CartController::class, 'delete'])->name('cart.delete');
 
 Route::post('/add-rating', [RatingController::class, 'store'])->name('rating.add');

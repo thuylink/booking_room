@@ -8,7 +8,21 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+
     public function addToCart(Request $request)
+{
+    $validatedData = $request->validate([
+        'id_product' => 'required|integer',
+        'id_user'=> 'required|integer',
+    ]);
+
+    $gioHang = new Cart();
+    $gioHang->id_product=$request->id_product;
+    $gioHang->id_user=$request->id_user;
+    $gioHang->save();
+    return response()->json($gioHang, 201);
+}
+    public function addToCart_(Request $request)
 {
     // Lấy thông tin sản phẩm từ request
     $product = $request->input('id_product');

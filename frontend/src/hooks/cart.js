@@ -45,19 +45,14 @@ export const deleteCartById = async id => {
     }
 }
 
-export const useCart = (id) => {
-    const { data: cart, error, mutate } = useSWR(`/gio-hang/${id}`, () =>
-        axios.get(`/gio-hang/${id}`).then(res => res.data),
+export const useCart = () => {
+    const { data: cart, error, mutate } = useSWR(`/gio-hang`, () =>
+        axios.get(`/gio-hang`).then(res => res.data),
     );
 
-    const addToCart = async (id_product) => {
+    const addToCart = async (id_product, id_user) => {
         try {
-            await axios.post('/gio-hang/them', { id_product: id_product }, {
-                headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:3000',
-                    'Access-Control-Allow-Credentials': 'true',
-                },
-            });
+            axios.post('/add-cart', { id_product , id_user});
             mutate();
         } catch (error) {
             throw new Error(error.message);
