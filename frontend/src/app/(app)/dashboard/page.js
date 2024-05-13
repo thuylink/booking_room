@@ -648,15 +648,10 @@ const Dashboard = () => {
                                                                 }
                                                             }}>
                                                             <FontAwesomeIcon
-                                                                icon={
-                                                                    favoriteStatus[
-                                                                        product
-                                                                            .id
-                                                                    ]
-                                                                        ? faHeartBroken
-                                                                        : faHeart
-                                                                }
-                                                            />
+    icon={favoriteStatus[product.id] ? faHeartBroken : faHeart}
+    className={favoriteStatus[product.id] ? 'heart-icon-pink' : ''}
+/>
+
                                                         </span>
                                                     </div>
 
