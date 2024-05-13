@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { incrementViewCount, useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
@@ -52,6 +52,17 @@ const Dashboard = () => {
     const { cart, mutate } = useCart()
     const [favoriteStatus, setFavoriteStatus] = useState({})
 
+    useEffect(() => {
+        // Cập nhật trạng thái của các sản phẩm trong favoriteStatus
+        const updatedFavorites = {};
+        if (cart && cart.length > 0) {
+            cart.forEach(item => {
+                updatedFavorites[item.id_product] = true;
+            });
+        }
+        setFavoriteStatus(updatedFavorites);
+    }, [cart]);
+
     if (product && product.length > 0) {
         product.forEach(productItem => {
             if (productItem && productItem.length > 0) {
@@ -62,7 +73,7 @@ const Dashboard = () => {
             // console.log('length', category.length)
         })
     }
-    console.log('product trong cart', product)
+    console.log('product trong cart', cart)
 
     if (cart && cart.length > 0) {
         const show = cart.map(test => {
@@ -86,11 +97,12 @@ const Dashboard = () => {
 
     const handleAddToCart = async (id_product, id_user) => {
         try {
-            await addToCart(id_product, id_user) // Pass id_user to addToCart function
+            await addToCart(id_product, id_user)
             console.log('Đã thêm sản phẩm vào giỏ hàng')
             const updatedFavorites = { ...favoriteStatus, [id_product]: true }
             setFavoriteStatus(updatedFavorites)
             setOverlayOpen(true)
+            setIsFavorite(true)
         } catch (error) {
             console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error)
         }
@@ -98,11 +110,28 @@ const Dashboard = () => {
 
     const handleDelete = async id => {
         try {
-            await deleteCartById(id) // Xóa sản phẩm khỏi danh sách all-cart
+            // Xóa sản phẩm khỏi giỏ hàng
+            await deleteCartById(id);
+            
+            // Cập nhật trạng thái yêu thích của sản phẩm thành false
+            const updatedFavorites = { ...favoriteStatus };
+            updatedFavorites[id] = false;
+            setFavoriteStatus(updatedFavorites);
+    
+            // Cập nhật state để render lại giao diện
+            mutate();
+        } catch (error) {
+            console.error('Lỗi:', error);
+        }
+    };
+
+    const handleUnlike = async id => {
+        try {
+            await deleteCartById(id)
             const updatedFavorites = { ...favoriteStatus }
-            delete updatedFavorites[id] // Xóa sản phẩm khỏi danh sách yêu thích
-            setFavoriteStatus(updatedFavorites) // Cập nhật lại danh sách yêu thích
-            mutate() // Cập nhật lại giao diện
+            updatedFavorites[id] = false; // Cập nhật trạng thái yêu thích của sản phẩm thành false
+            setFavoriteStatus(updatedFavorites)
+            mutate()
         } catch (error) {
             console.error('Lỗi:', error)
         }
@@ -157,6 +186,8 @@ const Dashboard = () => {
             return productItem
         })
     }
+    const [isFavorite, setIsFavorite] = useState(false)
+
 
     const handleClickCategory = name_category => {
         setSelectedCategory(name_category)
@@ -488,10 +519,78 @@ const Dashboard = () => {
                                     </button>
                                     <div className="grid grid-cols-3 gap-2 overflow-auto">
                                         {cart?.map(product => (
-                                            <ProductCard
+                                            <section
                                                 key={product.id}
-                                                product={product}
-                                            />
+                                                className="py-36">
+                                                <div className="container flex items-center justify-center">
+                                                    <Card className="py-4 lg:w-3/4 xl:w-1/2">
+                                                        <CardBody className="overflow-visible py-2">
+                                                            <div className="flex flex-col-reverse gap-4">
+                                                                <div className="right">
+                                                                    <h2 className="text-lg font-bold uppercase">
+                                                                        {
+                                                                            product.location
+                                                                        }
+                                                                    </h2>
+                                                                    <div className="gia mb-6 mt-2 flex gap-3">
+                                                                        {
+                                                                            product.price
+                                                                        }{' '}
+                                                                        VNĐ/đêm
+                                                                    </div>
+                                                                    <div className="kt mb-6 mt-2 flex gap-3">
+                                                                        {
+                                                                            product.name_category
+                                                                        }
+                                                                    </div>
+                                                                    <div className="mt-6 flex gap-6">
+                                                                        <span
+                                                                            className={`unlike ${
+                                                                                favoriteStatus[
+                                                                                    product
+                                                                                        .id
+                                                                                ]
+                                                                                    ? 'favorite'
+                                                                                    : ''
+                                                                            }`}
+                                                                            onClick={() =>
+                                                                                handleUnlike(
+                                                                                    product.id,
+                                                                                )
+                                                                            }>
+                                                                            {' '}
+                                                                            {/* Thêm sự kiện onClick và gọi hàm handleUnlike */}
+                                                                            <FontAwesomeIcon
+                                                                                icon={
+                                                                                    faHeartBroken
+                                                                                }
+                                                                                className="heart-icon"
+                                                                            />
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                {product.image && (
+                                                                    <a
+                                                                        href={`/show-product/${product.id}`}>
+                                                                        <img
+                                                                            src={`http://127.0.0.1:8000/uploads/product/${JSON.parse(
+                                                                                product.image,
+                                                                            )[0].replace(
+                                                                                /[\[\]"]/g,
+                                                                                '',
+                                                                            )}`}
+                                                                            alt="Image"
+                                                                            width="270px"
+                                                                            height="200px"
+                                                                            className="rounded-image"
+                                                                        />
+                                                                    </a>
+                                                                )}
+                                                            </div>
+                                                        </CardBody>
+                                                    </Card>
+                                                </div>
+                                            </section>
                                         ))}
                                     </div>
                                 </div>
@@ -527,8 +626,42 @@ const Dashboard = () => {
                                                             product.privacy_type,
                                                         )}
                                                     </div>
-
                                                     <div className=" mb-6 mt-2 flex gap-3">
+                                                    
+                                                    <span
+                                                        className='timdi'
+                                                            onClick={() => {
+                                                                if (
+                                                                    favoriteStatus[
+                                                                        product
+                                                                            .id
+                                                                    ]
+                                                                ) {
+                                                                    handleDelete(
+                                                                        product.id,
+                                                                    )
+                                                                } else {
+                                                                    handleAddToCart(
+                                                                        product.id,
+                                                                        user.id,
+                                                                    )
+                                                                }
+                                                            }}>
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    favoriteStatus[
+                                                                        product
+                                                                            .id
+                                                                    ]
+                                                                        ? faHeartBroken
+                                                                        : faHeart
+                                                                }
+                                                            />
+                                                        </span>
+                                                    </div>
+
+
+                                                    <div className=" icons mb-6 mt-2 flex gap-3">
                                                         {product.star}
                                                         <FontAwesomeIcon
                                                             icon={faStar}
@@ -557,22 +690,8 @@ const Dashboard = () => {
                                                                     '#ff385c',
                                                             }}
                                                         />
-                                                    </div>
-
-                                                    <div className="mt-6 flex gap-6">
-                                                        <span
-                                                            className="custom-button"
-                                                            onClick={() => {
-                                                                handleAddToCart(
-                                                                    product.id,
-                                                                    user.id,
-                                                                ) 
-                                                            }}>
-                                                            <FontAwesomeIcon
-                                                                icon={faHeart}
-                                                                className="heart-icon"
-                                                            />
-                                                        </span>
+                                                    
+                                                        
                                                     </div>
                                                 </div>
 

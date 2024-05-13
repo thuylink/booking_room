@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { useRef } from 'react'
 import { useProduct } from '../../../../hooks/product'
 import { useCart } from '../../../../hooks/cart'
@@ -56,6 +56,9 @@ export const ProductDetailWithPannellum = () => {
     const [comment, setComment] = useState('')
     const { addRating } = useRating()
     const { rating } = useRating()
+    const { booking } = useBooking()
+    
+
     const [startDate, setStartDate] = useState(new Date())
     const [endDate, setEndDate] = useState(null)
     const variants = ['bordered']
@@ -69,6 +72,25 @@ export const ProductDetailWithPannellum = () => {
     const [price, setPrice] = useState('')
     const [errors, setErrors] = useState([])
 
+    const isBooked = () => {
+        // Kiểm tra xem booking có dữ liệu không
+        if (booking && booking.length > 0) {
+            console.log('booking', booking)
+            // Duyệt qua danh sách booking để kiểm tra xem người dùng đã đặt phòng cho sản phẩm này chưa
+            for (let i = 0; i < booking.length; i++) {
+                console.log('id_user', booking[i].id_product)
+                console.log('id_user', id)
+                // Nếu có booking cho sản phẩm này và người dùng hiện tại đã đặt phòng
+                if (booking[i].id_product.toString() === id && booking[i].id_user === user.id) {
+                    console.log('chán')
+                    return true; // Trả về true nếu đã đặt phòng
+                }
+            }
+        }
+        return false; // Trả về false nếu chưa đặt phòng
+    };
+    console.log(isBooked())
+
     const submitForm = event => {
         event.preventDefault()
 
@@ -77,7 +99,7 @@ export const ProductDetailWithPannellum = () => {
         formData.append('id_product', id)
         formData.append('start_date', startDate)
         formData.append('end_date', endDate)
-        formData.append('price', price)
+        formData.append('price', (numberOfNights + 1) * parseFloat(product2.price.replace(/[^0-9.-]+/g, '')))
         formData.append('guestNumber', guestNumber)
         formData.append('guestName', guestName)
         formData.append('phone', phone)
@@ -122,9 +144,32 @@ export const ProductDetailWithPannellum = () => {
         if (startDate && endDate) {
             const numberOfNights = differenceInDays(endDate, startDate)
             const totalPrice = (numberOfNights + 2) * product2.price
-            setPrice(totalPrice)
+            setPrice(totalPrice.toString())
         }
     }
+
+    console.log('price', price)
+
+    const calculateNumberOfNights = (startDate, endDate) => {
+        // Chuyển đổi ngày nhận và trả thành đối tượng Date
+        const start = new Date(startDate)
+        const end = new Date(endDate)
+
+        // Kiểm tra ngày trả hợp lệ không
+        if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+            const difference = end.getTime() - start.getTime() // Tính số milliseconds giữa hai ngày
+            const numberOfNights = Math.floor(
+                difference / (1000 * 60 * 60 * 24), // Chuyển đổi số milliseconds thành số ngày và làm tròn xuống
+            )
+
+            return numberOfNights
+        } else {
+            return 0
+        }
+    }
+
+    const numberOfNights = calculateNumberOfNights(startDate, endDate)
+    console.log('Số ngày:', numberOfNights)
 
     const starCounts = {
         1: 0,
@@ -175,27 +220,7 @@ export const ProductDetailWithPannellum = () => {
     const percentage3Stars = [starCounts[3] / totalComments] * 100
     const percentage2Stars = [starCounts[2] / totalComments] * 100
     const percentage1Star = [starCounts[1] / totalComments] * 100
-
-    const calculateNumberOfNights = (startDate, endDate) => {
-        // Chuyển đổi ngày nhận và trả thành đối tượng Date
-        const start = new Date(startDate)
-        const end = new Date(endDate)
-
-        // Kiểm tra ngày trả hợp lệ không
-        if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
-            const difference = end.getTime() - start.getTime() // Tính số milliseconds giữa hai ngày
-            const numberOfNights = Math.floor(
-                difference / (1000 * 60 * 60 * 24), // Chuyển đổi số milliseconds thành số ngày và làm tròn xuống
-            )
-
-            return numberOfNights
-        } else {
-            return 0
-        }
-    }
-
-    const numberOfNights = calculateNumberOfNights(startDate, endDate)
-    console.log('Số ngày:', numberOfNights)
+   
 
     const BarContainer = styled.div`
         .bar-5 {
@@ -237,12 +262,19 @@ export const ProductDetailWithPannellum = () => {
     }
     const handleSubmit = async () => {
         try {
-            await addRating(id, user.id, ratings, comment)
-            console.log('Đánh giá thành công')
+            // Kiểm tra xem sản phẩm đã được đặt phòng hay chưa
+            const booked = isBooked();
+            if (!booked) {
+                throw new Error('Bạn phải đặt phòng trước khi đánh giá.');
+            }
+            // Thực hiện thêm đánh giá
+            await addRating(id, user.id, ratings, comment);
+            console.log('Đánh giá thành công');
         } catch (error) {
-            console.error('Lỗi khi gửi đánh giá:', error)
+            console.error('Lỗi khi gửi đánh giá:', error);
         }
-    }
+    };
+    
     const sliderRef = useRef(null)
 
     const goToPrev = () => {
@@ -308,7 +340,8 @@ export const ProductDetailWithPannellum = () => {
     console.log('rating', rating)
 
     const productFields = Object.keys(product2)
-
+    console.log('kiểu của price',typeof product2.price)
+    console.log('kiểu của number night',typeof numberOfNights)
     return (
         <div className="container">
             <Navbar className="nav">
@@ -907,20 +940,13 @@ export const ProductDetailWithPannellum = () => {
                                                     <input
                                                         type="text"
                                                         id="price"
-                                                        value={
-                                                            endDate
-                                                                ? (numberOfNights +
-                                                                      1) *
-                                                                  product2.price
-                                                                : 0
-                                                        }
+                                                        value={endDate
+                                                            ? (numberOfNights + 1) * parseFloat(product2.price.replace(/[^0-9.-]+/g, ''))
+                                                            : 0}
                                                         className="input"
                                                         readOnly // Ngăn người dùng chỉnh sửa
                                                     />
-                                                    <InputError
-                                                        messages={errors.price}
-                                                        className="mt-2"
-                                                    />
+                                                    
                                                 </div>
                                             </div>
 
@@ -935,6 +961,7 @@ export const ProductDetailWithPannellum = () => {
                                                                 {product2.price}{' '}
                                                                 / Ngày đêm
                                                             </td>
+                                                            
                                                         </tr>
                                                         <tr>
                                                             <th scope="row">
@@ -952,15 +979,15 @@ export const ProductDetailWithPannellum = () => {
                                                                 Tổng tiền:
                                                             </th>
                                                             <td className="tt">
-                                                                {endDate
-                                                                    ? (numberOfNights +
-                                                                          1) *
-                                                                      product2.price
-                                                                    : 0}
+                                                            {endDate
+                                                                ? (numberOfNights + 1) * parseFloat(product2.price.replace(/[^0-9.-]+/g, ''))
+                                                                : 0}
+                                                            
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                
                                             </div>
                                             <div className="button">
                                                 <Button
@@ -974,6 +1001,7 @@ export const ProductDetailWithPannellum = () => {
                                     </div>
                                 </div>
                             </div>
+                            
 
                             <div class="container bootdey flex-grow-1 container-p-y">
                                 <div class="bg-white p-4 ">
@@ -1148,68 +1176,45 @@ export const ProductDetailWithPannellum = () => {
                         </div>
 
                         <div id="comment-section">
-                            <div class="container bootdey flex-grow-1 container-p-y">
-                                <div class="bg-white p-4 ">
-                                    <div class="infor">
-                                        <div class="media align-items-center py-3 mb-3">
-                                            <div className="container">
-                                                <div className="inputcmt">
-                                                    <div className="row">
-                                                        <div className="col-10">
-                                                            <div className="comment-box">
-                                                                <div className="rating">
-                                                                    {[
-                                                                        ...Array(
-                                                                            5,
-                                                                        ),
-                                                                    ].map(
-                                                                        (
-                                                                            _,
-                                                                            index,
-                                                                        ) => (
-                                                                            <React.Fragment
-                                                                                key={
-                                                                                    index
-                                                                                }>
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    name="rating"
-                                                                                    value={
-                                                                                        5 -
-                                                                                        index
-                                                                                    }
-                                                                                    id={
-                                                                                        5 -
-                                                                                        index
-                                                                                    }
-                                                                                    onChange={
-                                                                                        handleRatingsChange
-                                                                                    }
-                                                                                />
-                                                                                <label
-                                                                                    htmlFor={
-                                                                                        5 -
-                                                                                        index
-                                                                                    }>
-                                                                                    ☆
-                                                                                </label>
-                                                                            </React.Fragment>
-                                                                        ),
-                                                                    )}
-                                                                </div>
-                                                                <div className="comment-area">
-                                                                    <textarea
-                                                                        className="my-view"
-                                                                        placeholder="Viết phản hồi sau khi trải nghiệm nơi ở của bạn ... "
-                                                                        rows="4"
-                                                                        value={
-                                                                            comment
-                                                                        }
-                                                                        onChange={
-                                                                            handleCommentChange
-                                                                        }></textarea>
-                                                                </div>
-                                                                <div className="comment-btns mt-2">
+    <div class="container bootdey flex-grow-1 container-p-y">
+        <div class="bg-white p-4 ">
+            <div class="infor">
+                <div class="media align-items-center py-3 mb-3">
+                    <div className="container">
+                        <div className="inputcmt">
+                            <div className="row">
+                                <div className="col-10">
+                                    <div className="comment-box">
+                                        <div className="rating">
+                                            {[...Array(5)].map((_, index) => (
+                                                <React.Fragment key={index}>
+                                                    <input
+                                                        type="radio"
+                                                        name="rating"
+                                                        value={5 - index}
+                                                        id={5 - index}
+                                                        onChange={
+                                                            handleRatingsChange
+                                                        }
+                                                    />
+                                                    <label
+                                                        htmlFor={5 - index}
+                                                    >
+                                                        ☆
+                                                    </label>
+                                                </React.Fragment>
+                                            ))}
+                                        </div>
+                                        <div className="comment-area">
+                                            <textarea
+                                                className="my-view"
+                                                placeholder="Viết phản hồi sau khi trải nghiệm nơi ở của bạn ... "
+                                                rows="4"
+                                                value={comment}
+                                                onChange={handleCommentChange}
+                                            ></textarea>
+                                        </div>
+                                        <div className="comment-btns mt-2">
                                                                     <div className="mt-6 flex gap-6">
                                                                         <Button
                                                                             className="custom-button"
@@ -1223,16 +1228,17 @@ export const ProductDetailWithPannellum = () => {
                                                                         </Button>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
                         <div id="heading-section" className="class1">
                             <div className="number-star">

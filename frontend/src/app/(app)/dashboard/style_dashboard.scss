@@ -229,6 +229,9 @@ section {
   margin-top: -115%;
 }
 
+.overflow-auto {
+  margin-left: -6%;
+}
 
 .button-text {
   color: #ff385c;
@@ -519,4 +522,23 @@ button {
 .pyy-36 {
   margin-left: 9%;
   margin: 10%;
+}
+
+/* CSS cho trạng thái favorite */
+.favorite .heart-icon {
+  color: rgb(92, 168, 92); /* Đổi màu sang xanh */
+}
+
+/* CSS cho trạng thái unfavorite */
+.unfavorite .heart-icon {
+  color: rgb(136, 93, 100); /* Giữ màu hồng */
+}
+
+.timdi {
+  margin-left: 95%;
+  color: #47ff2f;
+  margin-top: -110%;
+}
+.icons{
+  margin-top: -3%;
 }

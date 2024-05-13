@@ -51,6 +51,14 @@ export const useCart = () => {
     );
 
     const addToCart = async (id_product, id_user) => {
+        //kiểm tra người dùng đã tim chưa
+      const existingCart = cart.find(
+        item => item.id_product === id_product &&
+        item.id_user === id_user);
+
+      if (existingCart) {
+        throw new Error('Đã tim trước đó.');
+      }  
         try {
             axios.post('/add-cart', { id_product , id_user});
             mutate();
