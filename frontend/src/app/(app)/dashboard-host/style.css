@@ -161,7 +161,9 @@ body {
       justify-content: center;
     }
   }
-  
+  .times-icon {
+    color: #aeaeae;
+}
   .right-content {
     padding: 10px 40px;
     overflow-y: auto;
@@ -188,23 +190,34 @@ body {
   
   .time { margin-bottom: 6px; opacity: 0.4; font-size: 10px; }
   
-  .task-name { 
-    font-size: 14px; 
-    font-weight: 500;
-    opacity: 0.6;
-  }
+  .task-name {
+    font-size: 36px;
+    font-weight: bolder;
+    color: #ffffff;
+}
   
   .yellow { 
+    text-align: center;
+
     background-color: var(--box-color);
   }
   
-  .blue { background-color: var(--box-color-2); }
+  .blue {
+    text-align: center;
+
+    background-color: #008997;
+}
+
   
-  .red { background-color: var(--box-color-3); }
-  
-  .green { background-color: var(--box-color-4); }
-  
-  .more-button {
+.red {
+  background-color: #1e5a24;
+  text-align: center;
+}  
+.green {
+  background-color: #342e31;
+  text-align: center;
+}  
+  /* .more-button {
     position: absolute;
     width: 3px;
     height: 3px;
@@ -215,7 +228,7 @@ body {
     right: 20px;
     top: 30px;
     cursor: pointer;
-  }
+  } */
   
   .members {
     display: flex;

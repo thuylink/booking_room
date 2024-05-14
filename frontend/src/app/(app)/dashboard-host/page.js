@@ -227,8 +227,12 @@ const Dashboard = () => {
                     <div className="right-content">
                         <div className="task-box blue">
                             <div className="description-task">
+
                                 <div className="task-name">
-                                    Tổng số nhà ở đã tạo: {productCount}
+                                    <FontAwesomeIcon
+                                        icon={faHouse}
+                                        className="times-icon"
+                                    /> {productCount}
                                 </div>
                             </div>
                             <div className="more-button"></div>
@@ -236,14 +240,20 @@ const Dashboard = () => {
                         <div className="task-box red">
                             <div className="description-task">
                                 <div className="task-name">
-                                    Tổng số danh mục đã tạo: {categoryCount}
+                                <FontAwesomeIcon
+                                icon={faTableList}
+                                className="times-icon"
+                            /> {categoryCount}
                                 </div>
                             </div>
                             <div className="more-button"></div>
                         </div>
                         <div className="task-box green">
                             <div className="description-task">
-                                <div className="task-name">Tổng số đơn đặt phòng: {bookingCount}</div>
+                                <div className="task-name"><FontAwesomeIcon
+                                icon={faClipboardList}
+                                className="times-icon"
+                            /> {bookingCount}</div>
                             </div>
                             <div className="more-button"></div>
                         </div>

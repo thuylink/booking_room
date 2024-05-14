@@ -3,11 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useProduct } from '../../../hooks/product';
 import Chart from 'chart.js/auto';
 import './chart.css';
+import { useCategory } from '../../../hooks/category'
 
 const BarChart = () => {
     const { product } = useProduct();
     const [topProducts, setTopProducts] = useState([]);
     const [topCategories, setTopCategories] = useState([]);
+    const { category } = useCategory()
 
     const productChartRef = useRef(null);
     const productChartInstance = useRef(null);
@@ -21,27 +23,25 @@ const BarChart = () => {
             setTopProducts(top10Products);
 
             drawProductBarChart(top10Products);
+            calculateCategoryCounts(product);
         }
     }, [product]);
 
-    useEffect(() => {
-        if (product && product.length > 0) {
-            const categoryMap = new Map();
-            product.forEach(item => {
-                if (item.categories && item.categories.length > 0) {
-                    item.categories.forEach(category => {
-                        categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
-                    });
-                }
-            });
+    const calculateCategoryCounts = (products) => {
+        const categoryCountMap = new Map();
 
-            const sortedCategories = [...categoryMap.entries()].sort((a, b) => b[1] - a[1]);
-            const top10Categories = sortedCategories.slice(0, 10).map(category => category[0]);
-            setTopCategories(top10Categories);
+        products.forEach(item => {
+            if (item.id_category) {
+                categoryCountMap.set(item.id_category, (categoryCountMap.get(item.id_category) || 0) + 1);
+            }
+        });
 
-            drawCategoryBarChart(top10Categories, categoryMap);
-        }
-    }, [product]);
+        const sortedCategoryCounts = [...categoryCountMap.entries()].sort((a, b) => b[1] - a[1]);
+        const top10Categories = sortedCategoryCounts.slice(0, 10);
+        setTopCategories(top10Categories);
+
+        drawCategoryPieChart(top10Categories);
+    };
 
     const drawProductBarChart = (data) => {
         if (productChartInstance.current) {
@@ -65,47 +65,91 @@ const BarChart = () => {
                         y: {
                             beginAtZero: true
                         }
-                    }
+                    },
+                    maintainAspectRatio: false, // Allow custom width and height
                 }
             });
         }
     };
 
-    const drawCategoryBarChart = (categories, categoryMap) => {
+    if (category && category.length > 0) {
+        category.forEach(categoryItem => {
+            if (categoryItem && categoryItem.length > 0) {
+                categoryItem.forEach(item => {
+                    console.log('item_name:', item.name_category)
+                })
+            }
+            // console.log('length', category.length)
+        })
+    }
+
+    if (product && product.length > 0) {
+        const show = product.map(test => {
+            if (category && category.length > 0) {
+                const foundCategory = category[0].find(
+                    item => item.id === test.id_category,
+                )
+                if (foundCategory) {
+                    test.name_category = foundCategory.name_category
+                    
+                }
+            }
+            return test
+        })
+    }
+
+    const drawCategoryPieChart = (data) => {
         if (categoryChartInstance.current) {
             categoryChartInstance.current.destroy();
         }
         if (categoryChartRef.current) {
+            // Extracting category names from the data array
+            const categoryNames = data.map(item => item[0]);
+    
             categoryChartInstance.current = new Chart(categoryChartRef.current, {
-                type: 'bar',
+                type: 'pie',
                 data: {
-                    labels: categories,
+                    labels: categoryNames, // Using category names as labels
                     datasets: [{
                         label: 'Số lượng sản phẩm',
-                        data: categories.map(category => categoryMap.get(category) || 0),
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
+                        data: data.map(item => item[1]),
+                        backgroundColor: data.map((_, i) => `hsl(${i * 36}, 70%, 50%)`),
+                        borderColor: '#ffffff',
                         borderWidth: 1
                     }]
                 },
                 options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label} - ${tooltipItem.raw}`;
+                                }
+                            }
                         }
                     }
                 }
             });
         }
     };
+    
+    
 
     return (
-        <div>
+        <div className="chart-container">
             <h1 className="view">Các sản phẩm được xem nhiều nhất</h1>
-            <canvas ref={productChartRef}></canvas>
+            <div className="chart-wrapper">
+                <canvas ref={productChartRef}></canvas>
+            </div>
 
-            <h1 className="view">Các danh mục có nhiều sản phẩm nhất</h1>
-            <canvas ref={categoryChartRef}></canvas>
+            <h1 className="view">Top 10 danh mục có nhiều sản phẩm nhất</h1>
+            <div className="piechart-wrapper">
+                <canvas ref={categoryChartRef}></canvas>
+            </div>
         </div>
     );
 };

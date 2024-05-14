@@ -4,3 +4,33 @@
     text-align: center;
     color: #ff385c;
 }
+
+.chart-container {
+    max-height: 80vh;
+    overflow-y: auto;
+    margin-top: -4%;
+    padding: 20px;
+}
+
+.chart-wrapper {
+    width: 93%;
+    height: 90%;
+    margin-top: 9px;
+}
+
+.piechart-wrapper {
+    width: 51%;
+    height: 82%;
+    margin-bottom: 40px;
+    margin-left: 25%;
+}
+
+.view {
+    margin-top: 20px;
+}
+
+canvas {
+    display: block;
+    width: 100% !important; /* Ensure the canvas takes full width */
+    height: 100% !important; /* Ensure the canvas takes full height */
+}
