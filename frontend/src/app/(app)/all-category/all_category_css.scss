@@ -13,3 +13,13 @@
 .text-white {
   color: #ffffff;
 }
+.text-lg {
+  font-weight: normal;
+  margin-top: 2px;
+}
+
+.hover\:bg-gray-700:hover {
+  --tw-bg-opacity: 1;
+  color: #ffffff;
+  background-color: #4bedd6;
+}

@@ -102,7 +102,7 @@ body {
 	z-index: 100;
 }
 .containercategory__overlay {
-    max-height: 400px; /* hoặc bất kỳ giá trị nào phù hợp */
+    max-height: 90%; /* hoặc bất kỳ giá trị nào phù hợp */
     overflow-y: auto;
 }
 
@@ -164,21 +164,19 @@ body {
 
 .btncategory {
     background-color: rgb(9, 146, 200);
-    border-radius: 20px;
+    border-radius: 10px;
     border: 1px solid #f8585c;
-    color: #f8585c;
     cursor: pointer;
     font-size: 0.8rem;
     margin-left: 136%;
     font-weight: bold;
-    width: 153px;
+    width: 167px;
     margin-top: 159%;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
     position: relative;
     transition: background-color 0.3s ease;
     z-index: 999;
-    padding: 10px 20px;
 }
 .text-white {
     color: #f8585c;
@@ -220,13 +218,14 @@ body {
 	text-align: center;
 }
 
-.input {
+.input2 {
 	background-color: #fff;
 	border: none;
 	padding: 0.9rem 0.9rem;
 	margin: 0.5rem 0;
-	width: 100%;
+	width: 98%;
 }
+
 
 @keyframes show {
 	0%,

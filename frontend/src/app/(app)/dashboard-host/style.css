@@ -126,7 +126,7 @@ body {
   }
   
   .right-bar {
-    width: 320px;
+    width: 225px;
     border-left: 1px solid #e3e7f7;
     display: flex;
     flex-direction: column;
@@ -395,15 +395,22 @@ body {
 }
 
 .avtimage {
-  margin-top: -87%;
-  margin-left: -35%;
-  height: 55px;
-  width: 46px;
-  border-radius: 25px;
+  margin-top: -60%;
+  margin-left: -38%;
+  height: 52px;
+  border-radius: 23px;
+  width: 58px;
 }
 
 
 .fill-current {
   fill: currentColor;
   margin-top: -98%;
+}
+.input {
+  background-color: #fff;
+  border: none;
+  padding: 0.9rem 0.9rem;
+  margin: 0.5rem 0;
+  width: 98%;
 }

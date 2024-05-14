@@ -42,9 +42,10 @@ const AllProduct = () => {
     const [showUpdateProduct, setShowUpdateProduct] = useState(false)
     const [showDetailProduct, setShowDetailProduct] = useState(false)
 
-    const handleUpdateProductClick = (id) => {
+    const handleUpdateProductClick = async id => {
+        console.log('id update pro', id)
         setSelectedProductId(id);
-        setShowUpdateProduct(true);
+        // setShowUpdateProduct(true);
         setShowDetailProduct(false);
     }
     
@@ -124,7 +125,7 @@ const AllProduct = () => {
         <>
             <div className="table-container">
             <div>
-            {showUpdateProduct && <UpdateProductPage productId={selectedProductId} />}
+            {selectedProductId && <UpdateProductPage productId={selectedProductId} />}
             {showDetailProduct && <ProductDetailWithPannellum productId={selectedProductId} />}
             
                 </div>
@@ -224,7 +225,7 @@ const AllProduct = () => {
                                         </div>
                                         <div>
                                             
-                                                <Button className="ml-4 bg-pink-500" onClick={handleUpdateProductClick}>
+                                                <Button className="ml-4 bg-pink-500" onClick={() => handleUpdateProductClick(product.id)}>
                                                     <span className="text-lg text-white cursor-pointer active:opacity-50">
                                                         <EditIcon />
                                                     </span>

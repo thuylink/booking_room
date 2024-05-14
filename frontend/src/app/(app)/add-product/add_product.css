@@ -35,13 +35,20 @@ body {
 	height: 100vh;
 	place-items: center;
 }
-.amenities-column-left {
+/* .amenities-column-left {
     margin-right: -44px;
-}
+} */
 .form__title {
 	font-weight: 300;
 	margin: 0;
 	margin-bottom: 1.25rem;
+}
+
+.amenitiesproduct-column-left, .amenitiesproduct-column-right {
+    flex: 1;
+    margin-left: -20%;
+    width: 202px;
+    margin-top: -11%;
 }
 
 /* .link {
@@ -57,8 +64,8 @@ body {
     box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25), 0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
     overflow: hidden;
     position: relative;
-    width: 514%;
-    margin-left: -207%;
+    width: 663%;
+    margin-left: -296%;
     height: 524px;
     margin-top: -21%;
 }
@@ -159,12 +166,12 @@ body {
 
 .btnproduct {
     background-color: #008997;
-    border-radius: 20px;
+    border-radius: 7px;
     border: 1px solid #f8585c;
     cursor: pointer;
     font-size: 0.8rem;
     margin-left: 1%;
-    width: 56%;
+    width: 42%;
     margin-top: 223%;
     font-weight: bold;
     letter-spacing: 0.1rem;
@@ -172,7 +179,6 @@ body {
     position: relative;
     transition: background-color 0.3s ease;
     z-index: 999;
-    padding: 10px 20px;
 }
 .mt-4 {
     margin-top: 1%;
@@ -301,5 +307,5 @@ body {
 }
 .w-1\/2 {
     width: 131%;
-    margin-left: -38%;
+    margin-left: -42%;
 }

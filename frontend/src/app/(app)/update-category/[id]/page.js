@@ -11,9 +11,10 @@ import Link from 'next/link'
 import Button from '@/components/Button'
 import '../css.css'
 
-const UpdateCategoryPage = () => {
+const UpdateCategoryPage = (category) => {
     const router = useRouter()
-    const id = window.location.pathname.split('/').pop()
+    // const id = window.location.pathname.split('/').pop()
+    // console.log('đã bảo là id', id)
 
     const { getCategoryById, updateCategoryById } = useCategory({
         middleware: 'guest',
@@ -27,27 +28,21 @@ const UpdateCategoryPage = () => {
     const [errors, setErrors] = useState([])
 
     const [tempNameCategory, setTempNameCategory] = useState('')
-    const [tempImages, setTempImages] = useState([])
-    const [tempImage360s, setTempImage360s] = useState([])
 
-    // Sử dụng useEffect để fetch thông tin về danh mục khi component được render
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await getCategoryById(id)
+                const response = await getCategoryById(category.categoryId)
                 setTempNameCategory(response.name_category)
                 setStatus(response.status)
-                setTempImages(response.image)
-                setTempImage360s(response.image360)
             } catch (error) {
                 console.error('Error:', error)
             }
         }
 
         fetchCategory()
-    }, [id])
+    }, [category])
 
-    // Cập nhật state khi thông tin về danh mục thay đổi
     useEffect(() => {
         setNameCategory(tempNameCategory)
     }, [tempNameCategory])
@@ -83,10 +78,9 @@ const UpdateCategoryPage = () => {
 
         try {
             await updateCategoryById({
-                id: id,
+                id: category.categoryId,
                 formData: formData,
             })
-            router.push('/all-category') // Chuyển hướng về trang danh sách danh mục sau khi cập nhật thành công
         } catch (error) {
             console.error('Error:', error)
             // Xử lý các lỗi và hiển thị thông báo lỗi nếu có
@@ -132,11 +126,11 @@ const UpdateCategoryPage = () => {
             className="max-w-sm mx-auto"
             encType="multipart/form-data">
             <div className="flex flex-col flex-wrap gap-4"></div>
-            <div class="container right-panel-active">
-                <div class="container__form container--signup">
+            <div class="containerupdatecate right-panel-active">
+                <div class="containerupdatecate__form containerupdatecate--signup">
                     <form class="form">
-                        <div className="head">
-                            <a className="head">Chỉnh sửa danh mục </a>
+                        <div className="headupdatecate">
+                            <a className="headupdatecate">Chỉnh sửa danh mục </a>
                         </div>
 
                         <Input
@@ -173,7 +167,7 @@ const UpdateCategoryPage = () => {
                     </form>
                 </div>
 
-                <div className="container__overlay">
+                <div className="containerupdatecate__overlay">
                     <div className="mt-4">
                         <Label htmlFor="image">Hình ảnh:</Label>
                         {images.length > 0 &&
@@ -231,89 +225,13 @@ const UpdateCategoryPage = () => {
                         <InputError messages={errors.image} className="mt-2" />
                     </div>
                 </div>
+                <div className="buttonupdatecate">
+                <Button className="btnupdatecate">Lưu thay đổi</Button>
             </div>
-            <div className="button">
-                <Link href="/dashboard-host">Quay lại</Link>
-                <Button className="btn">Lưu thay đổi</Button>
             </div>
+            
         </form>
     )
 }
 
 export default UpdateCategoryPage
-// <div className="border rounded-lg p-4" color="blue">
-//                 <h1 className="text-center">Chủ nhà chỉnh sửa danh mục</h1>
-
-//                 <div className="mt-4">
-//                     <Label htmlFor="nameCategory">Tên danh mục:</Label>
-//                     <Input
-//                         type="text"
-//                         id="nameCategory"
-//                         value={name_category}
-//                         className="block w-full"
-//                         onChange={event => setNameCategory(event.target.value)}
-//                         required
-//                         autoFocus
-//                     />
-
-//                     <InputError
-//                         messages={errors.nameCategory}
-//                         className="mt-2"
-//                     />
-//                 </div>
-
-//                 <div className="mt-4">
-//                     <Label htmlFor="image">Hình ảnh:</Label>
-//                     {previewImages()}
-//                     <Input
-//                         id="image"
-//                         type="file"
-//                         className="block w-full"
-//                         onChange={handleImageChange}
-//                         multiple
-//                         accept="image/*"
-//                     />
-//                 </div>
-
-//                 <div className="mt-4">
-//                     <Label htmlFor="image360">Hình ảnh 360°:</Label>
-//                     {previewImage360s()}
-//                     <Input
-//                         id="image360"
-//                         type="file"
-//                         className="block w-full"
-//                         onChange={handleImage360Change}
-//                         multiple
-//                         accept="image/*"
-//                     />
-//                 </div>
-
-//                 <div className="mt-4">
-//                     <Label htmlFor="status">Trạng thái:</Label>
-//                     <Input
-//                         id="status"
-//                         type="text"
-//                         tu
-//                         value={status}
-//                         className="block w-full"
-//                         onChange={event => setStatus(event.target.value)}
-//                         required
-//                     />
-
-//                     <InputError messages={errors.status} className="mt-2" />
-//                 </div>
-
-//                 <div className="mt-6">
-//                     <Button type="submit" className="w-full" color="blue">
-//                         Cập nhật
-//                     </Button>
-//                 </div>
-
-//                 <div className="mt-4">
-//                     <Link href="/all-category">
-//                         <Button className="text-center block underline">
-//                             Quay lại danh sách danh mục
-//                         </Button>
-//                     </Link>
-//                 </div>
-//             </div>

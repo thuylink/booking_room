@@ -360,6 +360,9 @@ body {
   width: 100%; /* Đảm bảo khung chứa chiếm toàn bộ chiều rộng của phần tử cha */
 }
 
+.taikhoan{
+  margin-left: 10%;
+}
 .my-view{
   width: 320%;
 }
@@ -461,6 +464,14 @@ body {
 .stars2 {
   width: 88%;
   margin-left: 16%;
+}
+
+.avtimage {
+  margin-top: -40%;
+  margin-left: -32%;
+  height: 55px;
+  width: 46px;
+  border-radius: 41px;
 }
 
 .average{

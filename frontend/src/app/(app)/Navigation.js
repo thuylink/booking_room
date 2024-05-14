@@ -123,12 +123,12 @@ const Navigation = ({ user }) => {
                             {/* Authentication */}
                             
                             <DropdownButton className="taikhoan" onClick={onClick}
-                            style={{marginLeft: "-1%",}}
+                            style={{ marginLeft: '15%', fontSize: 'large', fontWeight: 'bold' }}
                             >
                                 Tài khoản
                             </DropdownButton>
                             <DropdownButton onClick={logout} className="dangxuat"
-                            style={{marginLeft: "0%",}}
+                            style={{ marginLeft: '16%', fontSize: 'large', fontWeight: 'bold' }}
                             >
                                 Đăng xuất
                             </DropdownButton>

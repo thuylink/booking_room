@@ -14,9 +14,9 @@ import { useCategory } from '../../../../hooks/category'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-const UpdateProductPage = () => {
+const UpdateProductPage = (product) => {
     const router = useRouter()
-    const id = window.location.pathname.split('/').pop()
+    // const id = window.location.pathname.split('/').pop()
 
     const { getProductById, updateProductById } = useProduct({
         middleware: 'guest',
@@ -55,7 +55,7 @@ const UpdateProductPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await getProductById(id)
+                const response = await getProductById(product.productId)
                 setTempLocation(response.location)
                 setTempCapacity(response.capacity)
                 setTempAmenities(response.amenities)
@@ -67,7 +67,7 @@ const UpdateProductPage = () => {
             }
         }
         fetchProduct()
-    }, [id])
+    }, [product])
 
     useEffect(() => {
         setLocation(tempLocation)
@@ -159,7 +159,7 @@ const UpdateProductPage = () => {
         }
 
         // try {
-        await updateProductById({ id: id, formData: formData })
+        await updateProductById({ id: product.productId, formData: formData })
         // console.log('Cập nhật sản phẩm thành công')
         router.push('/all-product')
         // } catch (error) {
@@ -505,255 +505,4 @@ const UpdateProductPage = () => {
 
 export default UpdateProductPage
 
-// <div className="flex">
-//                 <div className="w-1/2 pr-2">
-//                     <div className="border rounded-lg p-4 w-full">
-//                         <div className="mt-4">
-//                             <Label htmlFor="image">Hình ảnh:</Label>
-//                             {previewImages()}
 
-//                             <Input
-//                                 id="image"
-//                                 type="file"
-//                                 className="block w-full"
-//                                 onChange={event =>
-//                                     setImages(Array.from(event.target.files))
-//                                 }
-//                                 multiple
-//                             />
-
-//                             <InputError
-//                                 messages={errors.image}
-//                                 className="mt-2"
-//                             />
-//                         </div>
-
-//                         <div className="mt-4">
-//                             <Label htmlFor="image360">Hình ảnh 360:</Label>
-//                             {previewImage360s()}
-
-//                             <Input
-//                                 id="image360"
-//                                 type="file"
-//                                 className="block w-full"
-//                                 onChange={event =>
-//                                     setImage360s(Array.from(event.target.files))
-//                                 }
-//                                 multiple
-//                             />
-
-//                             <InputError
-//                                 messages={errors.image360}
-//                                 className="mt-2"
-//                             />
-//                         </div>
-//                     </div>
-//                 </div>
-//                 <div className="w-1/2 pl-2">
-//                     <div className="border rounded-lg p-4-2">
-//     <select
-//     id="id_category"
-//     value={id_category}
-//     className="block w-full"
-//     onChange={event => {
-//         const selectedId = event.target.value // Lấy giá trị id được chọn từ event
-//         setIdCategory(selectedId) // Cập nhật id_category
-//     }}
-//     required
-//     autoFocus>
-//     <option value="">Chọn kiểu kiến trúc</option>
-//     <option value="all">Tất cả các danh mục</option>
-//     {category &&
-//         category.length > 0 &&
-//         category[0].map((categoryItem, index) => (
-//             <option
-//                 key={categoryItem.id}
-//                 value={categoryItem.id} // Thiết lập giá trị value bằng id của danh mục
-//             >
-//                 {categoryItem.name_category}
-//             </option>
-//         ))}
-// </select>
-
-//                         <div className="mt-4">
-//                             <Label htmlFor="privacy_type">
-//                                 Phạm vi sử dụng:
-//                             </Label>
-//                             <select
-//                                 id="privacy_type"
-//                                 value={selectedPrivacy}
-//                                 className="block w-full"
-//                                 onChange={handlePrivacyTypeChange}
-//                                 required
-//                                 autoFocus>
-//                                 <option value="">Chọn</option>
-//                                 {privacyOptions.map(option => (
-//                                     <option
-//                                         key={option.value}
-//                                         value={option.value}>
-//                                         {option.label}
-//                                     </option>
-//                                 ))}
-//                             </select>
-//                             <InputError
-//                                 messages={errors.privacy_type}
-//                                 className="mt-2"
-//                             />
-//                         </div>
-
-//                         <div className="mt-4">
-//                             <Label htmlFor="location">Địa chỉ:</Label>
-// <Input
-//     type="text"
-//     id="location"
-//     value={location}
-//     className="block w-full"
-//     onChange={event =>
-//         setLocation(event.target.value)
-//     }
-//     required
-//     autoFocus
-// />
-
-// <InputError
-//     messages={errors.location}
-//     className="mt-2"
-// />
-//                         </div>
-
-//                         <div className="mt-4">
-//                             <Label htmlFor="capacity">Sức chứa:</Label>
-// <Input
-//     type="text"
-//     id="capacity"
-//     value={capacity}
-//     className="block w-full"
-//     onChange={event =>
-//         setCapacity(event.target.value)
-//     }
-//     required
-//     autoFocus
-// />
-
-// <InputError
-//     messages={errors.capacity}
-//     className="mt-2"
-// />
-//                         </div>
-
-//                         <div className="mt-4">
-//                             <Label htmlFor="amenities">Tiện ích:</Label>
-
-//     <div className="mt-4">
-//         <div className="amenities-column-left">
-//             {amenitiesOptions
-//                 .slice(0, 6)
-//                 .map(option => (
-//                     <div key={option.id}>
-//                         <input
-//                             type="checkbox"
-//                             id={option.label}
-//                             value={option.label}
-//                             checked={selectedAmenities.includes(
-//                                 option.label,
-//                             )}
-//                             onChange={
-//                                 handleAmenitiesChange
-//                             }
-//                         />
-//                         <label htmlFor={option.label}>
-//                             {option.label}
-//                         </label>
-//                     </div>
-//                 ))}
-//         </div>
-//         <div className="amenities-column-right">
-//             {amenitiesOptions.slice(6).map(option => (
-//                 <div key={option.id}>
-//                     <input
-//                         type="checkbox"
-//                         id={option.label}
-//                         value={option.label}
-//                         checked={selectedAmenities.includes(
-//                             option.label,
-//                         )}
-//                         onChange={handleAmenitiesChange}
-//                     />
-//                     <label htmlFor={option.label}>
-//                         {option.label}
-//                     </label>
-//                 </div>
-//             ))}
-//         </div>
-//     </div>
-//     <InputError
-//         messages={errors.amenities}
-//         className="mt-2"
-//     />
-// </div>
-
-//                         <div className="mt-4">
-//                             <Label htmlFor="title">Tiêu đề:</Label>
-// <Input
-//     type="text"
-//     id="title"
-//     value={title}
-//     className="block w-full"
-//     onChange={event => setTitle(event.target.value)}
-//     required
-// />
-
-// <InputError
-//     messages={errors.title}
-//     className="mt-2"
-// />
-//                         </div>
-
-//                         <div className="mt-4">
-//                             <Label htmlFor="description">Mô tả:</Label>
-//                             <Input
-//                                 type="text"
-//                                 id="description"
-//                                 value={description}
-//                                 className="block w-full"
-//                                 onChange={event =>
-//                                     setDescription(event.target.value)
-//                                 }
-//                                 required
-//                             />
-
-//                             <InputError
-//                                 messages={errors.description}
-//                                 className="mt-2"
-//                             />
-//                         </div>
-
-//                         <div className="mt-4">
-//                             <Label htmlFor="price">Chi phí:</Label>
-// <Input
-//     id="price"
-//     type="text"
-//     value={price}
-//     className="block w-full"
-//     onChange={event => setPrice(event.target.value)}
-//     required
-// />
-
-// <InputError
-//     messages={errors.price}
-//     className="mt-2"
-// />
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-
-//             <div className="flex items-center justify-end mt-4">
-//                 <Link
-//                     href="/"
-//                     className="underline text-sm text-gray-600 hover:text-gray-900">
-//                     Back
-//                 </Link>
-
-//                 <Button className="ml-4">Cập nhật</Button>
-//             </div>

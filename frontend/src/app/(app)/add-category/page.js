@@ -13,7 +13,7 @@ import './add.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-const CreateCategoryPage = () => {
+const CreateCategoryPage = ({onCategoryCreated}) => {
     const router = useRouter()
 
     const { createCategory } = useCategory({
@@ -39,7 +39,8 @@ const CreateCategoryPage = () => {
             setStatus,
             setErrors,
         }).then(() => {
-            router.push('all-category')
+            // Gọi callback để báo cho Dashboard biết danh mục mới đã được tạo
+            onCategoryCreated()
         })
         console.log(
             'form add đây',
@@ -73,7 +74,7 @@ const CreateCategoryPage = () => {
                             id="nameCategory"
                             value={name_category}
                             placeholder="Tên danh mục"
-                            className="input"
+                            className="input2"
                             onChange={event =>
                                 setNameCategory(event.target.value)
                             }
@@ -86,7 +87,7 @@ const CreateCategoryPage = () => {
                             type="text"
                             id="status"
                             value={status}
-                            className="input"
+                            className="input2"
                             placeholder="Trạng thái"
                             onChange={event => setStatus(event.target.value)}
                             required
@@ -192,101 +193,3 @@ const CreateCategoryPage = () => {
 }
 
 export default CreateCategoryPage
-// <div className="border rounded-lg p-4" color="blue">
-//                 <h1 className="text-center">Chủ nhà thêm mới danh mục</h1>
-
-//                 <div className="mt-4">
-//                     <Label htmlFor="nameCategory">Tên danh mục:</Label>
-//                     <Input
-// type="text"
-// id="nameCategory"
-// value={name_category}
-// className="block w-full"
-// onChange={event => setNameCategory(event.target.value)}
-// required
-// autoFocus
-//                     />
-
-//                     <InputError
-//                         messages={errors.nameCategory}
-//                         className="mt-2"
-//                     />
-//                 </div>
-
-//                 <div className="mt-4">
-//                     <Label htmlFor="image">Hình ảnh:</Label>
-//                     {images.length > 0 &&
-//                         images.map((image, index) => (
-//                             <div key={index} className="w-32 h-32">
-//                                 <Image
-//                                     src={URL.createObjectURL(image)}
-//                                     // alt={`Preview ${index}`}
-//                                     layout="responsive"
-//                                     width={200}
-//                                     height={200}
-//                                 />
-//                             </div>
-//                         ))}
-
-//                     <Input
-//                         id="image"
-//                         type="file"
-//                         className="block w-full"
-//                         onChange={event =>
-//                             setImages([...images, event.target.files[0]])
-//                         }
-//                     />
-
-//                     <InputError messages={errors.image} className="mt-2" />
-//                 </div>
-
-//                 <div className="mt-4">
-//                     <Label htmlFor="image">Hình ảnh 360:</Label>
-// {image360s.length > 0 &&
-//     image360s.map((image360, index) => (
-//         <div key={index} className="w-32 h-32">
-//             <Image
-//                 src={URL.createObjectURL(image360)}
-//                 // alt={`Preview ${index}`}
-//                 layout="responsive"
-//                 width={200}
-//                 height={200}
-//             />
-//         </div>
-//     ))}
-
-//                     <Input
-//                         id="image360"
-//                         type="file"
-//                         className="block w-full"
-//                         onChange={event =>
-//                             setImage360s([...image360s, event.target.files[0]])
-//                         }
-//                     />
-
-//                     <InputError messages={errors.image} className="mt-2" />
-//                 </div>
-//                 <div className="mt-4">
-//                     <Label htmlFor="status">Trạng thái:</Label>
-//                     <Input
-//                         id="status"
-//                         type="text"
-//                         value={status}
-//                         className="block w-full"
-//                         onChange={event => setStatus(event.target.value)}
-//                         required
-//                     />
-
-//                     <InputError messages={errors.status} className="mt-2" />
-//                 </div>
-//             </div>
-
-//             <div className="flex items-center justify-end mt-4">
-//                 <Link
-//                     href="/dashboard-host"
-//                     className="underline text-sm text-gray-600 hover:text-gray-900">
-//                     Quay lại
-//                 </Link>
-
-//                 <Button className="ml-4">Tạo mới danh mục</Button>
-//             </div>

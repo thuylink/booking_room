@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 
-const CreateProductPage = () => {
+const CreateProductPage = ({onProductCreated}) => {
     const router = useRouter()
 
     const { createProduct } = useProduct({
@@ -109,7 +109,6 @@ const CreateProductPage = () => {
             formData.append('privacy_type', selectedPrivacy);
             formData.append('location', location);
             formData.append('capacity', capacity);
-            formData.append('amenities', amenities);
             formData.append('amenities', selectedAmenities);
             images.forEach(image => formData.append('image[]', image));
             image360s.forEach(image360 => formData.append('image360[]', image360));
@@ -121,7 +120,7 @@ const CreateProductPage = () => {
                 formData,
                 setErrors,
             }).then(() => {
-                router.push('/all-product');
+                onProductCreated()
             });
     }
 
@@ -272,35 +271,35 @@ const CreateProductPage = () => {
                         <div className="mt-4">
 
                             <div className="mt-4 flex">
-    <div className="amenities-column-left w-1/2">
-        {amenitiesOptions.slice(0, 11).map(option => (
-            <div key={option.id} className="flex items-center">
-                <input
-                    type="checkbox"
-                    id={option.label}
-                    value={option.label}
-                    checked={selectedAmenities.includes(option.label)}
-                    onChange={handleAmenitiesChange}
-                />
-                <label htmlFor={option.label}>{option.label}</label>
-            </div>
-        ))}
-    </div>
-    <div className="amenities-column-right w-1/2">
-        {amenitiesOptions.slice(11).map(option => (
-            <div key={option.id} className="flex items-center">
-                <input
-                    type="checkbox"
-                    id={option.label}
-                    value={option.label}
-                    checked={selectedAmenities.includes(option.label)}
-                    onChange={handleAmenitiesChange}
-                />
-                <label htmlFor={option.label}>{option.label}</label>
-            </div>
-        ))}
-    </div>
-</div>
+                                <div className="amenitiesproduct-column-left w-1/2">
+                                    {amenitiesOptions.slice(0, 11).map(option => (
+                                        <div key={option.id} className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id={option.label}
+                                                value={option.label}
+                                                checked={selectedAmenities.includes(option.label)}
+                                                onChange={handleAmenitiesChange}
+                                            />
+                                            <label htmlFor={option.label}>{option.label}</label>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="amenitiesproduct-column-right w-1/2">
+                                    {amenitiesOptions.slice(11).map(option => (
+                                        <div key={option.id} className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id={option.label}
+                                                value={option.label}
+                                                checked={selectedAmenities.includes(option.label)}
+                                                onChange={handleAmenitiesChange}
+                                            />
+                                            <label htmlFor={option.label}>{option.label}</label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
 
                             <InputError
                                 messages={errors.amenities}

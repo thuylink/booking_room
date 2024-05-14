@@ -17,14 +17,9 @@ import AllProduct from '../all-product/page'
 import BarChart from '../chart/page'
 import { useCategory } from '../../../hooks/category' 
 import { useBooking } from '../../../hooks/booking' 
-
 import { useProduct } from '../../../hooks/product' // Import hook useProduct
 import { useAuth } from '@/hooks/auth'
 import React, { useState, useEffect } from 'react'
-
-// export const metadata = {
-//     title: 'Laravel - Dashboard',
-// }
 
 const Dashboard = () => {
     const { user } = useAuth({ middleware: 'auth' })
@@ -32,13 +27,9 @@ const Dashboard = () => {
     const { category } = useCategory()
     const { booking } = useBooking()
 
-    console.log('ca', category)
-    console.log('pr', product)
-    
     const [productCount, setProductCount] = useState(0)
     const [categoryCount, setCategoryCount] = useState(0)
     const [bookingCount, setBookingCount] = useState(0)
-
 
     useEffect(() => {
         if (product) {
@@ -56,13 +47,12 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (category) {
-            // Tính tổng số lượng phần tử trong mảng con của mỗi phần tử trong mảng category
             const totalCount = category.reduce((acc, curr) => acc + curr.length, 0);
             setCategoryCount(totalCount); // Cập nhật số lượng sản phẩm
         }
     }, [category]);
 
-    const [showCreateCategory, setShowCreateCategory] = useState(false) // State để xác định liệu có hiển thị template tạo mới danh mục hay không
+    const [showCreateCategory, setShowCreateCategory] = useState(false)
     const [showAllCategory, setShowAllCategory] = useState(false)
     const [showCreateProduct, setShowCreateProduct] = useState(false)
     const [showAllProduct, setShowAllProduct] = useState(false)
@@ -76,7 +66,6 @@ const Dashboard = () => {
         setShowAllProduct(false);
         setShowBooking(false);
         setShowChart(true)
-
     }
 
     const handleCategoryClick = () => {
@@ -86,7 +75,6 @@ const Dashboard = () => {
         setShowAllProduct(false);
         setShowBooking(false);
         setShowChart(false)
-
     }
 
     const handleAllCategoryClick = () => {
@@ -96,7 +84,6 @@ const Dashboard = () => {
         setShowAllProduct(false);
         setShowBooking(false);
         setShowChart(false)
-
     }
 
     const handleProductClick = () => {
@@ -105,7 +92,6 @@ const Dashboard = () => {
         setShowCreateProduct(true);
         setShowAllProduct(false);
         setShowChart(false)
-
         setShowBooking(false);
     }
 
@@ -113,7 +99,6 @@ const Dashboard = () => {
         setShowCreateCategory(false);
         setShowAllCategory(false);
         setShowChart(false)
-
         setShowCreateProduct(false);
         setShowAllProduct(true);
         setShowBooking(false);
@@ -126,15 +111,25 @@ const Dashboard = () => {
         setShowAllProduct(false);
         setShowBooking(true);
         setShowChart(false)
-
     }
+
+    const handleCategoryCreated = () => {
+        setShowCreateCategory(false);
+        setShowAllCategory(true);
+    }
+
+    const handleProductCreated = () => {
+        setShowCreateProduct(false);
+        setShowAllProduct(true);
+    }
+
+
     return (
         <>
             <link
                 href="https://fonts.googleapis.com/css?family=DM+Sans:400,500,700&display=swap"
                 rel="stylesheet"
             />
-
             <div className="task-manager">
                 <div className="left-bar">
                     <div className="upper-part">
@@ -146,8 +141,7 @@ const Dashboard = () => {
                     <div className="left-content">
                         <ul className="action-list">
                             <li className="item">
-
-                            <span
+                                <span
                                     onClick={handleChartClick}
                                     className="flex items-center cursor-pointer">
                                     <FontAwesomeIcon
@@ -157,7 +151,6 @@ const Dashboard = () => {
                                     <span className="ml-2">Thống kê</span>
                                 </span>
                             </li>
-
                             <li className="item">
                                 <span
                                     onClick={handleBookingClick}
@@ -169,7 +162,6 @@ const Dashboard = () => {
                                     <span className="ml-2">Đơn đặt phòng</span>
                                 </span>
                             </li>
-
                             <li className="item">
                                 <span
                                     onClick={handleProductClick}
@@ -181,7 +173,6 @@ const Dashboard = () => {
                                     <span className="ml-2">Tạo mới nhà ở</span>
                                 </span>
                             </li>
-
                             <li className="item">
                                 <span
                                     onClick={handleAllProductClick}
@@ -195,7 +186,6 @@ const Dashboard = () => {
                                     </span>
                                 </span>
                             </li>
-
                             <li className="item">
                                 <span
                                     onClick={handleCategoryClick}
@@ -209,7 +199,6 @@ const Dashboard = () => {
                                     </span>
                                 </span>
                             </li>
-
                             <li className="item">
                                 <span
                                     onClick={handleAllCategoryClick}
@@ -227,36 +216,36 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className="page-content">
-                    {showCreateCategory && <CreateCategoryPage />}{' '}
-                    {showCreateProduct && <CreateProductPage />}
+                    {showCreateCategory && <CreateCategoryPage onCategoryCreated={handleCategoryCreated} />}
+                    {showCreateProduct && <CreateProductPage onProductCreated={handleProductCreated} />}
                     {showBooking && <AllBooking />}
                     {showAllCategory && <AllCategory />}
                     {showAllProduct && <AllProduct />}
                     {showChart && <BarChart />}
                 </div>
-                <div class="right-bar">
-                    <div class="right-content">
-                        <div class="task-box blue">
-                            <div class="description-task">
-                                <div class="task-name">
+                <div className="right-bar">
+                    <div className="right-content">
+                        <div className="task-box blue">
+                            <div className="description-task">
+                                <div className="task-name">
                                     Tổng số nhà ở đã tạo: {productCount}
                                 </div>
                             </div>
-                            <div class="more-button"></div>
+                            <div className="more-button"></div>
                         </div>
-                        <div class="task-box red">
-                            <div class="description-task">
-                                <div class="task-name">
+                        <div className="task-box red">
+                            <div className="description-task">
+                                <div className="task-name">
                                     Tổng số danh mục đã tạo: {categoryCount}
                                 </div>
                             </div>
-                            <div class="more-button"></div>
+                            <div className="more-button"></div>
                         </div>
-                        <div class="task-box green">
-                            <div class="description-task">
-                                <div class="task-name">Tổng số đơn đặt phòng: {bookingCount}  </div>
+                        <div className="task-box green">
+                            <div className="description-task">
+                                <div className="task-name">Tổng số đơn đặt phòng: {bookingCount}</div>
                             </div>
-                            <div class="more-button"></div>
+                            <div className="more-button"></div>
                         </div>
                     </div>
                 </div>
