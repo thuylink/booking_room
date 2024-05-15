@@ -125,7 +125,6 @@ const CreateProductPage = ({onProductCreated}) => {
     }
 
     const removeImage = (index, arrayName) => {
-    
         if (arrayName === 'images') {
             const updatedImages = [...images];
             updatedImages.splice(index, 1);
@@ -314,16 +313,7 @@ const CreateProductPage = ({onProductCreated}) => {
         <Label htmlFor="image">Hình ảnh:</Label>
         {images.length > 0 &&
             images.map((image, index) => (
-                <div
-                    key={index}
-                    className="w-64 h-64"
-                    onDrop={e => {
-                        e.preventDefault(); // Ngăn chặn hành vi mặc định của trình duyệt
-                        if (!isDeletingImage) { // Kiểm tra xem liệu có đang trong quá trình xóa ảnh không
-                            removeImage(index, 'images');
-                        }
-                    }}
-                >
+                <div key={index} className="w-64 h-64">
                     <div className="relative">
                         <Image
                             src={URL.createObjectURL(image)}
@@ -332,7 +322,7 @@ const CreateProductPage = ({onProductCreated}) => {
                             height={400}
                         />
                         <button
-                            className=" but absolute top-2 right-2"
+                            className="absolute top-2 right-2"
                             onClick={() =>
                                 removeImage(index, 'images')
                             }>
@@ -342,15 +332,15 @@ const CreateProductPage = ({onProductCreated}) => {
                 </div>
             ))}
 
-        <Input
+            <Input
             id="image"
             type="file"
             className="block w-full"
             multiple
             onChange={event => {
                 const selectedImages = Array.from(
-                    event.target.files
-                );
+                    event.target.files,
+                )
                 setImages([...images, ...selectedImages])
             }}
         />
@@ -362,16 +352,7 @@ const CreateProductPage = ({onProductCreated}) => {
         <Label htmlFor="image360">Hình ảnh 360:</Label>
         {image360s.length > 0 &&
             image360s.map((image360, index) => (
-                <div
-                    key={index}
-                    className="w-64 h-64"
-                    onDrop={e => {
-                        e.preventDefault(); // Ngăn chặn hành vi mặc định của trình duyệt
-                        if (!isDeletingImage) { // Kiểm tra xem liệu có đang trong quá trình xóa ảnh không
-                            removeImage(index, 'image360s');
-                        }
-                    }}
-                >
+                <div key={index} className="w-64 h-64">
                     <div className="relative">
                         <Image
                             src={URL.createObjectURL(image360)}
@@ -390,18 +371,19 @@ const CreateProductPage = ({onProductCreated}) => {
                 </div>
             ))}
 
-        <Input
+
+            <Input
             id="image360"
             type="file"
             className="block w-full"
             multiple
             onChange={event => {
                 const selectedImages360 = Array.from(
-                    event.target.files
-                );
+                    event.target.files,
+                )
                 setImage360s([
                     ...image360s,
-                    ...selectedImages360
+                    ...selectedImages360,
                 ])
             }}
         />

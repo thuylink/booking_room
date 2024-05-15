@@ -72,32 +72,6 @@ const BarChart = () => {
         }
     };
 
-    if (category && category.length > 0) {
-        category.forEach(categoryItem => {
-            if (categoryItem && categoryItem.length > 0) {
-                categoryItem.forEach(item => {
-                    console.log('item_name:', item.name_category)
-                })
-            }
-            // console.log('length', category.length)
-        })
-    }
-
-    if (product && product.length > 0) {
-        const show = product.map(test => {
-            if (category && category.length > 0) {
-                const foundCategory = category[0].find(
-                    item => item.id === test.id_category,
-                )
-                if (foundCategory) {
-                    test.name_category = foundCategory.name_category
-                    
-                }
-            }
-            return test
-        })
-    }
-
     const drawCategoryPieChart = (data) => {
         if (categoryChartInstance.current) {
             categoryChartInstance.current.destroy();
@@ -127,7 +101,7 @@ const BarChart = () => {
                         tooltip: {
                             callbacks: {
                                 label: function (tooltipItem) {
-                                    return `${tooltipItem.label} - ${tooltipItem.raw}`;
+                                    return `${tooltipItem.label} : ${tooltipItem.raw}`;
                                 }
                             }
                         }
@@ -136,6 +110,35 @@ const BarChart = () => {
             });
         }
     };
+
+    // Step 1: Ensure each product has its name_category
+if (product && product.length > 0) {
+    const updatedProducts = product.map(test => {
+        if (category && category.length > 0) {
+            const foundCategory = category[0].find(item => item.id === test.id_category);
+            if (foundCategory) {
+                test.name_category = foundCategory.name_category;
+            }
+        }
+        return test;
+    });
+
+    // Step 2: Aggregate products by name_category
+    const categoryCount = updatedProducts.reduce((acc, curr) => {
+        const categoryName = curr.name_category || 'Unknown Category';
+        if (!acc[categoryName]) {
+            acc[categoryName] = 0;
+        }
+        acc[categoryName]++;
+        return acc;
+    }, {});
+
+ const sortedCategoryCount = Object.entries(categoryCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+    // Step 3: Pass aggregated data to drawCategoryPieChart function
+    drawCategoryPieChart(sortedCategoryCount);
+}
     
     
 
