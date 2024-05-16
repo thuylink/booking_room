@@ -13,7 +13,7 @@ import './add.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-const CreateCategoryPage = ({onCategoryCreated}) => {
+const CreateCategoryPage = ({ onCategoryCreated }) => {
     const router = useRouter()
 
     const { createCategory } = useCategory({
@@ -26,7 +26,7 @@ const CreateCategoryPage = ({onCategoryCreated}) => {
     const [status, setStatus] = useState('')
     const [errors, setErrors] = useState([])
 
-    const submitForm = event => {
+    const submitForm = async (event) => {
         event.preventDefault()
 
         const formData = new FormData()
@@ -34,40 +34,40 @@ const CreateCategoryPage = ({onCategoryCreated}) => {
         images.forEach(image => formData.append('image[]', image))
         image360s.forEach(image360 => formData.append('image360[]', image360))
         formData.append('status', status)
-        createCategory({
-            formData,
-            setStatus,
-            setErrors,
-        }).then(() => {
+
+        try {
+            await createCategory({
+                formData,
+                setErrors,
+            })
             // Gọi callback để báo cho Dashboard biết danh mục mới đã được tạo
             onCategoryCreated()
-        })
-        console.log(
-            'form add đây',
-            formData.getAll('image[]', 'name_category', 'image360[]'),
-        )
+        } catch (error) {
+            console.error('Error creating category:', error)
+        }
+    }
+
+    const handleImageChange = (event, setImageFunction) => {
+        const selectedImages = Array.from(event.target.files)
+        setImageFunction(prevImages => [...prevImages, ...selectedImages])
     }
 
     const removeImage = (index, arrayName) => {
         if (arrayName === 'images') {
-            const updatedImages = [...images]
-            updatedImages.splice(index, 1)
-            setImages(updatedImages)
+            setImages(images => images.filter((_, i) => i !== index))
         } else if (arrayName === 'image360s') {
-            const updatedImage360s = [...image360s]
-            updatedImage360s.splice(index, 1)
-            setImage360s(updatedImage360s)
+            setImage360s(image360s => image360s.filter((_, i) => i !== index))
         }
     }
 
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
             <div className="flex flex-col flex-wrap gap-4"></div>
-            <div class="containercategory right-panel-active">
-                <div class="containercategory__form containercategory--signup">
-                    <form class="form">
+            <div className="containercategory right-panel-active">
+                <div className="containercategory__form containercategory--signup">
+                    <div className="form">
                         <div className="headcategory">
-                            <a className="headcategory">Tạo mới danh mục </a>
+                            <a className="headcategory">Tạo mới danh mục</a>
                         </div>
                         <Input
                             type="text"
@@ -75,9 +75,7 @@ const CreateCategoryPage = ({onCategoryCreated}) => {
                             value={name_category}
                             placeholder="Tên danh mục"
                             className="input2"
-                            onChange={event =>
-                                setNameCategory(event.target.value)
-                            }
+                            onChange={event => setNameCategory(event.target.value)}
                             required
                             autoFocus
                         />
@@ -93,11 +91,8 @@ const CreateCategoryPage = ({onCategoryCreated}) => {
                             required
                             autoFocus
                         />
-                        <InputError
-                            messages={errors.address}
-                            className="mt-2"
-                        />
-                    </form>
+                        <InputError messages={errors.address} className="mt-2" />
+                    </div>
                 </div>
 
                 <div className="containercategory__overlay">
@@ -114,10 +109,9 @@ const CreateCategoryPage = ({onCategoryCreated}) => {
                                             height={400}
                                         />
                                         <button
+                                            type="button"
                                             className="absolute top-2 right-2"
-                                            onClick={() =>
-                                                removeImage(index, 'images')
-                                            }>
+                                            onClick={() => removeImage(index, 'images')}>
                                             <FontAwesomeIcon icon={faTimes} />
                                         </button>
                                     </div>
@@ -129,12 +123,7 @@ const CreateCategoryPage = ({onCategoryCreated}) => {
                             type="file"
                             className="block w-full"
                             multiple
-                            onChange={event => {
-                                const selectedImages = Array.from(
-                                    event.target.files,
-                                )
-                                setImages([...images, ...selectedImages])
-                            }}
+                            onChange={event => handleImageChange(event, setImages)}
                         />
 
                         <InputError messages={errors.image} className="mt-2" />
@@ -153,10 +142,9 @@ const CreateCategoryPage = ({onCategoryCreated}) => {
                                             height={200}
                                         />
                                         <button
+                                            type="button"
                                             className="absolute top-2 right-2"
-                                            onClick={() =>
-                                                removeImage(index, 'image360s')
-                                            }>
+                                            onClick={() => removeImage(index, 'image360s')}>
                                             <FontAwesomeIcon icon={faTimes} />
                                         </button>
                                     </div>
@@ -168,26 +156,17 @@ const CreateCategoryPage = ({onCategoryCreated}) => {
                             type="file"
                             className="block w-full"
                             multiple
-                            onChange={event => {
-                                const selectedImages360 = Array.from(
-                                    event.target.files,
-                                )
-                                setImage360s([
-                                    ...image360s,
-                                    ...selectedImages360,
-                                ])
-                            }}
+                            onChange={event => handleImageChange(event, setImage360s)}
                         />
 
                         <InputError messages={errors.image} className="mt-2" />
                     </div>
                 </div>
                 <div className="button">
-                <Link href="/dashboard-host">Quay lại</Link>
-                <Button className="btncategory">Tạo mới danh mục</Button>
+                    <Link href="/dashboard-host">Quay lại</Link>
+                    <Button className="btncategory">Tạo mới danh mục</Button>
+                </div>
             </div>
-            </div>
-           
         </form>
     )
 }

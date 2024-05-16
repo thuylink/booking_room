@@ -12,13 +12,13 @@ use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        $products = Product::all();
-        return response()->json($products);
+    public function index() {
+        return $this->productService->getAllProducts();
     }
 
     protected $productService;
+    protected $categoryService;
+
     public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
@@ -56,7 +56,6 @@ class ProductController extends Controller
     }
     public function show($id)
     {
-        // $product = Product::find($id);
         $product = Product::findOrFail($id);
         $product->increment('view_count');
         return response()->json($product);
@@ -69,15 +68,10 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
-    public function getProductsByCategory($name_category)
-    {
-        try {
-            $category = Category::where('name_category', $name_category)->firstOrFail();
-            $products = $category->products;
-            return response()->json($products);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Không tìm thấy danh mục hoặc sản phẩm'], 404);
-        }
+
+
+    public function getProductsByCategory($name_category) {
+        return $this->categoryService->getProductsByCategory($name_category);
     }
 
     public function getRelatedProducts($productId)
@@ -310,3 +304,15 @@ class ProductController extends Controller
 //         // return redirect()->back()->with('status', 'Đã xóa 1 nhà');
 
 //     }
+
+
+    // public function getProductsByCategory($name_category)
+    // {
+    //     try {
+    //         $category = Category::where('name_category', $name_category)->firstOrFail();
+    //         $products = $category->products;
+    //         return response()->json($products);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => 'Không tìm thấy danh mục hoặc sản phẩm'], 404);
+    //     }
+    // }

@@ -12,6 +12,8 @@ class ProductRepository {
      * @var Product
      */
     protected $product;
+    protected $category;
+
 
     /**
      * @param Product $product
@@ -80,6 +82,14 @@ class ProductRepository {
         if ($imagePath && File::exists($imagePath)) {
             File::delete($imagePath);
         }
+    }
+
+    public function getProductsByCategory($name_category) {
+        return $this->category->where('name_category', $name_category)->firstOrFail()->products;
+    }
+
+    public function getAllProducts() {
+        return $this->product->all();
     }
 }
 

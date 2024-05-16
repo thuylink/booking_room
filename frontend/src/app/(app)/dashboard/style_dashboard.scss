@@ -231,7 +231,9 @@ section {
 }
 
 .overflow-auto {
-  margin-left: -6%;
+  margin-left: -12%;
+  margin-top: -9%;
+  padding: 8%;
 }
 
 .button-text {
@@ -495,15 +497,17 @@ button {
 .overlay {
   position: fixed;
   top: 92px;
-  left: 117px;
-  width: 84%;
+  left: 196px;
+  width: 74%;
   height: 603%;
   background-color: white;
   z-index: 999;
   border-radius: 13px;
-  overflow-y: auto; /* Thêm thanh cuộn dọc khi nội dung vượt quá kích thước của overlay */
+  overflow-y: auto;
   max-height: 80vh;
 }
+
+
 
 /* CSS cho nội dung của pop-up */
 .popup-content {

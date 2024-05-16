@@ -10,6 +10,8 @@ class ProductService {
      * @var $productRepository
      */
     protected $productRepository;
+    protected $categoryRepository;
+
 
     /**
      * @param ProductRepository $productRepository
@@ -119,4 +121,16 @@ public function deleteProduct($id) {
     return ['status' => 'Xóa nhà thành công'];
 }
 
+public function getProductsByCategory($name_category) {
+    try {
+        $products = $this->categoryRepository->getProductsByCategory($name_category);
+        return response()->json($products);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Không tìm thấy danh mục hoặc sản phẩm'], 404);
+    }
+}
+
+public function getAllProducts() {
+    return $this->productRepository->getAllProducts();
+}
 }

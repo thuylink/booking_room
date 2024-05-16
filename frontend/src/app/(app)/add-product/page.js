@@ -101,7 +101,7 @@ const CreateProductPage = ({onProductCreated}) => {
         }
     }
 
-    const submitForm = event => {
+    const submitForm = async (event) => {
         event.preventDefault();
         
             const formData = new FormData();
@@ -116,23 +116,40 @@ const CreateProductPage = ({onProductCreated}) => {
             formData.append('description', description);
             formData.append('price', price);
     
-            createProduct({
-                formData,
-                setErrors,
-            }).then(() => {
+            // createProduct({
+            //     formData,
+            //     setErrors,
+            // }).then(() => {
+            //     onProductCreated()
+            // });
+
+            try {
+                await createProduct({
+                    formData,
+                    setErrors,
+                })
+                // Gọi callback để báo cho Dashboard biết danh mục mới đã được tạo
                 onProductCreated()
-            });
+            } catch (error) {
+                console.error('Error creating product:', error)
+            }
     }
+
+    const handleImageChange = (event, setImageFunction) => {
+        const selectedImages = Array.from(event.target.files)
+        setImageFunction(prevImages => [...prevImages, ...selectedImages])
 
     const removeImage = (index, arrayName) => {
         if (arrayName === 'images') {
-            const updatedImages = [...images];
-            updatedImages.splice(index, 1);
-            setImages(updatedImages);
+            // const updatedImages = [...images];
+            // updatedImages.splice(index, 1);
+            // setImages(updatedImages);
+            setImages(images => images.filter((_, i) => i !== index))
         } else if (arrayName === 'image360s') {
-            const updatedImage360s = [...image360s];
-            updatedImage360s.splice(index, 1);
-            setImage360s(updatedImage360s);
+            // const updatedImage360s = [...image360s];
+            // updatedImage360s.splice(index, 1);
+            // setImage360s(updatedImage360s);
+            setImage360s(image360s => image360s.filter((_, i) => i !== index))
         }
     
     };
@@ -337,12 +354,8 @@ const CreateProductPage = ({onProductCreated}) => {
             type="file"
             className="block w-full"
             multiple
-            onChange={event => {
-                const selectedImages = Array.from(
-                    event.target.files,
-                )
-                setImages([...images, ...selectedImages])
-            }}
+            onChange={event => handleImageChange(event, setImages)}
+
         />
 
         <InputError messages={errors.image} className="mt-2" />
@@ -363,8 +376,8 @@ const CreateProductPage = ({onProductCreated}) => {
                         <button
                             className="absolute top-2 right-2"
                             onClick={() =>
-                                removeImage(index, 'image360s')
-                            }>
+                                                removeImage(index, 'image360s')
+                                            }>
                             <FontAwesomeIcon icon={faTimes} />
                         </button>
                     </div>
@@ -377,15 +390,7 @@ const CreateProductPage = ({onProductCreated}) => {
             type="file"
             className="block w-full"
             multiple
-            onChange={event => {
-                const selectedImages360 = Array.from(
-                    event.target.files,
-                )
-                setImage360s([
-                    ...image360s,
-                    ...selectedImages360,
-                ])
-            }}
+            onChange={event => handleImageChange(event, setImage360s)}
         />
 
         <InputError messages={errors.image} className="mt-2" />
