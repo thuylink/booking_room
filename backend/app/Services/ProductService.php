@@ -67,6 +67,7 @@ public function createProduct($request)
         'title' => $request->title,
         'description'=>$request->description,
         'price'=>$request->price,
+        'id_owner'=>$request->id_owner,
     ]);
     return $product;
 }

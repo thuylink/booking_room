@@ -17,6 +17,8 @@
     font-size: medium;
 }
 
+
+
 .text-lg{
   margin-top: 1%;
 }
@@ -277,7 +279,7 @@ section {
   transition-timing-function: ease;
   transition-duration: 250ms;
   background-color: white;
-  margin-left: 30%;
+  margin-left: 14%;
 }
 .mb-6 {
   margin-bottom: 0.5rem;
@@ -551,4 +553,75 @@ button {
 
 .heart-icon-pink {
   color: pink; /* Thay đổi màu của icon thành màu hồng */
+}
+
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+body{
+	background: #EEEEEE;
+	font-family: 'Roboto', sans-serif;
+}
+.card{
+	width: 300px;
+	border: none;
+	border-radius: 15px;
+}
+.adiv {
+  background: #4598e9;
+  border-radius: 15px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  font-size: 24px;
+  height: 46px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+.chat {
+  border: none;
+  background: #ff395d;
+  font-size: 13px;
+  color: white;
+  border-radius: 20px;
+}
+.bg-white {
+  border: 1px solid #ffffff;
+  font-size: 13px;
+  border-radius: 20px;
+}
+.myvideo img{
+	border-radius: 20px
+}
+.dot{
+	font-weight: bold;
+}
+.form-control {
+  border-radius: 12px;
+  border: 1px solid #F0F0F0;
+  font-size: 30%;
+  width: 99%;
+  height: 47px;
+}
+.form-control:focus{
+	box-shadow: none;
+	}
+.form-control::placeholder{
+	font-size: 8px;
+	color: #C4C4C4;
+}
+
+.page-content {
+  margin-left: -32%;
+  margin-top: 142%;
+  background-color: white;
+  width: 100%;
+}
+
+.typehere {
+  font-size: 17px;
+  margin-left: 7%;
 }

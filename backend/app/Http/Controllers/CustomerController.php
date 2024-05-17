@@ -24,6 +24,11 @@ class CustomerController extends Controller
         $this->customerService = $customerService;
     }
 
+    public function index(){
+        $allProfile = Profile::all();
+        return response()->json([$allProfile]);
+    }
+
     public function store(CustomerRequest $request)
     {
         try {

@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ChattingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
@@ -133,6 +135,7 @@ Route::get('products/category/{name_category}', [ProductController::class, 'getP
 
 
 // Route::get('/profile', [CustomerController::class, 'showProfile'])->name('users.all');
+Route::get('/allProfile', [CustomerController::class, 'index']);
 Route::post('/store-user', [CustomerController::class, 'store'])->name('user.add');
 Route::get('/profiles', [CustomerController::class, 'showProfile'])->name('user.show');
 Route::get('/edit-user',[CustomerController::class,'edit'])->name('user.edit');
@@ -153,3 +156,16 @@ Route::get('/products/{productId}/related', [ProductController::class,'getRelate
 Route::get('/create-booking', [BookingController::class, 'showBookingForm'])->name('booking.create');
 Route::post('/store-booking', [BookingController::class, 'store'])->name('booking.store');
 Route::get('/booking', [BookingController::class, 'index'])->name('bookings.all');
+
+
+// Route::get('/message', [MessageController::class, 'index']);
+// Route::post('/send-message', [MessageController::class, 'sendMessage']);
+// Route::get('/messages/sender/{sender_id}', [MessageController::class, 'viewMessagesBySender']);
+// Route::get('/messages/receiver/{receiver_id}', [MessageController::class, 'viewMessagesByReceiver']);
+
+
+
+Route::get('/chattings', [ChattingController::class, 'index']);
+Route::post('/store-chatting', [ChattingController::class, 'store']);
+Route::get('/chattings/sender/{sender_id}', [ChattingController::class, 'viewChattingsBySender']);
+Route::get('/chattings/receiver/{receiver_id}', [ChattingController::class, 'viewChattingsByReceiver']);

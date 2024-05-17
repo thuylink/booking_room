@@ -6,6 +6,8 @@ import { incrementViewCount, useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
 import { useRating } from '../../../hooks/rating'
 import { useCart } from '../../../hooks/cart'
+import { useMessage } from '@/hooks/message'
+
 import { Card, CardBody } from '@nextui-org/card'
 import './style_dashboard.scss'
 import { Button } from '@nextui-org/react'
@@ -28,6 +30,8 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useAuth } from '@/hooks/auth'
 import { faHeartBroken } from '@fortawesome/free-solid-svg-icons'
 import { deleteCartById } from '../../../hooks/cart'
+import { faMessage} from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
 
 const Dashboard = () => {
     const { user } = useAuth({ middleware: 'auth' })
@@ -51,6 +55,14 @@ const Dashboard = () => {
 
     const { cart, mutate } = useCart()
     const [favoriteStatus, setFavoriteStatus] = useState({})
+
+
+    const [isChatOpen, setIsChatOpen] = useState(false); // State để kiểm soát hiển thị/ẩn popup chat
+
+    const toggleChatPopup = () => {
+        setIsChatOpen(!isChatOpen); // Khi click vào nút, đảo ngược trạng thái hiển thị của popup
+    };
+
 
     useEffect(() => {
         // Cập nhật trạng thái của các sản phẩm trong favoriteStatus
@@ -218,62 +230,6 @@ const Dashboard = () => {
         })
     }
 
-    const ProductCard = ({ product }) => {
-        const cleanedImagePath = product.image
-            ? JSON.parse(product.image)[0].replace(/[\[\]"]/g, '')
-            : ''
-        const imagePath = cleanedImagePath
-            ? `http://127.0.0.1:8000/uploads/product/${cleanedImagePath}`
-            : ''
-
-        return (
-            <section key={product.id} className="pyy-36">
-                <div className="container flex items-center justify-center">
-                    <Card className="py-4 lg:w-3/4 xl:w-1/2">
-                        <CardBody className="overflow-visible py-2">
-                            <div className="flex flex-col-reverse gap-4">
-                                <div className="right">
-                                    <h2 className="text-lg font-bold uppercase">
-                                        {product.location}
-                                    </h2>
-                                    <div className="gia mb-6 mt-2 flex gap-3">
-                                        {product.price} VNĐ/đêm
-                                    </div>
-                                    <div className="kt mb-6 mt-2 flex gap-3">
-                                        {product.name_category}
-                                    </div>
-                                    <div className="mt-6 flex gap-6">
-                                        <span
-                                            className="unlike"
-                                            onClick={() =>
-                                                handleDelete(product.id)
-                                            }>
-                                            <FontAwesomeIcon
-                                                icon={faHeartBroken}
-                                                className="heart-icon"
-                                            />
-                                        </span>
-                                    </div>
-                                </div>
-                                {imagePath && (
-                                    <a href={`/show-product/${product.id}`}>
-                                        <img
-                                            src={imagePath}
-                                            alt="Image"
-                                            width="270px"
-                                            height="200px"
-                                            className="rounded-image"
-                                        />
-                                    </a>
-                                )}
-                            </div>
-                        </CardBody>
-                    </Card>
-                </div>
-            </section>
-        )
-    }
-
     const settings = {
         dots: false,
         infinite: true,
@@ -311,6 +267,7 @@ const Dashboard = () => {
     const filteredProducts = product?.filter(product =>
         product.location.toLowerCase().includes(searchValue.toLowerCase()),
     )
+
 
     const filteredProductsAll =
         filteredProducts && filteredProducts.length > 0
@@ -419,6 +376,8 @@ const Dashboard = () => {
                         </Button>
                     </NavbarItem>
                 </NavbarContent>
+
+                
 
                 {showFilterPopup && (
                     <div className="filter-overlay">
@@ -598,6 +557,8 @@ const Dashboard = () => {
                         )}
                     </NavbarItem>
                 </NavbarContent>
+
+
             </Navbar>
 
             <div className="sticky-element"></div>

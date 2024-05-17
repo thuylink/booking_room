@@ -25,6 +25,8 @@ export const getProfile = async() => {
     }
 }
 
+
+
 export const useProfile = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter();
 
@@ -41,6 +43,8 @@ export const useProfile = ({ middleware, redirectIfAuthenticated } = {}) => {
         await axios.get('/sanctum/csrf-cookie');
     };
 
+    
+    
     const createProfiles = async ({ formData, setErrors, setStatus }) => {
         await csrf();
 

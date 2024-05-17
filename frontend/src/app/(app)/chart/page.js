@@ -54,7 +54,7 @@ const BarChart = () => {
                     labels: data.map(product => product.title),
                     datasets: [{
                         label: 'Lượt xem',
-                        data: data.map(product => product.view_count),
+                        data: data.map(product => product.view_count/2),
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1

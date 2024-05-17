@@ -34,6 +34,7 @@ class ProductRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|string',
+            'id_owner'=>'required|integer'
         ];
     }
 }

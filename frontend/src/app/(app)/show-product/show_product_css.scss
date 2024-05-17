@@ -24,6 +24,7 @@
   transition-timing-function: ease;
   transition-duration: 250ms;
   color: white;
+  width: 101%;
   background: #ff385c;
   margin-top: 1%;
 }
@@ -136,14 +137,13 @@
   margin-top: 26px;
 }
 
-.form-control {
-  background-color: #f2f2f2;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px;
-  width: 132%;
-  margin-left: 13%;
-  box-sizing: border-box;
+.form-controlnhanphong {
+  border-radius: 12px;
+  border: 1px solid #F0F0F0;
+  font-size: 102%;
+  width: 125%;
+  height: 47px;
+  margin-left: 14%;
 }
 .form-label{
   margin-left: -23%;
@@ -240,12 +240,11 @@ body{
   border: 2px solid dodgerblue;
   border-radius: 10px;
   padding: 10px 20px;
-  align-items: center;
   cursor: pointer;
   margin-left: 477px;
   width: 756px;
-  margin-top: -68.5%;
-  height: 839px;
+  margin-top: -66.6%;
+  height: 814px;
 }
 
 .user-img{
@@ -314,6 +313,18 @@ body{
   margin-left: 106px;
   float: left;
 }
+.avatar {
+  width: 50px; /* Độ rộng của ảnh */
+  height: 50px; /* Độ cao của ảnh */
+  border-radius: 50%; /* Bo tròn viền ảnh để tạo hình dáng tròn */
+  object-fit: cover; /* Chế độ hiển thị của ảnh, có thể thay đổi tùy theo yêu cầu */
+  margin-right: 10px; /* Khoảng cách giữa ảnh và nội dung khác */
+}
+
+.rating-item {
+  margin-bottom: 20px; /* Khoảng cách giữa các bình luận */
+}
+
 
 .rating>input {
     display: none
@@ -1013,12 +1024,16 @@ body {
 
 .input-wrapper {
   margin-top: 13px;
+  cursor: pointer;
+
   margin-left: -81px;
   width: 105%;
 }
 
 .input {
   margin-left: 18%;
+  cursor: pointer;
+
   width: 99%;
 }
 
@@ -1042,4 +1057,125 @@ body {
 .dong {
   margin-left: 12%;
   margin-top: 2%;
+}
+
+.yes {
+  margin-left: 9%;
+  margin-top: -9%;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+.error-popup {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f44336;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.error-popup.show {
+  opacity: 1;
+}
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+body{
+	background: #EEEEEE;
+	font-family: 'Roboto', sans-serif;
+}
+.card{
+	width: 300px;
+	border: none;
+	border-radius: 15px;
+}
+.adiv {
+  background: #4598e9;
+  border-radius: 15px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  font-size: 24px;
+  height: 46px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+.chat {
+  border: none;
+  background: #ff395d;
+  font-size: 13px;
+  color: white;
+  border-radius: 20px;
+}
+.bg-white {
+  border: 1px solid #ffffff;
+  font-size: 13px;
+  border-radius: 20px;
+}
+.myvideo img{
+	border-radius: 20px
+}
+.dot{
+	font-weight: bold;
+}
+.form-control {
+  border-radius: 12px;
+  border: 1px solid #F0F0F0;
+  font-size: 30%;
+  width: 99%;
+  height: 47px;
+}
+.form-control:focus{
+	box-shadow: none;
+	}
+.form-control::placeholder{
+	font-size: 8px;
+	color: #C4C4C4;
+}
+
+.page-content {
+  margin-left: 10%;
+  margin-top: 142%;
+  background-color: #c9d7f5;
+  width: 100%;
+}
+
+.typehere {
+  font-size: 17px;
+  margin-left: 7%;
+}
+
+.send-btn {
+  width: 20%;
+  border-radius: 11px;
+  margin-left: -26%;
+  color: white;
+  background: #2563eb;
+}
+
+.close-btn{
+  width: 30%;
+  border-radius: 11px;
+  margin-left: -26%;
+  color: white;
+  background: #2563eb;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px; /* Khoảng cách giữa các nút, tùy chỉnh theo nhu cầu */
+}
+
+.send-btn, .close-btn {
+  flex: 1; /* Để các nút có cùng kích thước, nếu không cần thì có thể bỏ dòng này */
 }

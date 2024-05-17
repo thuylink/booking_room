@@ -33,6 +33,7 @@ class ProductRepository {
      public function createProduct($data)
      {
          $product = $this->product->create([
+             'id_owner'=>$data['id_owner'],
              'id_category' => $data['id_category'],
              'privacy_type' => $data['privacy_type'],
              'location' => $data['location'],

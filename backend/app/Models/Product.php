@@ -21,6 +21,7 @@ class Product extends Model
         'title',
         'description',
         'price',
+        'id_owner'
     ];
 
     /**mqh belongsTo giữa Product và Category

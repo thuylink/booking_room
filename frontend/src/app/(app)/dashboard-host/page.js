@@ -1,6 +1,4 @@
 'use client'
-import Link from 'next/link'
-import Button from '@/components/Button'
 import './style.css'
 import { faHouseCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,6 +6,8 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { faListDots } from '@fortawesome/free-solid-svg-icons'
 import { faTableList } from '@fortawesome/free-solid-svg-icons'
 import { faShop } from '@fortawesome/free-solid-svg-icons'
+import { faMessage} from '@fortawesome/free-solid-svg-icons'
+
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
 import CreateCategoryPage from '../add-category/page'
 import CreateProductPage from '../add-product/page'
@@ -15,12 +15,12 @@ import AllBooking from '../all-booking/page'
 import AllCategory from '../all-category/page'
 import AllProduct from '../all-product/page'
 import BarChart from '../chart/page'
+import ChatHost from '../chat-host/page'
 import { useCategory } from '../../../hooks/category' 
 import { useBooking } from '../../../hooks/booking' 
 import { useProduct } from '../../../hooks/product' // Import hook useProduct
 import { useAuth } from '@/hooks/auth'
 import React, { useState, useEffect } from 'react'
-
 const Dashboard = () => {
     const { user } = useAuth({ middleware: 'auth' })
     const { product } = useProduct() // Sử dụng hook useProduct để lấy danh sách sản phẩm
@@ -58,6 +58,7 @@ const Dashboard = () => {
     const [showAllProduct, setShowAllProduct] = useState(false)
     const [showBooking, setShowBooking] = useState(false)
     const [showChart, setShowChart] = useState(false)
+    const [showChatHost, setShowChatHost] = useState(false)
 
     const handleChartClick = () => {
         setShowCreateCategory(false);
@@ -65,6 +66,7 @@ const Dashboard = () => {
         setShowCreateProduct(false);
         setShowAllProduct(false);
         setShowBooking(false);
+        setShowChatHost(false);
         setShowChart(true)
     }
 
@@ -74,6 +76,8 @@ const Dashboard = () => {
         setShowCreateProduct(false);
         setShowAllProduct(false);
         setShowBooking(false);
+        setShowChatHost(false);
+
         setShowChart(false)
     }
 
@@ -83,6 +87,8 @@ const Dashboard = () => {
         setShowCreateProduct(false);
         setShowAllProduct(false);
         setShowBooking(false);
+        setShowChatHost(false);
+
         setShowChart(false)
     }
 
@@ -93,6 +99,8 @@ const Dashboard = () => {
         setShowAllProduct(false);
         setShowChart(false)
         setShowBooking(false);
+        setShowChatHost(false);
+
     }
 
     const handleAllProductClick = () => {
@@ -102,6 +110,8 @@ const Dashboard = () => {
         setShowCreateProduct(false);
         setShowAllProduct(true);
         setShowBooking(false);
+        setShowChatHost(false);
+
     }
 
     const handleBookingClick = () => {
@@ -111,6 +121,19 @@ const Dashboard = () => {
         setShowAllProduct(false);
         setShowBooking(true);
         setShowChart(false)
+        setShowChatHost(false);
+
+    }
+
+    const handleChatHostClick = () => {
+        setShowCreateCategory(false);
+        setShowAllCategory(false);
+        setShowCreateProduct(false);
+        setShowAllProduct(false);
+        setShowBooking(false);
+        setShowChart(false)
+        setShowChatHost(true);
+
     }
 
     const handleCategoryCreated = () => {
@@ -212,6 +235,21 @@ const Dashboard = () => {
                                     </span>
                                 </span>
                             </li>
+
+                            <li className="item">
+                                <span
+                                    onClick={handleChatHostClick}
+                                    className="flex items-center cursor-pointer">
+                                    <FontAwesomeIcon
+                                        icon={faMessage
+                                        }
+                                        className="times-icon"
+                                    />
+                                    <span className="ml-2">
+                                        Tin nhắn
+                                    </span>
+                                </span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -222,6 +260,7 @@ const Dashboard = () => {
                     {showAllCategory && <AllCategory />}
                     {showAllProduct && <AllProduct />}
                     {showChart && <BarChart />}
+                    {showChatHost && <ChatHost/>}
                 </div>
                 <div className="right-bar">
                     <div className="right-content">
@@ -250,12 +289,13 @@ const Dashboard = () => {
                         </div>
                         <div className="task-box green">
                             <div className="description-task">
-                                <div className="task-name"><FontAwesomeIcon
+                                <div className="task-name">
+                                <FontAwesomeIcon
                                 icon={faClipboardList}
                                 className="times-icon"
-                            /> {bookingCount}</div>
+                            />
+                            {bookingCount}</div>
                             </div>
-                            <div className="more-button"></div>
                         </div>
                     </div>
                 </div>

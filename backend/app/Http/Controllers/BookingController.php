@@ -1,15 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\BookingRequest;
+use App\Services\BookingService;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
+    protected $bookingService;
+
     public function showBookingForm() {
         return view('booking.create');
     }
+
+
+    public function __construct(BookingService $bookingService) {
+        $this->bookingService = $bookingService;
+    }
+
     public function store(Request $request) {
 
 
@@ -43,8 +52,14 @@ class BookingController extends Controller
 
     }
 
+
     public function index() {
         $bookings = Booking::all();
         return response()->json($bookings);
     }
 }
+
+
+
+
+

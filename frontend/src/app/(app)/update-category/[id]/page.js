@@ -80,7 +80,9 @@ const UpdateCategoryPage = (category) => {
             await updateCategoryById({
                 id: category.categoryId,
                 formData: formData,
-            })
+            }).then(() => {
+                router.push('/dashboard-host');
+            });
         } catch (error) {
             console.error('Error:', error)
             // Xử lý các lỗi và hiển thị thông báo lỗi nếu có

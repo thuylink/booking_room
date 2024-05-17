@@ -15,7 +15,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-
+import { useAuth } from '@/hooks/auth'
 
 const CreateProductPage = ({onProductCreated}) => {
     const router = useRouter()
@@ -24,6 +24,7 @@ const CreateProductPage = ({onProductCreated}) => {
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
     })
+    const {user} = useAuth();
     const { category, error, mutate } = useCategory()
     console.log('category của product', category)
 
@@ -39,6 +40,7 @@ const CreateProductPage = ({onProductCreated}) => {
     const [description, setDescription] = useState('')
 
     const [price, setPrice] = useState('')
+    const [id_owner, setIdOwner] = useState('')
     const [errors, setErrors] = useState([])
 
     const [isDeletingImage, setIsDeletingImage] = useState(false);
@@ -115,6 +117,7 @@ const CreateProductPage = ({onProductCreated}) => {
             formData.append('title', title);
             formData.append('description', description);
             formData.append('price', price);
+            formData.append('id_owner', user.id);
     
             // createProduct({
             //     formData,
@@ -138,7 +141,7 @@ const CreateProductPage = ({onProductCreated}) => {
     const handleImageChange = (event, setImageFunction) => {
         const selectedImages = Array.from(event.target.files)
         setImageFunction(prevImages => [...prevImages, ...selectedImages])
-
+    }
     const removeImage = (index, arrayName) => {
         if (arrayName === 'images') {
             // const updatedImages = [...images];
@@ -404,358 +407,5 @@ const CreateProductPage = ({onProductCreated}) => {
         </form>
     )
 }
-
 export default CreateProductPage
-// <div className="flex">
-//                 {/* Phần thứ nhất */}
-//                 <div className="part1">
-//                     <div className=" w-1/3 pr-2 ">
-//                         <div className="border rounded-lg p-4 w-full">
-//                             <div className="mt-4">
-//                                 <Label htmlFor="image">Hình ảnh:</Label>
-//                                 <div className="grid grid-cols-2 gap-4">
-//                                     {images.length > 0 &&
-//                                         images.map((image, index) => (
-//                                             <div
-//                                                 key={index}
-//                                                 className="w-32 h-32">
-//                                                 <Image
-//                                                     src={URL.createObjectURL(
-//                                                         image,
-//                                                     )}
-//                                                     layout="responsive"
-//                                                     width={200}
-//                                                     height={200}
-//                                                 />
-//                                             </div>
-//                                         ))}
-//                                 </div>
-//                                 <Input
-//                                     id="image"
-//                                     type="file"
-//                                     className="block w-full"
-//                                     onChange={event =>
-//                                         setImages([
-//                                             ...images,
-//                                             event.target.files[0],
-//                                         ])
-//                                     }
-//                                 />
-//                                 <InputError
-//                                     messages={errors.image}
-//                                     className="mt-2"
-//                                 />
-//                             </div>
 
-//                             <div className="mt-4">
-//                                 <Label htmlFor="image">Hình ảnh 360:</Label>
-//                                 <div className="grid grid-cols-2 gap-4">
-//                                     {image360s.length > 0 &&
-//                                         image360s.map((image360, index) => (
-//                                             <div
-//                                                 key={index}
-//                                                 className="w-32 h-32">
-//                                                 <Image
-//                                                     src={URL.createObjectURL(
-//                                                         image360,
-//                                                     )}
-//                                                     layout="responsive"
-//                                                     width={200}
-//                                                     height={200}
-//                                                 />
-//                                             </div>
-//                                         ))}
-//                                 </div>
-
-//                                 <Input
-//                                     id="image360"
-//                                     type="file"
-//                                     className="block w-full"
-//                                     onChange={event =>
-//                                         setImage360s([
-//                                             ...image360s,
-//                                             event.target.files[0],
-//                                         ])
-//                                     }
-//                                 />
-
-//                                 <InputError
-//                                     messages={errors.image}
-//                                     className="mt-2"
-//                                 />
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-
-//                 <div className="part2">
-//                     <div className="w-1/3 px-2">
-//                         <div className="border rounded-lg p-4 w-full">
-// <select
-//     id="id_category"
-//     value={id_category}
-//     className="block w-full"
-//     onChange={event => {
-//         const selectedId = event.target.value // Lấy giá trị id được chọn từ event
-//         setIdCategory(selectedId) // Cập nhật id_category
-//     }}
-//     required
-//     autoFocus>
-//     <option value="">Chọn kiểu kiến trúc</option>
-//     <option value="all">Tất cả các danh mục</option>
-//     {category &&
-//         category.length > 0 &&
-//         category[0].map((categoryItem, index) => (
-//             <option
-//                 key={categoryItem.id}
-//                 value={categoryItem.id} // Thiết lập giá trị value bằng id của danh mục
-//             >
-//                 {categoryItem.name_category}
-//             </option>
-//         ))}
-// </select>
-
-//                             <div className="mt-4">
-//                                 <Label htmlFor="privacy_type">
-//                                     Phạm vi sử dụng:
-//                                 </Label>
-//                                 <select
-//                                     id="privacy_type"
-//                                     value={selectedPrivacy}
-//                                     className="block w-full"
-//                                     onChange={handlePrivacyTypeChange}
-//                                     required
-//                                     autoFocus>
-//                                     <option value="">Chọn</option>
-//                                     {privacyOptions.map(option => (
-//                                         <option
-//                                             key={option.value}
-//                                             value={option.value}>
-//                                             {option.label}
-//                                         </option>
-//                                     ))}
-//                                 </select>
-//                                 <InputError
-//                                     messages={errors.privacy_type}
-//                                     className="mt-2"
-//                                 />
-//                             </div>
-
-//                             <div className="mt-4">
-//                                 <Label htmlFor="location">Địa chỉ:</Label>
-// <Input
-//     type="text"
-//     id="location"
-//     value={location}
-//     className="block w-full"
-//     onChange={event =>
-//         setLocation(event.target.value)
-//     }
-//     required
-//     autoFocus
-// />
-
-// <InputError
-//     messages={errors.location}
-//     className="mt-2"
-// />
-//                             </div>
-
-//                             <div className="mt-4">
-//                                 <Label htmlFor="capacity">Sức chứa:</Label>
-// <Input
-//     type="text"
-//     id="capacity"
-//     value={capacity}
-//     className="block w-full"
-//     onChange={event =>
-//         setCapacity(event.target.value)
-//     }
-//     required
-//     autoFocus
-// />
-
-// <InputError
-//     messages={errors.capacity}
-//     className="mt-2"
-// />
-//                             </div>
-
-//                             <div className="mt-4">
-//                                 <Label htmlFor="amenities">Tiện ích:</Label>
-
-//                                 <div className="mt-4">
-// <div className="amenities-column-left">
-//     {amenitiesOptions
-//         .slice(0, 11)
-//         .map(option => (
-//             <div key={option.id}>
-//                 <input
-//                     type="checkbox"
-//                     id={option.label}
-//                     value={option.label}
-//                     checked={selectedAmenities.includes(
-//                         option.label,
-//                     )}
-//                     onChange={
-//                         handleAmenitiesChange
-//                     }
-//                 />
-//                 <label
-//                     htmlFor={option.label}>
-//                     {option.label}
-//                 </label>
-//             </div>
-//         ))}
-// </div>
-// <div className="amenities-column-right">
-//     {amenitiesOptions
-//         .slice(11)
-//         .map(option => (
-//             <div key={option.id}>
-//                 <input
-//                     type="checkbox"
-//                     id={option.label}
-//                     value={option.label}
-//                     checked={selectedAmenities.includes(
-//                         option.label,
-//                     )}
-//                     onChange={
-//                         handleAmenitiesChange
-//                     }
-//                 />
-//                 <label
-//                     htmlFor={option.label}>
-//                     {option.label}
-//                 </label>
-//             </div>
-//         ))}
-// </div>
-//                                 </div>
-//                                 <InputError
-//                                     messages={errors.amenities}
-//                                     className="mt-2"
-//                                 />
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-
-//                 {/* Phần thứ ba */}
-//                 <div className="part3">
-//                     <div className="w-1/3 pl-2">
-//                         <div className="border rounded-lg p-4 w-full">
-//                             <div className="mt-4">
-//                                 <Label htmlFor="title">Tiêu đề:</Label>
-// <Input
-//     type="text"
-//     id="title"
-//     value={title}
-//     className="block w-full"
-//     onChange={event =>
-//         setTitle(event.target.value)
-//     }
-//     required
-//     autoFocus
-// />
-
-// <InputError
-//     messages={errors.title}
-//     className="mt-2"
-// />
-//                             </div>
-
-//                             <div className="mt-4">
-//                                 <label htmlFor="description">Mô tả:</label>
-// <CKEditor
-//     editor={ClassicEditor}
-//     data={description}
-//     onChange={(event, editor) => {
-//         const data = editor.getData()
-//         setDescription(data)
-//     }}
-//     required
-//     autoFocus
-// />
-// <InputError
-//     messages={errors.description}
-//     className="mt-2"
-// />
-//                             </div>
-
-//                             <div className="mt-4">
-//                                 <Label htmlFor="price">Chi phí:</Label>
-// <Input
-//     id="price"
-//     type="text"
-//     value={price}
-//     className="block w-full"
-//     onChange={event =>
-//         setPrice(event.target.value)
-//     }
-//     required
-// />
-
-// <InputError
-//     messages={errors.price}
-//     className="mt-2"
-// />
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-
-//             <div className="fly">
-//                 <Link
-//                     href="/dashboard-host"
-//                     className="underline text-sm text-gray-600 hover:text-gray-900">
-//                     Back
-//                 </Link>
-
-//                 <Button className="ml-4" color="pink">
-//                     Thêm mới nhà
-//                 </Button>
-//             </div>
-
-// <div className="amenities-column-left">
-//                             {amenitiesOptions.slice(0, 11).map(option => (
-//                                 <div key={option.id}>
-//                                     <input
-//                                         type="checkbox"
-//                                         id={option.label}
-//                                         value={option.label}
-//                                         checked={selectedAmenities.includes(
-//                                             option.label,
-//                                         )}
-//                                         onChange={handleAmenitiesChange}
-//                                     />
-//                                     <label htmlFor={option.label}>
-//                                         {option.label}
-//                                     </label>
-//                                 </div>
-//                             ))}
-//                         </div>
-//                         <div className="amenities-column-right">
-//                             {amenitiesOptions.slice(11).map(option => (
-//                                 <div key={option.id}>
-//                                     <input
-//                                         type="checkbox"
-//                                         id={option.label}
-//                                         value={option.label}
-//                                         checked={selectedAmenities.includes(
-//                                             option.label,
-//                                         )}
-//                                         onChange={handleAmenitiesChange}
-//                                     />
-//                                     <label htmlFor={option.label}>
-//                                         {option.label}
-//                                     </label>
-//                                 </div>
-//                             ))}
-//                         </div>
-
-//                         <InputError
-//                             messages={errors.amenities}
-//                             className="mt-2"
-//                         />
