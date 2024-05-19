@@ -64,7 +64,7 @@ const AllCategory = () => {
             {showDetailCategory && <CategoryDetailWithPannellum categoryId={selectedCategoryId} />}
             <Table aria-label="Example static collection table">
                 <TableHeader>
-                    <TableColumn>STT</TableColumn>
+                    <TableColumn className='stt'>STT</TableColumn>
                     <TableColumn>Tên</TableColumn>
                     <TableColumn>Ảnh</TableColumn>
                     <TableColumn>Trạng thái</TableColumn>
@@ -86,17 +86,10 @@ const AllCategory = () => {
                                     />
                                 ))}
                             </TableCell>
-                            <TableCell>
-                                {category.status === 1 ? (
-                                    <div className="status-button active">
-                                        <Button className="status-button-active">Hoạt động</Button>
-                                    </div>
-                                ) : (
-                                    <div className="status-button inactive">
-                                        <Button className="status-button-inactive">Không hoạt động</Button>
-                                    </div>
-                                )}
-                            </TableCell>
+                            <TableCell style={{ fontWeight: 'bold', color: category.status === 'Hoạt động' ? 'green' : 'red' }}>
+    {category.status}
+</TableCell>
+
                             <TableCell>
                                 <div>
                                     <Button className="ml-4 bg-pink-500" onClick={() => handleDetailCategoryClick(category.id)}>

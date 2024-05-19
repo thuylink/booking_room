@@ -34,14 +34,7 @@ const Login = () => {
         }
     }, [router.reset, errors]);
 
-    useEffect(() => {
-        const panorama = pannellum.viewer('panorama-container', {
-            type: 'equirectangular',
-            // panorama: 'C:/Users/PC/OneDrive/Pictures/căn hộ.jpg',
-            // Các tùy chọn khác của Pannellum
-        });
-    }, []);
-
+   
     const submitForm = async event => {
         event.preventDefault();
     
@@ -127,9 +120,6 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <div className="container__overlay">
-                        <div id="panorama-container" style={{ width: '100%', height: '500px' }}></div>
-                    </div>
                 </div>
             </form>
         </>

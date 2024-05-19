@@ -17,14 +17,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useAuth } from '@/hooks/auth'
 
-const CreateProductPage = ({onProductCreated}) => {
+const CreateProductPage = ({ onProductCreated }) => {
     const router = useRouter()
 
     const { createProduct } = useProduct({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
     })
-    const {user} = useAuth();
+    const { user } = useAuth()
     const { category, error, mutate } = useCategory()
     console.log('category của product', category)
 
@@ -43,8 +43,7 @@ const CreateProductPage = ({onProductCreated}) => {
     const [id_owner, setIdOwner] = useState('')
     const [errors, setErrors] = useState([])
 
-    const [isDeletingImage, setIsDeletingImage] = useState(false);
-
+    const [isDeletingImage, setIsDeletingImage] = useState(false)
 
     if (error) {
         return <div>{error}</div>
@@ -103,39 +102,31 @@ const CreateProductPage = ({onProductCreated}) => {
         }
     }
 
-    const submitForm = async (event) => {
-        event.preventDefault();
-        
-            const formData = new FormData();
-            formData.append('id_category', id_category);
-            formData.append('privacy_type', selectedPrivacy);
-            formData.append('location', location);
-            formData.append('capacity', capacity);
-            formData.append('amenities', selectedAmenities);
-            images.forEach(image => formData.append('image[]', image));
-            image360s.forEach(image360 => formData.append('image360[]', image360));
-            formData.append('title', title);
-            formData.append('description', description);
-            formData.append('price', price);
-            formData.append('id_owner', user.id);
-    
-            // createProduct({
-            //     formData,
-            //     setErrors,
-            // }).then(() => {
-            //     onProductCreated()
-            // });
+    const submitForm = async event => {
+        event.preventDefault()
 
-            try {
-                await createProduct({
-                    formData,
-                    setErrors,
-                })
-                // Gọi callback để báo cho Dashboard biết danh mục mới đã được tạo
-                onProductCreated()
-            } catch (error) {
-                console.error('Error creating product:', error)
-            }
+        const formData = new FormData()
+        formData.append('id_category', id_category)
+        formData.append('privacy_type', selectedPrivacy)
+        formData.append('location', location)
+        formData.append('capacity', capacity)
+        formData.append('amenities', selectedAmenities)
+        images.forEach(image => formData.append('image[]', image))
+        image360s.forEach(image360 => formData.append('image360[]', image360))
+        formData.append('title', title)
+        formData.append('description', description)
+        formData.append('price', price)
+        formData.append('id_owner', user.id)
+
+        try {
+            await createProduct({
+                formData,
+                setErrors,
+            })
+            onProductCreated()
+        } catch (error) {
+            console.error('Error creating product:', error)
+        }
     }
 
     const handleImageChange = (event, setImageFunction) => {
@@ -144,21 +135,11 @@ const CreateProductPage = ({onProductCreated}) => {
     }
     const removeImage = (index, arrayName) => {
         if (arrayName === 'images') {
-            // const updatedImages = [...images];
-            // updatedImages.splice(index, 1);
-            // setImages(updatedImages);
             setImages(images => images.filter((_, i) => i !== index))
         } else if (arrayName === 'image360s') {
-            // const updatedImage360s = [...image360s];
-            // updatedImage360s.splice(index, 1);
-            // setImage360s(updatedImage360s);
             setImage360s(image360s => image360s.filter((_, i) => i !== index))
         }
-    
-    };
-    
-    
-    
+    }
 
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
@@ -288,33 +269,48 @@ const CreateProductPage = ({onProductCreated}) => {
                         <InputError messages={errors.price} className="mt-2" />
 
                         <div className="mt-4">
-
                             <div className="mt-4 flex">
                                 <div className="amenitiesproduct-column-left w-1/2">
-                                    {amenitiesOptions.slice(0, 11).map(option => (
-                                        <div key={option.id} className="flex items-center">
-                                            <input
-                                                type="checkbox"
-                                                id={option.label}
-                                                value={option.label}
-                                                checked={selectedAmenities.includes(option.label)}
-                                                onChange={handleAmenitiesChange}
-                                            />
-                                            <label htmlFor={option.label}>{option.label}</label>
-                                        </div>
-                                    ))}
+                                    {amenitiesOptions
+                                        .slice(0, 11)
+                                        .map(option => (
+                                            <div
+                                                key={option.id}
+                                                className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    id={option.label}
+                                                    value={option.label}
+                                                    checked={selectedAmenities.includes(
+                                                        option.label,
+                                                    )}
+                                                    onChange={
+                                                        handleAmenitiesChange
+                                                    }
+                                                />
+                                                <label htmlFor={option.label}>
+                                                    {option.label}
+                                                </label>
+                                            </div>
+                                        ))}
                                 </div>
                                 <div className="amenitiesproduct-column-right w-1/2">
                                     {amenitiesOptions.slice(11).map(option => (
-                                        <div key={option.id} className="flex items-center">
+                                        <div
+                                            key={option.id}
+                                            className="flex items-center">
                                             <input
                                                 type="checkbox"
                                                 id={option.label}
                                                 value={option.label}
-                                                checked={selectedAmenities.includes(option.label)}
+                                                checked={selectedAmenities.includes(
+                                                    option.label,
+                                                )}
                                                 onChange={handleAmenitiesChange}
                                             />
-                                            <label htmlFor={option.label}>{option.label}</label>
+                                            <label htmlFor={option.label}>
+                                                {option.label}
+                                            </label>
                                         </div>
                                     ))}
                                 </div>
@@ -329,83 +325,83 @@ const CreateProductPage = ({onProductCreated}) => {
                 </div>
 
                 <div className="containerproduct__overlay">
-    <div className="mt-4">
-        <Label htmlFor="image">Hình ảnh:</Label>
-        {images.length > 0 &&
-            images.map((image, index) => (
-                <div key={index} className="w-64 h-64">
-                    <div className="relative">
-                        <Image
-                            src={URL.createObjectURL(image)}
-                            layout="responsive"
-                            width={400}
-                            height={400}
+                    <div className="mt-4">
+                        <Label htmlFor="image">Hình ảnh:</Label>
+                        {images.length > 0 &&
+                            images.map((image, index) => (
+                                <div key={index} className="w-64 h-64">
+                                    <div className="relative">
+                                        <Image
+                                            src={URL.createObjectURL(image)}
+                                            layout="responsive"
+                                            width={400}
+                                            height={400}
+                                        />
+                                        <button
+                                            className="absolute top-2 right-2"
+                                            onClick={() =>
+                                                removeImage(index, 'images')
+                                            }>
+                                            <FontAwesomeIcon icon={faTimes} />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+
+                        <Input
+                            id="image"
+                            type="file"
+                            className="block w-full"
+                            multiple
+                            onChange={event =>
+                                handleImageChange(event, setImages)
+                            }
                         />
-                        <button
-                            className="absolute top-2 right-2"
-                            onClick={() =>
-                                removeImage(index, 'images')
-                            }>
-                            <FontAwesomeIcon icon={faTimes} />
-                        </button>
+
+                        <InputError messages={errors.image} className="mt-2" />
                     </div>
-                </div>
-            ))}
 
-            <Input
-            id="image"
-            type="file"
-            className="block w-full"
-            multiple
-            onChange={event => handleImageChange(event, setImages)}
-
-        />
-
-        <InputError messages={errors.image} className="mt-2" />
-    </div>
-
-    <div className="mt-4">
-        <Label htmlFor="image360">Hình ảnh 360:</Label>
-        {image360s.length > 0 &&
-            image360s.map((image360, index) => (
-                <div key={index} className="w-64 h-64">
-                    <div className="relative">
-                        <Image
-                            src={URL.createObjectURL(image360)}
-                            layout="responsive"
-                            width={200}
-                            height={200}
-                        />
-                        <button
-                            className="absolute top-2 right-2"
-                            onClick={() =>
+                    <div className="mt-4">
+                        <Label htmlFor="image360">Hình ảnh 360:</Label>
+                        {image360s.length > 0 &&
+                            image360s.map((image360, index) => (
+                                <div key={index} className="w-64 h-64">
+                                    <div className="relative">
+                                        <Image
+                                            src={URL.createObjectURL(image360)}
+                                            layout="responsive"
+                                            width={200}
+                                            height={200}
+                                        />
+                                        <button
+                                            className="absolute top-2 right-2"
+                                            onClick={() =>
                                                 removeImage(index, 'image360s')
                                             }>
-                            <FontAwesomeIcon icon={faTimes} />
-                        </button>
+                                            <FontAwesomeIcon icon={faTimes} />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+
+                        <Input
+                            id="image360"
+                            type="file"
+                            className="block w-full"
+                            multiple
+                            onChange={event =>
+                                handleImageChange(event, setImage360s)
+                            }
+                        />
+
+                        <InputError messages={errors.image} className="mt-2" />
                     </div>
                 </div>
-            ))}
-
-
-            <Input
-            id="image360"
-            type="file"
-            className="block w-full"
-            multiple
-            onChange={event => handleImageChange(event, setImage360s)}
-        />
-
-        <InputError messages={errors.image} className="mt-2" />
-    </div>
-</div>
-<div className="button">
-                <Button className="btnproduct">Tạo mới nhà </Button>
+                <div className="button">
+                    <Button className="btnproduct">Tạo mới nhà </Button>
+                </div>
             </div>
-            </div>
-            
         </form>
     )
 }
 export default CreateProductPage
-

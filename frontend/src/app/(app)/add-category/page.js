@@ -25,15 +25,25 @@ const CreateCategoryPage = ({ onCategoryCreated }) => {
     const [image360s, setImage360s] = useState([])
     const [status, setStatus] = useState('')
     const [errors, setErrors] = useState([])
+    const [selectedStatus, setSelectedStatus] = useState('')
 
-    const submitForm = async (event) => {
+    const statusOptions = [
+        { value: 'Hoạt động', label: 'Hoạt động' },
+        { value: 'Không hoạt động', label: 'Không hoạt động' },
+    ]
+
+    const handleStatusChange = event => {
+        setSelectedStatus(event.target.value)
+    }
+
+    const submitForm = async event => {
         event.preventDefault()
 
         const formData = new FormData()
         formData.append('name_category', name_category)
         images.forEach(image => formData.append('image[]', image))
         image360s.forEach(image360 => formData.append('image360[]', image360))
-        formData.append('status', status)
+        formData.append('status', selectedStatus)
 
         try {
             await createCategory({
@@ -75,23 +85,32 @@ const CreateCategoryPage = ({ onCategoryCreated }) => {
                             value={name_category}
                             placeholder="Tên danh mục"
                             className="input2"
-                            onChange={event => setNameCategory(event.target.value)}
+                            onChange={event =>
+                                setNameCategory(event.target.value)
+                            }
                             required
                             autoFocus
                         />
                         <InputError messages={errors.name} className="mt-2" />
 
-                        <Input
-                            type="text"
+                        <select
                             id="status"
-                            value={status}
-                            className="input2"
-                            placeholder="Trạng thái"
-                            onChange={event => setStatus(event.target.value)}
+                            value={selectedStatus}
+                            className="input"
+                            onChange={handleStatusChange}
                             required
-                            autoFocus
+                            autoFocus>
+                            <option value="">Trạng thái</option>
+                            {statusOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                        <InputError
+                            messages={errors.status}
+                            className="mt-2"
                         />
-                        <InputError messages={errors.address} className="mt-2" />
                     </div>
                 </div>
 
@@ -111,7 +130,9 @@ const CreateCategoryPage = ({ onCategoryCreated }) => {
                                         <button
                                             type="button"
                                             className="absolute top-2 right-2"
-                                            onClick={() => removeImage(index, 'images')}>
+                                            onClick={() =>
+                                                removeImage(index, 'images')
+                                            }>
                                             <FontAwesomeIcon icon={faTimes} />
                                         </button>
                                     </div>
@@ -123,7 +144,9 @@ const CreateCategoryPage = ({ onCategoryCreated }) => {
                             type="file"
                             className="block w-full"
                             multiple
-                            onChange={event => handleImageChange(event, setImages)}
+                            onChange={event =>
+                                handleImageChange(event, setImages)
+                            }
                         />
 
                         <InputError messages={errors.image} className="mt-2" />
@@ -144,7 +167,9 @@ const CreateCategoryPage = ({ onCategoryCreated }) => {
                                         <button
                                             type="button"
                                             className="absolute top-2 right-2"
-                                            onClick={() => removeImage(index, 'image360s')}>
+                                            onClick={() =>
+                                                removeImage(index, 'image360s')
+                                            }>
                                             <FontAwesomeIcon icon={faTimes} />
                                         </button>
                                     </div>
@@ -156,7 +181,9 @@ const CreateCategoryPage = ({ onCategoryCreated }) => {
                             type="file"
                             className="block w-full"
                             multiple
-                            onChange={event => handleImageChange(event, setImage360s)}
+                            onChange={event =>
+                                handleImageChange(event, setImage360s)
+                            }
                         />
 
                         <InputError messages={errors.image} className="mt-2" />

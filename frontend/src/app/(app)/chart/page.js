@@ -3,13 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useProduct } from '../../../hooks/product';
 import Chart from 'chart.js/auto';
 import './chart.css';
-import { useCategory } from '../../../hooks/category'
+import { useCategory } from '../../../hooks/category';
 
 const BarChart = () => {
     const { product } = useProduct();
     const [topProducts, setTopProducts] = useState([]);
     const [topCategories, setTopCategories] = useState([]);
-    const { category } = useCategory()
+    const { category } = useCategory();
 
     const productChartRef = useRef(null);
     const productChartInstance = useRef(null);
@@ -54,7 +54,7 @@ const BarChart = () => {
                     labels: data.map(product => product.title),
                     datasets: [{
                         label: 'Lượt xem',
-                        data: data.map(product => product.view_count/2),
+                        data: data.map(product => product.view_count / 2),
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
@@ -79,7 +79,7 @@ const BarChart = () => {
         if (categoryChartRef.current) {
             // Extracting category names from the data array
             const categoryNames = data.map(item => item[0]);
-    
+
             categoryChartInstance.current = new Chart(categoryChartRef.current, {
                 type: 'pie',
                 data: {
@@ -111,47 +111,44 @@ const BarChart = () => {
         }
     };
 
-    // Step 1: Ensure each product has its name_category
-if (product && product.length > 0) {
-    const updatedProducts = product.map(test => {
-        if (category && category.length > 0) {
-            const foundCategory = category[0].find(item => item.id === test.id_category);
-            if (foundCategory) {
-                test.name_category = foundCategory.name_category;
+    if (product && product.length > 0) {
+        const updatedProducts = product.map(test => {
+            if (category && category.length > 0) {
+                const foundCategory = category[0].find(item => item.id === test.id_category);
+                if (foundCategory) {
+                    test.name_category = foundCategory.name_category;
+                }
             }
-        }
-        return test;
-    });
+            return test;
+        });
 
-    // Step 2: Aggregate products by name_category
-    const categoryCount = updatedProducts.reduce((acc, curr) => {
-        const categoryName = curr.name_category || 'Unknown Category';
-        if (!acc[categoryName]) {
-            acc[categoryName] = 0;
-        }
-        acc[categoryName]++;
-        return acc;
-    }, {});
+        const categoryCount = updatedProducts.reduce((acc, curr) => {
+            const categoryName = curr.name_category || 'Unknown Category';
+            if (!acc[categoryName]) {
+                acc[categoryName] = 0;
+            }
+            acc[categoryName]++;
+            return acc;
+        }, {});
 
- const sortedCategoryCount = Object.entries(categoryCount)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10);
-    // Step 3: Pass aggregated data to drawCategoryPieChart function
-    drawCategoryPieChart(sortedCategoryCount);
-}
-    
-    
+        const sortedCategoryCount = Object.entries(categoryCount)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10);
+
+        drawCategoryPieChart(sortedCategoryCount);
+    }
 
     return (
         <div className="chart-container">
             <h1 className="view">Các sản phẩm được xem nhiều nhất</h1>
-            <div className="chart-wrapper">
-                <canvas ref={productChartRef}></canvas>
-            </div>
-
             <h1 className="view">Top 10 danh mục có nhiều sản phẩm nhất</h1>
-            <div className="piechart-wrapper">
-                <canvas ref={categoryChartRef}></canvas>
+            <div className="charts-wrapper">
+                <div className="chart-wrapper">
+                    <canvas ref={productChartRef}></canvas>
+                </div>
+                <div className="piechart-wrapper">
+                    <canvas ref={categoryChartRef}></canvas>
+                </div>
             </div>
         </div>
     );

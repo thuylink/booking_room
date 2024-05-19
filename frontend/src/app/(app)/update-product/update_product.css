@@ -50,50 +50,50 @@ body {
     margin-left: -4%;
 }
 
-.container {
+.containerupdateproduct {
     background-color: var(--white);
     border-radius: var(--button-radius);
     box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25), 0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
     overflow: hidden;
     position: relative;
-    width: 188%;
-    margin-left: -44%;
-    height: 526px;
-    margin-top: 3%;
+    width: 208%;
+    margin-left: -53%;
+    height: 504px;
+    margin-top: 0%;
 }
 
-.container__form {
+.containerupdateproduct__form {
 	height: 100%;
 	position: absolute;
 	top: 0;
 	transition: all 0.6s ease-in-out;
 }
 
-.container--signin {
+.containerupdateproduct--signin {
 	left: 0;
 	width: 50%;
 	z-index: 2;
 }
 
-.container.right-panel-active .container--signin {
+.containerupdateproduct.right-panel-active .containerupdateproduct--signin {
 	transform: translateX(100%);
 }
 
-.container--signup {
+.containerupdateproduct--signup {
 	left: 0;
 	opacity: 0;
 	width: 50%;
 	z-index: 1;
 }
 
-.container.right-panel-active .container--signup {
+.containerupdateproduct.right-panel-active .containerupdateproduct--signup {
 	animation: show 0.6s;
 	opacity: 1;
 	transform: translateX(100%);
 	z-index: 5;
 }
 
-.container__overlay {
+.containerupdateproduct__overlay {
 	height: 100%;
 	left: 50%;
 	overflow: hidden;
@@ -103,13 +103,13 @@ body {
 	width: 50%;
 	z-index: 100;
 }
-.container__overlay {
+.containerupdateproduct__overlay {
     max-height: 400px; /* hoặc bất kỳ giá trị nào phù hợp */
     overflow-y: auto;
 }
 
 
-.container.right-panel-active .container__overlay {
+.containerupdateproduct.right-panel-active .containerupdateproduct__overlay {
 	transform: translateX(-100%);
 }
 
@@ -129,7 +129,7 @@ body {
     position:relative;
 }
 
-.container.right-panel-active .overlay {
+.containerupdateproduct.right-panel-active .overlay {
 	transform: translateX(50%);
 }
 
@@ -151,7 +151,7 @@ body {
 	transform: translateX(-20%);
 }
 
-.container.right-panel-active .overlay--left {
+.containerupdateproduct.right-panel-active .overlay--left {
 	transform: translateX(0);
 }
 
@@ -160,11 +160,11 @@ body {
 	transform: translateX(0);
 }
 
-.container.right-panel-active .overlay--right {
+.containerupdateproduct.right-panel-active .overlay--right {
 	transform: translateX(20%);
 }
 
-.btn {
+.btnupdateproduct {
     background-color: white;
     border-radius: 20px;
     border: 1px solid #f8585c;
@@ -173,8 +173,8 @@ body {
     font-size: 0.8rem;
     margin-left: -10%;
     font-weight: bold;
-    width: 156px;
-    margin-top: 226%;
+    width: 163px;
+    margin-top: 210%;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
     position: relative;
@@ -281,7 +281,7 @@ body {
     margin-top: 0.5%;
 }
 
-.amenities-container {
+.amenities-containerupdateproduct {
     display: flex;
     margin-left: -6%;
     text-align: left;

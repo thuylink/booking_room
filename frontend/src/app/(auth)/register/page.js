@@ -43,9 +43,9 @@ const Page = () => {
             <div class="container right-panel-active">
                 <div class="container__form container--signup">
                     <div class="form">
-                        <h1 className="head">Đăng ký cho chủ nhà</h1>
+                        <h1 className="head">Đăng ký cho khách thuê</h1>
 
-                        <div>
+                        <div className="mtregisterhost-4">
                             <Input
                                 id="name"
                                 type="text"
@@ -63,7 +63,7 @@ const Page = () => {
                             />
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mtregisterhost-4">
 
                             <Input
                                 id="email"
@@ -81,7 +81,7 @@ const Page = () => {
                             />
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mtregisterhost-4">
 
                             <Input
                                 id="password"
@@ -102,7 +102,7 @@ const Page = () => {
                             />
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mtregisterhost-4">
 
                             <Input
                                 id="passwordConfirmation"
@@ -134,11 +134,7 @@ const Page = () => {
                     </div>
                 </div>
 
-                <div className="container__overlay">
-                    <div
-                        id="panorama-container"
-                        style={{ width: '100%', height: '500px' }}></div>
-                </div>
+               
             </div>
         </form>
     )

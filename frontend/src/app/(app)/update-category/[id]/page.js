@@ -24,10 +24,19 @@ const UpdateCategoryPage = (category) => {
     const [name_category, setNameCategory] = useState('')
     const [images, setImages] = useState([])
     const [image360s, setImage360s] = useState([])
-    const [status, setStatus] = useState('')
+    const [selectedStatus, setSelectedStatus] = useState('')
     const [errors, setErrors] = useState([])
 
     const [tempNameCategory, setTempNameCategory] = useState('')
+
+    const statusOptions = [
+        { value: 'Hoạt động', label: 'Hoạt động' },
+        { value: 'Không hoạt động', label: 'Không hoạt động' },
+    ]
+
+    const handleStatusChange = event => {
+        setSelectedStatus(event.target.value)
+    }
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -58,12 +67,10 @@ const UpdateCategoryPage = (category) => {
     const submitForm = async event => {
         event.preventDefault()
 
-        // Tạo formData để gửi lên server
         const formData = new FormData()
         formData.append('name_category', name_category)
-        formData.append('status', status)
+        formData.append('status', selectedStatus)
 
-        // Thêm các ảnh vào formData
         if (images && images.length > 0) {
             images.forEach(image => {
                 formData.append('image[]', image)
@@ -151,16 +158,20 @@ const UpdateCategoryPage = (category) => {
                             className="mt-2"
                         />
 
-                        <Input
-                            type="text"
+                        <select
                             id="status"
-                            value={status}
+                            value={selectedStatus}
                             className="input"
-                            onChange={event => setStatus(event.target.value)}
+                            onChange={handleStatusChange}
                             required
-                            autoFocus
-                        />
-
+                            autoFocus>
+                            <option value="">Trạng thái</option>
+                            {statusOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
                         <InputError
                             messages={errors.status}
                             className="mt-2"

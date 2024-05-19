@@ -68,6 +68,7 @@ export const ProductDetailWithPannellum = () => {
     const { addRating } = useRating()
     const { rating } = useRating()
     const { booking } = useBooking()
+    const [showBookingAlert, setShowBookingAlert] = useState(false); // State để kiểm soát việc hiển thị thông báo
 
     const [startDate, setStartDate] = useState(new Date())
     const [endDate, setEndDate] = useState(null)
@@ -273,17 +274,32 @@ export const ProductDetailWithPannellum = () => {
 
     const handleSubmit = async () => {
         try {
-            const booked = isBooked()
-            if (!booked) {
-                throw new Error('Bạn phải đặt phòng trước khi đánh giá.')
-            }
-            await addRating(id, user.id, ratings, comment)
-            console.log('Đánh giá thành công')
-            setErrorMessage('')
+          const booked = isBooked();
+          if (!booked) {
+            setShowBookingAlert(true);
+            setTimeout(() => {
+              setShowBookingAlert(false);
+            }, 1000);
+            return;
+          }
+          await addRating(id, user.id, ratings, comment);
+          console.log('Đánh giá thành công');
         } catch (error) {
-            console.error('Lỗi khi gửi đánh giá:', error)
+          console.error('Lỗi khi gửi đánh giá:', error);
         }
-    }
+      };
+
+    const BookingAlert = ({ show, setShow }) => {
+        if (!show) return null;
+      
+        return (
+          <div className="booking-alert">
+            <div className="booking-alert-content">
+              <p>Bạn cần đặt phòng trước khi đánh giá.</p>
+            </div>
+          </div>
+        );
+      };
 
     const handleSubmitChat = async () => {
         try {
@@ -358,6 +374,90 @@ export const ProductDetailWithPannellum = () => {
     }
     console.log('hia hia id_ownerđayyyy', product2.id_owner)
 
+    const findProfile = () => {
+    let profileContent = null; // Khởi tạo biến để chứa nội dung template
+
+    if (allProfile && allProfile.length > 0) {
+        const found = allProfile[0].find(item => item.id_user === product2.id_owner);
+        if (found) {
+            product2.id_owner = found.id_user;
+            console.log('gender', found.gender)
+            // Tạo nội dung template
+            profileContent = (
+                <div id="book-section">
+                    <div className="container bootdey flex-grow-1 container-p-y">
+                        <div className="bg-white p-4">
+                            <div className="infor">
+                                <div className="media align-items-center py-3 mb-3">
+                                    <img
+                                    src={`http://127.0.0.1:8000/uploads/avt/${found.image}`}
+                                    alt=""
+                                        className="d-block ui-w-100 rounded-circle"
+                                    />
+
+                                      
+                                    <div className="media-body contact2">
+                                        <div className="mail">
+                                        <div className="card-body">
+                                        <table className="table1 user-view-table m-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Tên:</td>
+                                                    <td>
+                                                        <span className="fa fa-check text-primary"></span>
+                                                        &nbsp; {found.name}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Giới tính:</td>
+                                                    <td>{found.gender}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ngày sinh:</td>
+                                                    <td>
+                                                        {found.birthday}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td> Điên thoại:</td>
+                                                    <td>
+                                                        {found.phone}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Địa chỉ:</td>
+                                                    <td>{found.address}</td>
+                                                </tr>
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="card mb-4">
+                                    
+                                    <div className="border-light m-0"></div>
+                                    <div className="table-responsive"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        } else {
+            console.log('Không tìm thấy profile với id tương ứng');
+        }
+    }
+    return profileContent; // Trả về nội dung template
+};
+
+// Gọi hàm để lấy nội dung template
+const profileContent = findProfile();
+
+
+
     if (rating && rating.length > 0) {
         rating.forEach(item => {
             const found = users.find(item2 => item2.id === item.id_user)
@@ -429,7 +529,7 @@ export const ProductDetailWithPannellum = () => {
                                 className="page-content page-containerchat"
                                 id="page-content">
                                 <div class="container d-flex justify-content-center">
-                                    <div class="card mt-5">
+                                    <div class="cardnhantin mt-5">
                                         <div class="d-flex flex-row justify-content-between p-3 adiv text-white">
                                             <i class="fas fa-chevron-left"></i>
                                             <span class="pb-3">
@@ -437,15 +537,16 @@ export const ProductDetailWithPannellum = () => {
                                             </span>
                                             <i class="fas fa-times"></i>
                                         </div>
+                                        <div className="chat-container" style={{ maxHeight: "300px", overflowY: "auto" }}>
                                         {chatting.map((chat, index) => (
-                                            <div
-                                                key={index}
-                                                className="d-flex flex-row p-3">
+                                            <div key={index} className="d-flex flex-row p-3">
                                                 <div className="chat ml-2 p-3">
                                                     {chat.content}
                                                 </div>
                                             </div>
                                         ))}
+                                    </div>
+                                    
 
                                         <div class="d-flex flex-row p-3">
                                             <div class="myvideo ml-2"></div>
@@ -460,20 +561,26 @@ export const ProductDetailWithPannellum = () => {
                                                 onChange={
                                                     handleContentChange
                                                 }></textarea>
-                                        </div>
-                                        <div className="form-group px-3">
-                                            <div className="button-container">
-                                                <button
-                                                    className="send-btn"
-                                                    onClick={handleSubmitChat}>
-                                                    Gửi
-                                                </button>
-                                                <button className="close-btn"                                               
-                                                onClick={handleCloseChat}>
-                                                    Đóng
-                                                </button>
+                                                <div className="form-group px-3">
+                                                <div className="button-container">
+                                                    <button
+                                                        className="send-btn"
+                                                        onClick={handleSubmitChat}>
+                                                        Gửi
+                                                    </button>
+                                                    <button className="close-btn"                                               
+                                                    onClick={handleCloseChat}>
+                                                        Đóng
+                                                    </button>
+                                                </div>
                                             </div>
+                                            <div class="tromeo">
+                                            <i class="fas fa-chevron-left"></i>
+                                           <p class='tromeotext'>_ </p>
+                                            <i class="fas fa-times"></i>
                                         </div>
+                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -1097,85 +1204,7 @@ export const ProductDetailWithPannellum = () => {
                                 </div>
                             </div>
 
-                            <div class="container bootdey flex-grow-1 container-p-y">
-                                <div class="bg-white p-4 ">
-                                    <div class="infor">
-                                        <div class="media align-items-center py-3 mb-3">
-                                            <img
-                                                src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                                alt=""
-                                                class="d-block ui-w-100 rounded-circle"
-                                            />
-                                            <div class="media-body contact2">
-                                                <div className="mail">
-                                                    <h4 class="font-weight-bold mb-0">
-                                                        John Doe{' '}
-                                                        <span class="text-muted font-weight-normal">
-                                                            @johndoe
-                                                        </span>
-                                                    </h4>
-                                                    <div class="text-muted mb-2">
-                                                        ID: 3425433
-                                                    </div>
-                                                    <a
-                                                        href="javascript:void(0)"
-                                                        class="btn btn-default btn-sm icon-btn">
-                                                        <i class="fa fa-mail"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="card mb-4">
-                                            <div class="card-body">
-                                                <table class="table1 user-view-table m-0">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Tên:</td>
-                                                            <td>
-                                                                <span class="fa fa-check text-primary"></span>
-                                                                &nbsp; Yes
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Tham gia:</td>
-                                                            <td>01/23/2017</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Ngày sinh:</td>
-                                                            <td>
-                                                                01/23/2018 (14
-                                                                days ago)
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Giới tính:</td>
-                                                            <td>
-                                                                01/23/2018 (14
-                                                                days ago)
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Điện thoại:</td>
-                                                            <td>1234567890</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Địa chỉ:</td>
-                                                            <td>
-                                                                <span class="badge badge-outline-success">
-                                                                    huhuhuhu
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="border-light m-0"></div>
-                                            <div class="table-responsive"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {profileContent}
                         </div>
 
                         <div id="rate-section">
@@ -1207,47 +1236,29 @@ export const ProductDetailWithPannellum = () => {
                                                                                                 <div className="d-flex justify-content-between align-items-center">
                                                                                                     <div className="user d-flex flex-row align-items-center">
                                                                                                         <span>
-                                                                                                            <small class="font-weight-bold text-primary">
-                                                                                                                {
-                                                                                                                    rating.name
-                                                                                                                }
+                                                                                                        {rating.image && (
+                                                                                                            <small class="font-weight-bold text-primary mr-2">
+                                                                                                                <img
+                                                                                                                    src={`http://127.0.0.1:8000/uploads/avt/${rating.image}`}
+                                                                                                                    alt="Avatar"
+                                                                                                                    className="avatar"
+                                                                                                                />
                                                                                                             </small>
-
-                                                                                                            <small class="font-weight-bold text-primary">
-                                                                                                                {rating.image && ( // Kiểm tra xem ảnh có tồn tại không
-                                                                                                                    <img
-                                                                                                                        src={`http://127.0.0.1:8000/uploads/avt/${rating.image}`}
-                                                                                                                        // src={rating.image} // Đường dẫn hoặc URL của ảnh
-                                                                                                                        alt="Avatar"
-                                                                                                                        className="avatar mr-2"
+                                                                                                        )}
+                                                                                                        <div class="nganghangavt">
+                                                                                                            <div class="mr-2">
+                                                                                                                {Array.from({ length: rating.star }, (_, i) => (
+                                                                                                                    <FontAwesomeIcon
+                                                                                                                        icon={faStar}
+                                                                                                                        key={i}
+                                                                                                                        className="text-pink-500"
                                                                                                                     />
-                                                                                                                )}
+                                                                                                                ))}
+                                                                                                            </div>
+                                                                                                            <small class="font-weight-bold text-primary">
+                                                                                                                {rating.name}
                                                                                                             </small>
-
-                                                                                                            <small className="d-flex align-items-center">
-                                                                                                                <div>
-                                                                                                                    {Array.from(
-                                                                                                                        {
-                                                                                                                            length:
-                                                                                                                                rating.star,
-                                                                                                                        },
-                                                                                                                        (
-                                                                                                                            _,
-                                                                                                                            i,
-                                                                                                                        ) => (
-                                                                                                                            <FontAwesomeIcon
-                                                                                                                                icon={
-                                                                                                                                    faStar
-                                                                                                                                }
-                                                                                                                                key={
-                                                                                                                                    i
-                                                                                                                                }
-                                                                                                                                className="text-pink-500"
-                                                                                                                            />
-                                                                                                                        ),
-                                                                                                                    )}
-                                                                                                                </div>
-                                                                                                            </small>
+                                                                                                        </div>
                                                                                                             <small className="font-weight-bold">
                                                                                                                 {
                                                                                                                     rating.cmt
@@ -1331,32 +1342,31 @@ export const ProductDetailWithPannellum = () => {
                                                                         ),
                                                                     )}
                                                                 </div>
-                                                                <div className="comment-area">
-                                                                    <textarea
-                                                                        className="my-view"
-                                                                        placeholder="Viết phản hồi sau khi trải nghiệm nơi ở của bạn ... "
-                                                                        rows="4"
-                                                                        value={
-                                                                            comment
-                                                                        }
-                                                                        onChange={
-                                                                            handleCommentChange
-                                                                        }></textarea>
-                                                                </div>
-                                                                <div className="comment-btns mt-2">
-                                                                    <div className="mt-6 flex gap-6">
-                                                                        <Button
-                                                                            className="custom-button"
-                                                                            onClick={
-                                                                                handleSubmit
-                                                                            }>
-                                                                            <span className="button-text">
-                                                                                Đánh
-                                                                                giá
-                                                                            </span>
-                                                                        </Button>
-                                                                    </div>
-                                                                </div>
+
+                                                                <div>
+      <div className="comment-area">
+        <BookingAlert show={showBookingAlert} setShow={setShowBookingAlert} />
+        <textarea
+          className="my-view"
+          placeholder="Viết phản hồi sau khi trải nghiệm nơi ở của bạn ..."
+          rows="4"
+          value={comment}
+          onChange={handleCommentChange}></textarea>
+      </div>
+      <div className="comment-btns mt-2">
+        <div className="mt-6 flex gap-6">
+          <Button className="custom-button" onClick={handleSubmit}>
+            <span className="button-text">Đánh giá</span>
+          </Button>
+        </div>
+      </div>
+      {showBookingAlert && (
+        <div className="modal">
+          <BookingAlert show={showBookingAlert} setShow={setShowBookingAlert} />
+        </div>
+      )}
+    </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1367,6 +1377,7 @@ export const ProductDetailWithPannellum = () => {
                                 </div>
                             </div>
                         </div>
+                        
 
                         <div id="heading-section" className="class1">
                             <div className="number-star">
@@ -1640,6 +1651,7 @@ export const ProductDetailWithPannellum = () => {
                     </CardBody>
                 </Card>
             </div>
+            
         </div>
     )
 }

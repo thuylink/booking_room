@@ -23,7 +23,7 @@ class CategoryRequest extends FormRequest
     {
         return [
                 'name_category' => 'required|string',
-                'status' => 'required|integer',
+                'status' => 'required|string',
                 'image' => 'nullable|array',
                 'image.*' => 'nullable|image',
                 'image360' => 'nullable|array',

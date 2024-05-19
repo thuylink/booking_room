@@ -94,7 +94,8 @@
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 96px;
+  margin-top: 13%;
+  margin-left: 122px;
 }
 
 .heart-icon {
@@ -170,7 +171,7 @@ body{
 }
 
 .ui-w-100 {
-  width: 100px !important;
+  width: 169px !important;
   height: auto;
 }
 
@@ -210,7 +211,6 @@ body{
   border: 2px solid dodgerblue;
   border-radius: 10px;
   padding: 10px 20px;
-  // display: inline-flex;
   align-items: center;
   cursor: pointer;
   margin-left: 10px;
@@ -231,10 +231,15 @@ body{
 }
 
 .mail {
-  margin-left: 59px;
-  margin-top: -70px;
+  margin-left: 157px;
+  margin-top: -164px;
 }
-
+.cardnhantin {
+  width: 315px;
+  border: none;
+  margin-top: 25px;
+  border-radius: 15px;
+}
 .cmt {
   background-color: white;
   border: 2px solid dodgerblue;
@@ -243,9 +248,16 @@ body{
   cursor: pointer;
   margin-left: 477px;
   width: 756px;
-  margin-top: -66.6%;
-  height: 814px;
+  margin-top: -59.6%;
+  height: 726px;
 }
+.user-view-table td {
+  padding-right: 0;
+  padding-left: 21px;
+  border: 0;
+  width: 56%;
+}
+
 
 .user-img{
 
@@ -314,17 +326,25 @@ body{
   float: left;
 }
 .avatar {
-  width: 50px; /* Độ rộng của ảnh */
-  height: 50px; /* Độ cao của ảnh */
-  border-radius: 50%; /* Bo tròn viền ảnh để tạo hình dáng tròn */
-  object-fit: cover; /* Chế độ hiển thị của ảnh, có thể thay đổi tùy theo yêu cầu */
-  margin-right: 10px; /* Khoảng cách giữa ảnh và nội dung khác */
+  width: 50px; 
+  height: 50px;
+  border-radius: 50%; 
+  margin-right: 10px; 
 }
 
 .rating-item {
-  margin-bottom: 20px; /* Khoảng cách giữa các bình luận */
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn chỉnh các phần tử theo chiều dọc */
 }
 
+.nganghangavt {
+  margin-left: 9%;
+  margin-top: -10%;
+}
+.rating-info {
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn chỉnh các phần tử theo chiều dọc */
+}
 
 .rating>input {
     display: none
@@ -366,9 +386,8 @@ body {
 }
 
 .scrollable-container {
-  max-height: 300px; /* Điều chỉnh chiều cao tối đa của khung chứa */
-  // overflow-y: auto; /* Tạo thanh cuộn cho phần nội dung khi vượt quá kích thước */
-  width: 100%; /* Đảm bảo khung chứa chiếm toàn bộ chiều rộng của phần tử cha */
+  max-height: 300px; 
+  width: 100%; 
 }
 
 .taikhoan{
@@ -403,7 +422,6 @@ body {
   color: orange;
 }
 
-/* Three column layout */
 .side {
   float: left;
   width: 15%;
@@ -416,19 +434,12 @@ body {
   width: 70%;
 }
 
-/* Place text to the right */
-// .right {
-//   text-align: right;
-// }
-
-/* Clear floats after the columns */
 .row:after {
   content: "";
   display: table;
   clear: both;
 }
 
-/* The bar container */
 .bar-container {
   width: 100%;
   background-color: #f1f1f1;
@@ -436,14 +447,12 @@ body {
   color: white;
 }
 
-/* Individual bars */
 .bar-5 {height: 18px; background-color: #04AA6D;}
 .bar-4 {height: 18px; background-color: #2196F3;}
 .bar-3 {height: 18px; background-color: #00bcd4;}
 .bar-2 {height: 18px; background-color: #ff9800;}
 .bar-1 {height: 18px; background-color: #f44336;}
 
-/* Responsive layout - make the columns stack on top of each other instead of next to each other */
 @media (max-width: 400px) {
   .side, .middle {
     width: 100%;
@@ -460,16 +469,44 @@ body {
 }
 
 .stars {
-  background-color: white;
-  border: 2px solid dodgerblue;
-  border-radius: 10px;
-  padding: 10px 20px;
-  align-items: center;
+    background-color: white;
+    border: 2px solid dodgerblue;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-left: 38%;
+    width: 62.1%;
+    margin-top: -31.5%;
+    height: 276px;
+}
+.booking-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 999; /* Đảm bảo pop-up nằm trên tất cả các phần tử khác */
+}
+
+.booking-alert p {
+  margin: 0;
+}
+
+.booking-alert button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
-  margin-left: 38%;
-  width: 62.1%;
-  margin-top: -30.3%;
-  height: 268px;
+  border-radius: 3px;
+}
+
+.booking-alert button:hover {
+  background-color: #0056b3;
 }
 
 .stars2 {
@@ -503,19 +540,20 @@ body {
 }
 
 .card {
-  max-height: 550px; /* Đặt chiều cao tối đa cho container */
-  overflow-y: auto; /* Tạo thanh cuộn dọc khi cần */
+  max-height: 550px;
+  // overflow-y: auto; 
 }
 
 .label-tra-phong {
   margin-left: -28%;
 }
 
-.table {
-  display: table;
-  margin-left: 12%;
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+  font-size: medium;
 }
-
 .table td {
   text-align: left;
 }
@@ -556,25 +594,22 @@ body {
   overflow: auto; /* Cho phép cuộn nếu nội dung quá lớn */
 }
 
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
+.close-btn {
+  width: 30%;
+  border-radius: 11px;
+  margin-right: 7%;
+  color: white;
+  background: #2563eb;
 }
 .dropdown-button {
   position: relative;
   z-index: 10000;
-  // CSS cho DropdownButton
 }
 .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
   z-index: 10000;
-  // CSS cho Dropdown Menu
 }
 
 .ring-opacity-5 {
@@ -605,15 +640,10 @@ button {
   margin-top: 0.5%;
 }
 
-// @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@800&display=swap');
 
-// /!\ IMPORTANT: this variable precises the number of slides contained in the slider.
-// if you add/remove images, make sure that this variable is up to date so the buttons,
-// the disposition of elements and the animations work correctly.
 $nb-slides: 5;
 
-// THE BASICS
 html, body {
   color: white;
   background-color: rgb(30, 30, 35);
@@ -623,7 +653,6 @@ html, body {
   h1 {
     margin-top: 14px;
     margin-bottom: 0;
-    // text-shadow: 5px 5px rgba($color: black, $alpha: .5);
   }
 
   h2 {
@@ -933,7 +962,13 @@ body {
   margin-top: -214%;
   margin-left: 91%;
 }
+.tromeo{
+  color: #4598e9;
+} 
+.tromeotext{
+  color: #4598e9;
 
+}
 .product-price-btn p {
   display: inline-block;
   position: absolute;
@@ -1064,10 +1099,14 @@ body {
   margin-top: -9%;
 }
 
-.error-message {
-  color: red;
-  margin-top: 10px;
+.alert {
+  color: #e33333;
+  margin-top: -32px;
+  width: 281%;
+  margin-left: 17%;
 }
+
+
 .error-popup {
   position: fixed;
   bottom: 20px;
@@ -1093,10 +1132,10 @@ body{
 	background: #EEEEEE;
 	font-family: 'Roboto', sans-serif;
 }
-.card{
-	width: 300px;
-	border: none;
-	border-radius: 15px;
+.card {
+  width: 698px;
+  border: none;
+  border-radius: 15px;
 }
 .adiv {
   background: #4598e9;
@@ -1151,13 +1190,15 @@ body{
 
 .typehere {
   font-size: 17px;
-  margin-left: 7%;
+  height: 66px;
+  margin-left: 1%;
+  width: 278px;
 }
 
 .send-btn {
-  width: 20%;
+  width: 30%;
   border-radius: 11px;
-  margin-left: -26%;
+  margin-left: 15%;
   color: white;
   background: #2563eb;
 }
@@ -1176,6 +1217,4 @@ body{
   gap: 10px; /* Khoảng cách giữa các nút, tùy chỉnh theo nhu cầu */
 }
 
-.send-btn, .close-btn {
-  flex: 1; /* Để các nút có cùng kích thước, nếu không cần thì có thể bỏ dòng này */
-}
+

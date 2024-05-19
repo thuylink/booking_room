@@ -396,7 +396,7 @@ button {
 
 .question {
   position: relative;
-  padding: 10px 0;
+  margin-top: -4%;
 
   &:first-of-type {
     padding-top: 0;
@@ -408,7 +408,7 @@ button {
 
   label {
     transform-origin: left center;
-    color: #ff385c;
+    color: #e0e0e0;
     font-weight: 100;
     letter-spacing: 0.01em;
     font-size: 17px;
@@ -441,8 +441,8 @@ button {
 
     &:focus {
       outline: none;
-      background: #ff385c;
-      color: white;
+      background: #ffffff;
+      color: rgb(0, 0, 0);
       margin-top: 30px;
     }
 
@@ -464,6 +464,13 @@ button {
   margin-left: 85%;
 }
 
+.tromeo{
+  color: #4598e9;
+} 
+.tromeotext{
+  color: #4598e9;
+
+}
 .sel {
   background-repeat: no-repeat;
   background-size: contain;

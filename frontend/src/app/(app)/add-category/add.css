@@ -58,7 +58,7 @@ body {
     width: 386%;
     margin-left: -142%;
     height: 524px;
-    margin-top: -12%;
+    margin-top: -18%;
 }
 .containercategory__form {
 	height: 100%;
@@ -170,7 +170,7 @@ body {
     font-size: 0.8rem;
     margin-left: 136%;
     font-weight: bold;
-    width: 167px;
+    width: 161px;
     margin-top: 159%;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
@@ -219,11 +219,12 @@ body {
 }
 
 .input2 {
-	background-color: #fff;
-	border: none;
-	padding: 0.9rem 0.9rem;
-	margin: 0.5rem 0;
-	width: 98%;
+	
+    background-color: #fff;
+    border: none;
+    padding: 0.9rem 0.9rem;
+    margin: 0.5rem 0;
+    width: 99%;
 }
 
 

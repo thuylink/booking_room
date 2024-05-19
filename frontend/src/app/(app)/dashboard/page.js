@@ -1,13 +1,10 @@
 'use client'
 import React from 'react'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { incrementViewCount, useProduct } from '../../../hooks/product'
 import { useCategory } from '../../../hooks/category'
 import { useRating } from '../../../hooks/rating'
 import { useCart } from '../../../hooks/cart'
-import { useMessage } from '@/hooks/message'
-
 import { Card, CardBody } from '@nextui-org/card'
 import './style_dashboard.scss'
 import { Button } from '@nextui-org/react'
@@ -16,7 +13,6 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import {
     Navbar,
-    NavbarBrand,
     NavbarContent,
     NavbarItem,
 } from '@nextui-org/react'
@@ -30,8 +26,6 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useAuth } from '@/hooks/auth'
 import { faHeartBroken } from '@fortawesome/free-solid-svg-icons'
 import { deleteCartById } from '../../../hooks/cart'
-import { faMessage} from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
 
 const Dashboard = () => {
     const { user } = useAuth({ middleware: 'auth' })
@@ -44,25 +38,15 @@ const Dashboard = () => {
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [showFilterPopup, setShowFilterPopup] = useState(false)
 
-    const [priceMin, setPriceMin] = useState('') // Giá trị giá tiền tối thiểu
+    const [priceMin, setPriceMin] = useState('') 
     const [priceMax, setPriceMax] = useState('')
     const [capacityMin, setCapacityMin] = useState('')
     const [capacityMax, setCapacityMax] = useState('')
     const [privacy_type, setPrivacyType] = useState('')
-    const [addedToCart, setAddedToCart] = useState(false);
-
     const [overlayOpen, setOverlayOpen] = useState(false)
 
     const { cart, mutate } = useCart()
     const [favoriteStatus, setFavoriteStatus] = useState({})
-
-
-    const [isChatOpen, setIsChatOpen] = useState(false); // State để kiểm soát hiển thị/ẩn popup chat
-
-    const toggleChatPopup = () => {
-        setIsChatOpen(!isChatOpen); // Khi click vào nút, đảo ngược trạng thái hiển thị của popup
-    };
-
 
     useEffect(() => {
         // Cập nhật trạng thái của các sản phẩm trong favoriteStatus
@@ -89,15 +73,11 @@ const Dashboard = () => {
 
     if (cart && cart.length > 0) {
         const show = cart.map(test => {
-            // Tìm phần tử trong mảng product
             if (product && product.length > 0) {
                 const foundProduct = product.find(
                     item => item.id === test.id_product,
                 )
-
-                // Nếu tìm thấy phần tử trong product
                 if (foundProduct) {
-                    // Lấy tên của phần tử tìm thấy và thêm vào đối tượng product
                     test.location = foundProduct.location
                     test.price = foundProduct.price
                     test.image = foundProduct.image
@@ -122,14 +102,11 @@ const Dashboard = () => {
 
     const handleDelete = async id => {
         try {
-            // Xóa sản phẩm khỏi giỏ hàng
             await deleteCartById(id);
-            
             // Cập nhật trạng thái yêu thích của sản phẩm thành false
             const updatedFavorites = { ...favoriteStatus };
             updatedFavorites[id] = false;
             setFavoriteStatus(updatedFavorites);
-    
             // Cập nhật state để render lại giao diện
             mutate();
         } catch (error) {
@@ -272,19 +249,6 @@ const Dashboard = () => {
     const filteredProductsAll =
         filteredProducts && filteredProducts.length > 0
             ? filteredProducts.filter(product => {
-                  // Kiểm tra điều kiện của privacy_type
-                  let privacyTypeCondition = true
-                  if (privacy_type === 'Một căn phòng') {
-                      privacyTypeCondition =
-                          product.privacy_type === 'Một căn phòng'
-                  } else if (privacy_type === 'Phòng chung') {
-                      privacyTypeCondition =
-                          product.privacy_type === 'Phòng chung'
-                  } else if (privacy_type === 'Toàn bộ căn nhà') {
-                      privacyTypeCondition =
-                          product.privacy_type === 'Toàn bộ căn nhà'
-                  }
-
                   // Kiểm tra điều kiện của category, price và capacity
                   const categoryCondition =
                       !selectedCategory ||
@@ -300,7 +264,6 @@ const Dashboard = () => {
 
                   // Trả về true nếu cả bốn điều kiện đều đúng
                   return (
-                      privacyTypeCondition &&
                       categoryCondition &&
                       priceCondition &&
                       capacityCondition
@@ -420,7 +383,7 @@ const Dashboard = () => {
                                             setCapacityMin(e.target.value)
                                         }
                                         placeholder="Sức chứa tối thiểu"
-                                        style={{ marginRight: '10px' }}
+                                        style={{ marginRight: '10px', background:'white' }}
                                     />
                                     <input
                                         type="text"
@@ -430,29 +393,6 @@ const Dashboard = () => {
                                         }
                                         placeholder="Sức chứa tối đa"
                                     />
-                                </div>
-
-                                <div
-                                    className="question"
-                                    style={{ display: 'flex' }}>
-                                    <select
-                                        value={privacy_type}
-                                        onChange={e =>
-                                            setPrivacyType(e.target.value)
-                                        }
-                                        className="sel"
-                                        placeholder="Phạm vi sử dụng"
-                                        style={{ marginRight: '10px' }}>
-                                        <option value="phong">
-                                            Một căn phòng
-                                        </option>
-                                        <option value="phong_chung">
-                                            Phòng chung
-                                        </option>
-                                        <option value="toan_bo_nha">
-                                            Toàn bộ căn nhà
-                                        </option>
-                                    </select>
                                 </div>
                             </form>
                         </div>

@@ -51,18 +51,7 @@ const Navigation = ({ user }) => {
                     <div className="flex">
                         <div className="flex-shrink-0 flex items-center"></div>
                         <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            <NavLink
-                                href="/dashboard"
-                                active={router.pathname === '/dashboard'}>
-                                <div className="flex items-center">
-                                    <img
-                                        src="../../logo-airbnb.jpg"
-                                        alt="Logo"
-                                        className="mr-2"
-                                    />
-                                    <span>Dashboard</span>
-                                </div>
-                            </NavLink>
+                           
                         </div>
                     </div>
 

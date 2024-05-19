@@ -89,10 +89,12 @@ body {
 }
 
 .container.right-panel-active .container--signup {
-	animation: show 0.6s;
-	opacity: 1;
-	transform: translateX(100%);
-	z-index: 5;
+    animation: show 0.6s;
+    opacity: 1;
+    transform: translateX(100%);
+    z-index: 5;
+    width: 100%;
+    margin-left: -100%;
 }
 
 .container__overlay {
@@ -175,7 +177,7 @@ body {
     transition: background-color 0.3s ease;
     z-index: 999;
     margin-top: 24px;
-	margin-left: 6px;
+    margin-left: -15px;
     width: 132px;
 }
 
@@ -211,11 +213,12 @@ body {
 }
 
 .input {
-	background-color: #fff;
-	border: none;
-	padding: 0.9rem 0.9rem;
-	margin: 0.5rem 0;
-	width: 100%;
+    border: none;
+    padding: 0.9rem 0.9rem;
+    margin: 0.5rem 0;
+    width: 170%;
+    margin-left: -37%;
+    margin-top: 11%;
 }
 
 @keyframes show {
@@ -233,8 +236,8 @@ body {
 }
 .head {
     color: white;
-    font-size: larger;
-    margin-top: -22%;
+    font-size: xx-large;
+    margin-top: -8%;
     font-weight: bold;
 }
 .image-wrapper {

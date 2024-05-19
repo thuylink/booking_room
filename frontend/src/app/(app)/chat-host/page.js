@@ -1,20 +1,24 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { Button } from '@nextui-org/button'
 import './chat-host.css'
 import { useAuth } from '@/hooks/auth'
 import { useChatting } from '@/hooks/chatting'
+import { useAllProfile } from '@/hooks/all_profile'
 
 const ChatHost = () => {
     const { sendChatting, chatting, mutate } = useChatting()
     const [content, setContent] = useState('')
     const { user } = useAuth()
+    const { profile: allProfile } = useAllProfile()
     const [isChatOpen, setIsChatOpen] = useState(false)
     const [receiverId, setReceiverId] = useState(null)
+    const [bubbleName, setBubbleName] = useState(null)
+    const [receiverProfile, setReceiverProfile] = useState(null)
 
     const handleContentChange = event => {
         setContent(event.target.value)
     }
+    console.log('all profile trong chat', allProfile)
 
     const handleSubmitChat = async () => {
         try {
@@ -37,9 +41,12 @@ const ChatHost = () => {
 
         // Lấy tất cả các sender_id của tin nhắn gửi tới tài khoản đang đăng nhập
         if (chatting && chatting.length > 0) {
-            const receivedMessages = chatting.filter(chat => chat.receiver_id === user.id)
+            const receivedMessages = chatting.filter(
+                chat => chat.receiver_id === user.id,
+            )
             if (receivedMessages.length > 0) {
-                const lastReceivedMessage = receivedMessages[receivedMessages.length - 1]
+                const lastReceivedMessage =
+                    receivedMessages[receivedMessages.length - 1]
                 setReceiverId(lastReceivedMessage.sender_id)
             }
         }
@@ -50,20 +57,40 @@ const ChatHost = () => {
     }
 
     // Lọc các tin nhắn dựa trên receiverId
-    const filteredChatting = chatting ? chatting.filter(chat => chat.receiver_id === receiverId || chat.sender_id === receiverId) : []
+    const filteredChatting = chatting
+        ? chatting.filter(
+              chat =>
+                  chat.receiver_id === receiverId ||
+                  chat.sender_id === receiverId,
+          )
+        : []
 
     console.log('allmess', chatting)
     console.log('receiver ', receiverId)
+
+    // Kiểm tra allProfile có dữ liệu và không rỗng
+    useEffect(() => {
+        if (allProfile && allProfile.length > 0 && receiverId) {
+            const receiverProfile = allProfile[0].find(
+                item => item.id_user === receiverId,
+            )
+            if (receiverProfile) {
+                setReceiverProfile(receiverProfile)
+            } else {
+                setReceiverProfile(null)
+            }
+        }
+    }, [receiverId, allProfile])
 
     return (
         <div>
             <div className="py-2 px-4 border-bottom d-none d-lg-block">
                 <div className="d-flex align-items-center py-1">
                     <div className="position-relative">
-                        <h1>bong bongs chat</h1>
+                        <h1>{receiverProfile ? receiverProfile.name : ''}</h1>
                         <img
-                            src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                            className="rounded-circle mr-1"
+                            src={receiverProfile ? receiverProfile.avatar : 'https://bootdey.com/img/Content/avatar/avatar3.png'}
+                            className="avtnekk"
                             alt="AVT"
                             width="40"
                             height="40"
@@ -74,47 +101,57 @@ const ChatHost = () => {
             </div>
 
             {isChatOpen && (
-                <div className="page-content page-containerchat" id="page-content">
-                    <div className="padding">
-                        <div className="row containerchat d-flex justify-content-center">
-                            <div className="col-md-6">
-                                <div className="cardchat cardchat-bordered">
-                                    <div className="cardchat-header">
-                                        <a className="btn btn-xs btn-secondary" href="#" data-abc="true"></a>
+                <div
+                    className="page-content page-containerchat"
+                    id="page-content">
+                    <div class="containernhantin d-flex justify-content-center">
+                        <div class="cardnhantin mt-5">
+                            <div class="d-flex flex-row justify-content-between p-3 adivhost text-white">
+                                <i class="fas fa-chevron-left"></i>
+                                <span class="pb-3">Nhắn cho chủ nhà</span>
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div
+                                className="chat-container"
+                                style={{
+                                    maxHeight: '300px',
+                                    overflowY: 'auto',
+                                }}>
+                                {chatting.map((chat, index) => (
+                                    <div
+                                        key={index}
+                                        className="d-flex flex-row p-3">
+                                        <div className="chat ml-2 p-3">
+                                            {chat.content}
+                                        </div>
                                     </div>
+                                ))}
+                            </div>
 
-                                    <div className="ps-containerchat ps-theme-default ps-active-y" id="chat-content" style={{ overflowY: 'scroll', marginTop: '-1750px', height: '-221%' }}>
-                                        <div className="media media-chat">
-                                            {filteredChatting.map((chat, index) => (
-                                                <div key={index} className="d-flex flex-row p-3">
-                                                    <div className="chat ml-2 p-3">
-                                                        {chat.content}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="ps-scrollbar-x-rail" style={{ left: '0px', bottom: '0px' }}>
-                                            <div className="ps-scrollbar-x" tabIndex="0" style={{ left: '0px', width: '0px' }}
-                                            ></div>
-                                        </div>
-                                        <div className="ps-scrollbar-y-rail" style={{ top: '0px', height: '0px', right: '2px' }}>
-                                            <div className="ps-scrollbar-y" tabIndex="0" style={{ top: '0px', height: '2px' }}></div>
-                                        </div>
-                                    </div>
+                            <div class="d-flex flex-row p-3">
+                                <div class="myvideo ml-2"></div>
+                            </div>
 
-                                    <div className="publisher bt-1 border-light">
-                                        <textarea className="publisher-input" placeholder="Nhắn ở đây" value={content} onChange={handleContentChange}></textarea>
-                                        <div className="comment-btns mt-2">
-                                            <div className="mt-6 flex gap-6">
-                                                <Button className="custom-button" onClick={handleSubmitChat}>
-                                                    <span className="button-text">Gửi</span>
-                                                </Button>
-                                            </div>
-                                        </div>
+                            <div class="form-group px-3">
+                                <textarea
+                                    className="typeherechathost"
+                                    rows="5"
+                                    placeholder="Soạn tin nhắn"
+                                    value={content}
+                                    onChange={handleContentChange}></textarea>
+                                <div className="form-group px-3">
+                                    <div className="button-container">
+                                        <button
+                                            className="send-btnchathost"
+                                            onClick={handleSubmitChat}>
+                                            Gửi
+                                        </button>
+                                        <button
+                                            className="close-btnchathost"
+                                            onClick={handleCloseChat}>
+                                            Đóng
+                                        </button>
                                     </div>
-                                    <Button className="close-btn" onClick={handleCloseChat}>
-                                        Đóng
-                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -126,3 +163,12 @@ const ChatHost = () => {
 }
 
 export default ChatHost
+// <div className="page-content page-containerchat" id="page-content">
+//                 {filteredChatting.map((chat, index) => (
+//                     <div key={index} className="d-flex flex-row p-3">
+//                         <div className="chat ml-2 p-3">
+//                             {chat.content}
+//                         </div>
+//                     </div>
+//                 ))}
+//                 </div>

@@ -220,8 +220,8 @@ const UpdateProductPage = (product) => {
     return (
         <form onSubmit={submitForm} className="max-w-sm mx-auto">
             <div className="flex flex-col flex-wrap gap-4"></div>
-            <div class="container right-panel-active">
-                <div class="container__form container--signup">
+            <div class="containerupdateproduct right-panel-active">
+                <div class="containerupdateproduct__form containerupdateproduct--signup">
                     <form class="form">
                         <div className="head">
                             <a className="head">Chỉnh sửa thông tin nhà ở </a>
@@ -302,7 +302,7 @@ const UpdateProductPage = (product) => {
                         />
 
                         <div className="mt-4">
-                            <div className="amenities-container">
+                            <div className="amenities-containerupdateproduct">
                                 <div className="amenities-column-left">
                                     {amenitiesOptions
                                         .slice(0, 11)
@@ -394,7 +394,7 @@ const UpdateProductPage = (product) => {
                     </form>
                 </div>
 
-                <div className="container__overlay">
+                <div className="containerupdateproduct__overlay">
     <div className="mt-4">
         <Label htmlFor="image">Hình ảnh:</Label>
         {images.length > 0 &&
@@ -495,7 +495,7 @@ const UpdateProductPage = (product) => {
     </div>
 </div>
 <div className="button">
-<Button className="btn">Lưu thay đổi</Button>
+<Button className="btnupdateproduct">Lưu thay đổi</Button>
 </div>
             </div>
            
