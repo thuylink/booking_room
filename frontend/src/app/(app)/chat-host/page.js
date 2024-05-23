@@ -12,7 +12,6 @@ const ChatHost = () => {
     const { profile: allProfile } = useAllProfile()
     const [isChatOpen, setIsChatOpen] = useState(false)
     const [receiverId, setReceiverId] = useState(null)
-    const [bubbleName, setBubbleName] = useState(null)
     const [receiverProfile, setReceiverProfile] = useState(null)
 
     const handleContentChange = event => {
@@ -91,7 +90,6 @@ const ChatHost = () => {
                         <img
                             src={receiverProfile ? receiverProfile.avatar : 'https://bootdey.com/img/Content/avatar/avatar3.png'}
                             className="avtnekk"
-                            alt="AVT"
                             width="40"
                             height="40"
                             onClick={toggleChatPopup} // Bật/tắt popup khi nhấp vào ảnh
@@ -104,12 +102,12 @@ const ChatHost = () => {
                 <div
                     className="page-content page-containerchat"
                     id="page-content">
-                    <div class="containernhantin d-flex justify-content-center">
-                        <div class="cardnhantin mt-5">
-                            <div class="d-flex flex-row justify-content-between p-3 adivhost text-white">
-                                <i class="fas fa-chevron-left"></i>
-                                <span class="pb-3">Nhắn cho chủ nhà</span>
-                                <i class="fas fa-times"></i>
+                    <div className="containernhantin d-flex justify-content-center">
+                        <div className="cardnhantin mt-5">
+                            <div className="d-flex flex-row justify-content-between p-3 adivhost text-white">
+                                <i className="fas fa-chevron-left"></i>
+                                <span className="pb-3">Nhắn cho chủ nhà</span>
+                                <i className="fas fa-times"></i>
                             </div>
                             <div
                                 className="chat-container"
@@ -121,18 +119,21 @@ const ChatHost = () => {
                                     <div
                                         key={index}
                                         className="d-flex flex-row p-3">
-                                        <div className="chat ml-2 p-3">
-                                            {chat.content}
+                                        <div className={`chat ml-2 p-3 ${chat.sender_id === receiverId && receiverProfile ? '' : 'highlight-message'}`}>
+                                            {chat.sender_id === receiverId && receiverProfile
+                                                ? receiverProfile.name
+                                                : "Bạn"}
+                                            : {chat.content}
                                         </div>
                                     </div>
                                 ))}
                             </div>
 
-                            <div class="d-flex flex-row p-3">
-                                <div class="myvideo ml-2"></div>
+                            <div className="d-flex flex-row p-3">
+                                <div className="myvideo ml-2"></div>
                             </div>
 
-                            <div class="form-group px-3">
+                            <div className="form-group px-3">
                                 <textarea
                                     className="typeherechathost"
                                     rows="5"
@@ -163,12 +164,3 @@ const ChatHost = () => {
 }
 
 export default ChatHost
-// <div className="page-content page-containerchat" id="page-content">
-//                 {filteredChatting.map((chat, index) => (
-//                     <div key={index} className="d-flex flex-row p-3">
-//                         <div className="chat ml-2 p-3">
-//                             {chat.content}
-//                         </div>
-//                     </div>
-//                 ))}
-//                 </div>

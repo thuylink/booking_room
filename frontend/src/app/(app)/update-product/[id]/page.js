@@ -161,7 +161,7 @@ const UpdateProductPage = (product) => {
         // try {
         await updateProductById({ id: product.productId, formData: formData })
         // console.log('Cập nhật sản phẩm thành công')
-        router.push('/all-product')
+        router.push('/dashboard-host')
         // } catch (error) {
         //     console.error('Lỗi cập nhật sản phẩm: ', error)
         // }

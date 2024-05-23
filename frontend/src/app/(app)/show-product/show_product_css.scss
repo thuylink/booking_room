@@ -112,7 +112,7 @@
   margin-left: 45%;
 }
 .button-text {
-  color: #ff385c;
+  color: #ffffff;
 }
 
 .text-lg {
@@ -237,9 +237,27 @@ body{
 .cardnhantin {
   width: 315px;
   border: none;
-  margin-top: 25px;
+  margin-top: -150px;
   border-radius: 15px;
 }
+.highlight-message {
+  background-color: #d1e7dd; /* Màu xanh nhạt */
+  color: #0f5132; /* Màu chữ xanh đậm */
+  border-radius: 10px; /* Bo góc cho đẹp */
+  padding: 10px; /* Khoảng cách bên trong */
+  margin-bottom: 10px; /* Khoảng cách bên dưới */
+}
+
+.transition-transform-colors-opacity {
+  transition-property: transform, color, background, background-color, border-color, text-decoration-color, fill, stroke, opacity;
+  transition-timing-function: ease;
+  transition-duration: 250ms;
+  color: white;
+  width: 101%;
+  background: #ff385c;
+  margin-top: 22%;
+}
+
 .cmt {
   background-color: white;
   border: 2px solid dodgerblue;
@@ -248,8 +266,8 @@ body{
   cursor: pointer;
   margin-left: 477px;
   width: 756px;
-  margin-top: -59.6%;
-  height: 726px;
+  margin-top: -61.1%;
+  height: 746px;
 }
 .user-view-table td {
   padding-right: 0;
@@ -440,6 +458,11 @@ body {
   clear: both;
 }
 
+.tablenekk {
+  margin-top: 5%;
+  text-align: left;
+  margin-left: 20%;
+}
 .bar-container {
   width: 100%;
   background-color: #f1f1f1;
@@ -600,6 +623,9 @@ table {
   margin-right: 7%;
   color: white;
   background: #2563eb;
+}
+.btnthanhtoan {
+  margin-top: 4%;
 }
 .dropdown-button {
   position: relative;
@@ -1125,7 +1151,9 @@ body {
   opacity: 1;
 }
 
-
+.nhanchochunha{
+  margin-top: 30%;
+}
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 body{
@@ -1148,12 +1176,16 @@ body{
   font-weight: bold;
   color: white;
 }
+.chatchut {
+  margin-top: 20%;
+}
 .chat {
   border: none;
   background: #ff395d;
   font-size: 13px;
   color: white;
   border-radius: 20px;
+  text-align: left;
 }
 .bg-white {
   border: 1px solid #ffffff;
@@ -1216,5 +1248,6 @@ body{
   justify-content: space-between;
   gap: 10px; /* Khoảng cách giữa các nút, tùy chỉnh theo nhu cầu */
 }
+
 
 

@@ -84,36 +84,91 @@ export const ProductDetailWithPannellum = () => {
     const [errors, setErrors] = useState([])
 
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [receiverId, setReceiverId] = useState(null)
+    const [receiverProfile, setReceiverProfile] = useState(null)
+
+    const [showRatingAlert, setShowRatingAlert] = useState(false);
+    const [hasRated, setHasRated] = useState(false);
+
 
     const toggleChatPopup = () => {
-        setIsChatOpen(!isChatOpen);
-    };
+        setIsChatOpen(!isChatOpen)
+
+        // Lấy tất cả các sender_id của tin nhắn gửi tới tài khoản đang đăng nhập
+        if (chatting && chatting.length > 0) {
+            const receivedMessages = chatting.filter(
+                chat => chat.receiver_id === user.id,
+            )
+            if (receivedMessages.length > 0) {
+                const lastReceivedMessage =
+                    receivedMessages[receivedMessages.length - 1]
+                setReceiverId(lastReceivedMessage.sender_id)
+            }
+        }
+    }
+
+    const filteredChatting = chatting
+        ? chatting.filter(
+              chat =>
+                  chat.receiver_id === receiverId ||
+                  chat.sender_id === receiverId,
+          )
+        : []
+
+        useEffect(() => {
+            if (allProfile && allProfile.length > 0 && receiverId) {
+                const receiverProfile = allProfile[0].find(
+                    item => item.id_user === receiverId,
+                )
+                if (receiverProfile) {
+                    setReceiverProfile(receiverProfile)
+                } else {
+                    setReceiverProfile(null)
+                }
+            }
+        }, [receiverId, allProfile])
 
     const handleCloseChat = () => {
         setIsChatOpen(false); // Đặt trạng thái isChatOpen thành false để ẩn popup
     };
 
     const isBooked = () => {
-        // Kiểm tra xem booking có dữ liệu không
         if (booking && booking.length > 0) {
             console.log('booking', booking)
-            // Duyệt qua danh sách booking để kiểm tra xem người dùng đã đặt phòng cho sản phẩm này chưa
             for (let i = 0; i < booking.length; i++) {
                 console.log('id_user', booking[i].id_product)
                 console.log('id_user', id)
-                // Nếu có booking cho sản phẩm này và người dùng hiện tại đã đặt phòng
                 if (
                     booking[i].id_product.toString() === id &&
                     booking[i].id_user === user.id
                 ) {
                     console.log('chán')
-                    return true // Trả về true nếu đã đặt phòng
+                    return true 
                 }
             }
         }
         return false // Trả về false nếu chưa đặt phòng
     }
     console.log(isBooked())
+
+    const isRated = () => {
+        if (rating && rating.length > 0) {
+            console.log('rating', rating)
+            for (let i = 0; i < rating.length; i++) {
+                console.log('id_user', rating[i].id_product)
+                console.log('id_user', id)
+                if (
+                    rating[i].id_product.toString() === id &&
+                    rating[i].id_user === user.id
+                ) {
+                    console.log('chán')
+                    return true 
+                }
+            }
+        }
+        return false // Trả về false nếu chưa đặt phòng
+    }
+    console.log('đánh giá chưa',isRated())
 
     const submitForm = event => {
         event.preventDefault()
@@ -282,6 +337,15 @@ export const ProductDetailWithPannellum = () => {
             }, 1000);
             return;
           }
+
+          const rated = isRated();
+          if (rated) {
+            setShowRatingAlert(true);
+            setTimeout(() => {
+              setShowRatingAlert(false);
+            }, 1000);
+            return;
+          }
           await addRating(id, user.id, ratings, comment);
           console.log('Đánh giá thành công');
         } catch (error) {
@@ -301,6 +365,20 @@ export const ProductDetailWithPannellum = () => {
         );
       };
 
+      const RatingAlert = ({ show, setShow }) => {
+        if (!show) return null;
+      
+        return (
+          <div className="booking-alert">
+            <div className="booking-alert-content">
+              <p>Bạn đã đánh giá rồi.</p>
+            </div>
+          </div>
+        );
+      };
+const handleContentChange = event => {
+        setContent(event.target.value)
+    }
     const handleSubmitChat = async () => {
         try {
             await sendChatting(user.id, product2.id_owner, content);
@@ -308,7 +386,7 @@ export const ProductDetailWithPannellum = () => {
 
             // Thêm tin nhắn mới vào danh sách tin nhắn
             addChatting({ content: content });
-
+            mutate() 
             setContent('');
             setIsChatOpen(true);
         } catch (error) {
@@ -480,9 +558,7 @@ const profileContent = findProfile();
     }
 
     const productFields = Object.keys(product2)
-    const handleContentChange = event => {
-        setContent(event.target.value)
-    }
+    
 
 
     return (
@@ -520,71 +596,98 @@ const profileContent = findProfile();
                                     color: 'white',
                                 }}
                             />
-                            <span className="yeu1 text-white cursor-pointer active:opacity-50">
+                            <span className="  yeu1 text-white cursor-pointer active:opacity-50">
                                 Nhắn cho chủ nhà
                             </span>
                         </Button>
-                        {isChatOpen && (
+                        <div>
+            <div className="py-2 px-4 border-bottom d-none d-lg-block">
+                <div className="d-flex align-items-center py-1">
+                    <div className="position-relative">
+                       
+                    </div>
+                </div>
+            </div>
+
+            {isChatOpen && (
+                <div
+                    className="page-content page-containerchat"
+                    id="page-content">
+                    <div className="container d-flex justify-content-center">
+                        <div className="cardnhantin mt-5">
+                            <div className="d-flex flex-row justify-content-between p-3 adiv text-white">
+                                <i className="fas fa-chevron-left"></i>
+                                <span className="pb-3">Nhắn cho chủ nhà</span>
+                                <i className="fas fa-times"></i>
+                            </div>
                             <div
-                                className="page-content page-containerchat"
-                                id="page-content">
-                                <div class="container d-flex justify-content-center">
-                                    <div class="cardnhantin mt-5">
-                                        <div class="d-flex flex-row justify-content-between p-3 adiv text-white">
-                                            <i class="fas fa-chevron-left"></i>
-                                            <span class="pb-3">
-                                                Nhắn cho chủ nhà
-                                            </span>
-                                            <i class="fas fa-times"></i>
+                                className="chat-container"
+                                style={{
+                                    maxHeight: '300px',
+                                    overflowY: 'auto',
+                                }}>
+                                {filteredChatting.map((chat, index) => (
+                                    <div
+                                        key={index}
+                                        className="d-flex flex-row p-3">
+                                        <div
+                                            style={{
+                                                backgroundColor: chat.sender_id === user.id ? 'white' : 'inherit',
+                                                color: chat.sender_id === user.id ? '#ff385c' : 'inherit',
+                                                borderRadius: '10px',
+                                                padding: '10px',
+                                                marginBottom: '10px',
+                                            }}
+                                            className="chat ml-2 p-3"
+                                        >
+                                            {chat.sender_id === user.id
+                                                ? 'Bạn'
+                                                : chat.sender_id === receiverId &&
+                                                  receiverProfile
+                                                ? receiverProfile.name
+                                                : chat.sender_id}
+                                            : {chat.content}
                                         </div>
-                                        <div className="chat-container" style={{ maxHeight: "300px", overflowY: "auto" }}>
-                                        {chatting.map((chat, index) => (
-                                            <div key={index} className="d-flex flex-row p-3">
-                                                <div className="chat ml-2 p-3">
-                                                    {chat.content}
-                                                </div>
-                                            </div>
-                                        ))}
                                     </div>
-                                    
+                                ))}
+                            </div>
 
-                                        <div class="d-flex flex-row p-3">
-                                            <div class="myvideo ml-2"></div>
-                                        </div>
+                            <div className="d-flex flex-row p-3">
+                                <div className="myvideo ml-2"></div>
+                            </div>
 
-                                        <div class="form-group px-3">
-                                            <textarea
-                                                className="typehere"
-                                                rows="5"
-                                                placeholder="Soạn tin nhắn"
-                                                value={content}
-                                                onChange={
-                                                    handleContentChange
-                                                }></textarea>
-                                                <div className="form-group px-3">
-                                                <div className="button-container">
-                                                    <button
-                                                        className="send-btn"
-                                                        onClick={handleSubmitChat}>
-                                                        Gửi
-                                                    </button>
-                                                    <button className="close-btn"                                               
-                                                    onClick={handleCloseChat}>
-                                                        Đóng
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="tromeo">
-                                            <i class="fas fa-chevron-left"></i>
-                                           <p class='tromeotext'>_ </p>
-                                            <i class="fas fa-times"></i>
-                                        </div>
-                                        </div>
-                                       
+                            <div className="form-group px-3">
+                                <textarea
+                                    className="typehere"
+                                    rows="5"
+                                    placeholder="Soạn tin nhắn"
+                                    value={content}
+                                    onChange={handleContentChange}></textarea>
+                                <div className="form-group px-3">
+                                    <div className="button-container">
+                                        <button
+                                            className="send-btn"
+                                            onClick={handleSubmitChat}>
+                                            Gửi
+                                        </button>
+                                        <button
+                                            className="close-btn"
+                                            onClick={handleCloseChat}>
+                                            Đóng
+                                        </button>
                                     </div>
                                 </div>
+                                <div className="tromeo">
+                                    <i className="fas fa-chevron-left"></i>
+                                    <p className="tromeotext">_ </p>
+                                    <i className="fas fa-times"></i>
+                                </div>
                             </div>
-                        )}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
                     </NavbarItem>
                 </NavbarContent>
             </Navbar>
@@ -1149,7 +1252,7 @@ const profileContent = findProfile();
                                             </div>
 
                                             <div className="col">
-                                                <table className="table">
+                                                <table className="tablenekk">
                                                     <tbody>
                                                         <tr>
                                                             <th scope="row">
@@ -1194,7 +1297,7 @@ const profileContent = findProfile();
                                             <div className="button">
                                                 <Button
                                                     type="submit"
-                                                    className="btn">
+                                                    className="btnthanhtoan">
                                                     {' '}
                                                     Thanh toán
                                                 </Button>
@@ -1363,6 +1466,12 @@ const profileContent = findProfile();
       {showBookingAlert && (
         <div className="modal">
           <BookingAlert show={showBookingAlert} setShow={setShowBookingAlert} />
+        </div>
+      )}
+
+      {showRatingAlert && (
+        <div className="modal">
+          <RatingAlert show={showRatingAlert} setShow={setShowRatingAlert} />
         </div>
       )}
     </div>

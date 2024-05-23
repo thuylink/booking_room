@@ -96,7 +96,7 @@ const CreateCategoryPage = ({ onCategoryCreated }) => {
                         <select
                             id="status"
                             value={selectedStatus}
-                            className="input"
+                            className="input2"
                             onChange={handleStatusChange}
                             required
                             autoFocus>

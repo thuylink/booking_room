@@ -80,7 +80,7 @@ const AllBooking = () => {
             <div className="table-container">
                 <Navbar>
                     <NavbarBrand>
-                        <p className="font-bold text-inherit">AirBnb</p>
+                        <p className="font-bold text-inherit">Các đơn đặt phòng</p>
                     </NavbarBrand>
                     <NavbarContent
                         className="hidden sm:flex gap-4"

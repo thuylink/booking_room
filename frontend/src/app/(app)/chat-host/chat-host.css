@@ -464,6 +464,7 @@ body{
   gap: 10nẻpx; /* Khoảng cách giữa các nút, tùy chỉnh theo nhu cầu */
 }
 
-/* .avtnekk{
-    display: none;
-} */
+.highlight-message {
+    background-color: #e0f7fa; /* Màu xanh nhạt */
+    color: #013731; /* Màu chữ xanh đậm */
+}

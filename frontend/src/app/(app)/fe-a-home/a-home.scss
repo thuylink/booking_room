@@ -2,13 +2,13 @@
     color: #000;
   }
   
-  .py-4 {
+  .py-4ahome {
     margin-top: 1%;
     height: 303%;
-    width: 100%;
-    margin-left: -25px;
+    width: 96%;
+    margin-left: -99px;
     margin-right: -91px;
-  }
+}
   .py-6 {
     display: none;
   
@@ -70,15 +70,15 @@
     margin-left: 14px;
   }
   
-  .highlighted-box {
+  .highlighted-boxahome {
     background-color: white;
     border: 2px solid dodgerblue;
     border-radius: 10px;
     padding: 10px;
     margin-top: 8px;
-    width: 335px;
-    margin-left: 20px;
-  }
+    width: 564px;
+    margin-left: -218px;
+}
   
   .highlighted-value {
     color: #ff385c;
@@ -356,10 +356,24 @@
     width: 320%;
   }
   
+  .slick-prev:before, .slick-next:before {
+    font-family: 'slick';
+    font-size: 20px;
+    line-height: 1;
+    margin-left: -512%;
+    opacity: .75;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
   .tieude{
     text-align: center;
     font-weight: bold;
   }
+
+  .slick-prev {
+    left: -96px;
+}
   
   .slick-next {
     right: 1px;
